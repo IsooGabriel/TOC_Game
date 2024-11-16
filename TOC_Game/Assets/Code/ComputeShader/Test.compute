@@ -1,0 +1,78 @@
+﻿#pragma kernel CSMain
+
+RWStructuredBuffer<float2> enemyPositions; // 敵の位置
+StructuredBuffer<float> enemyScales; // 各敵のスケール
+float deltaTime;
+float moveSpeed;
+uint enemyCount; // 敵の数
+
+// XORシフト乱数生成器（例として利用）
+uint Seed;
+uint XorShift(inout uint state)
+{
+    state ^= state << 13;
+    state ^= state >> 17;
+    state ^= state << 5;
+    return state;
+}
+
+float Random(uint id, uint seed)
+{
+    Seed = id + seed;
+    uint randomValue = XorShift(Seed);
+    return (randomValue & 0xFFFFFF) / 16777216.0; // 24ビット乱数を0〜1に正規化
+}
+
+
+[numthreads(1, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+
+    // 配列外参照を防ぐ
+    if (index >= enemyCount)
+        return;
+
+    float2 position = enemyPositions[index];
+    float scale = enemyScales[index]; // 現在の敵のスケール
+    float dynamicRadius = scale; // スケールに比例した回避半径
+
+    float2 avoidForce = float2(0.0, 0.0);
+    int neighborCount = 0;
+
+    // 他の敵との衝突をチェック
+    for (int i = 0; i < enemyCount; i++)
+    {
+        if (i == index)
+            continue; // 自分自身はスキップ
+
+        float2 otherPos = enemyPositions[i];
+        float otherScale = enemyScales[i];
+        float combinedRadius = dynamicRadius + otherScale; // 自分と相手の半径を合計
+
+        float distance = length(position - otherPos);
+
+        if (distance < combinedRadius && distance > 0.0) // 衝突可能範囲内
+        {
+            float2 diff = normalize(position - otherPos);
+            avoidForce += diff / distance; // 距離に反比例して回避力を強く
+            neighborCount++;
+        }
+    }
+
+    // 回避力を正規化して平均化
+    if (neighborCount > 0)
+    {
+        avoidForce /= neighborCount;
+        avoidForce = normalize(avoidForce);
+    }
+    
+    // 移動方向に回避力を加える
+    float2 moveDirection = normalize(float2(Random(index, 0u), Random(index, 1u)) - 0.5) + avoidForce;
+    position += moveDirection * moveSpeed * deltaTime;
+
+    // 更新された位置を保存
+    enemyPositions[index] = position;
+}
+
+
