@@ -1,14 +1,16 @@
 ﻿#pragma kernel CSMain
 
+// Buffers and parameters
 RWStructuredBuffer<float2> enemyPositions; // 敵の位置
 StructuredBuffer<float> enemyScales; // 各敵のスケール
 RWStructuredBuffer<float> stopProbabilities; // 各敵の停止確率
-StructuredBuffer<float> bounds; // 各敵のスケール
+RWStructuredBuffer<float2> moveRestrictions; // 各敵の移動制限 (1: 移動可能、0: 移動不可)
+StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用される）
 float deltaTime;
 float moveSpeed;
 uint enemyCount; // 敵の数
 
-// XORシフト乱数生成器（例として利用）
+// XORシフト乱数生成器
 uint Seed;
 uint XorShift(inout uint state)
 {
@@ -25,49 +27,41 @@ float Random(uint id, uint seed)
     return (randomValue & 0xFFFFFF) / 16777216.0; // 24ビット乱数を0〜1に正規化
 }
 
-[numthreads(1, 1, 1)]
-void CSMain(uint3 id : SV_DispatchThreadID)
+// --- Functions ---
+
+// 停止確率を更新
+bool ShouldStop(uint index, inout float stopProbability)
 {
-    uint index = id.x;
+    if (Random(index, 2u) < stopProbability)
+    {
+        if (stopProbability > 0.01f)
+        {
+            stopProbability -= 0.002f;
+        }
+        return true; // 停止する
+    }
+    if (stopProbability < 0.99f)
+    {
+        stopProbability += 0.002f;
+    }
+    return false; // 移動する
+}
 
-    // 配列外参照を防ぐ
-    if (index >= enemyCount)
-        return;
-
-    float2 position = enemyPositions[index];
-    float scale = enemyScales[index]; // 現在の敵のスケール
-    float stopProbability = stopProbabilities[index]; // 停止確率
-    float dynamicRadius = scale; // スケールに比例した回避半径
-
+// 回避力を計算
+float2 ComputeAvoidForce(uint index, float2 position, float dynamicRadius)
+{
     float2 avoidForce = float2(0.0, 0.0);
     int neighborCount = 0;
 
-    // 停止確率による動作判定
-    if (Random(index, 2u) < stopProbability)
-    {
-        if (stopProbabilities[index] > 0.01f)
-        {
-            stopProbabilities[index] -= 0.002f;
-        }
-        return; // 一定確率で停止（動かない）
-    }
-    if (stopProbabilities[index] < 0.99f)
-    {
-        stopProbabilities[index] += 0.002f;
-    }
-
-    // 他の敵との衝突をチェック
     for (uint i = 0; i < enemyCount; i++)
     {
         if (i == index)
-            continue; // 自分自身はスキップ
+            continue;
 
         float2 otherPos = enemyPositions[i];
-        float combinedRadius = dynamicRadius; // 自分の半径のみ
-
         float distance = length(position - otherPos);
 
-        if (distance < combinedRadius && distance > 0.0) // 衝突可能範囲内
+        if (distance < dynamicRadius && distance > 0.0)
         {
             float2 diff = normalize(position - otherPos);
             avoidForce += diff / distance; // 距離に反比例して回避力を強く
@@ -75,20 +69,83 @@ void CSMain(uint3 id : SV_DispatchThreadID)
         }
     }
 
-    // 回避力を正規化して平均化
     if (neighborCount > 0)
     {
         avoidForce /= neighborCount;
         avoidForce = normalize(avoidForce);
     }
 
-    // 移動方向に回避力を加える
-    float2 moveDirection = normalize(float2(Random(index, 0u), Random(index, 1u)) - 0.5) + avoidForce;
+    return avoidForce;
+}
+
+// 座標制限を更新
+float2 ApplyBounds(float2 direction, float2 restriction, inout float2 moveRestriction)
+{
+    if (direction.x >= bounds[0])
+    {
+        direction.x = -1 * abs(direction.x);
+        moveRestriction = float2(-1.0, 0.0); // X方向を制限
+    }
+    else if (direction.x <= -bounds[0])
+    {
+        direction.x = abs(bounds[0]);
+        moveRestriction = float2(1.0, 0.0);
+    }
+    else if (direction.y >= bounds[0])
+    {
+        direction.y = -1 * abs(bounds[0]);
+        moveRestriction = float2(0.0, -1.0); // Y方向を制限
+    }
+    else if (direction.y <= -bounds[0])
+    {
+        direction.y = abs(bounds[0]);
+        moveRestriction = float2(0.0, 1.0);
+    }
+    else
+    {
+        moveRestriction = float2(1.0, 1.0); // 制限解除
+    }
+    
+    direction.x *= restriction.x != 0 ? restriction.x : 1;
+    direction.y *= restriction.y != 0 ? restriction.y : 1;
+    return direction;
+}
+
+// --- Main Kernel ---
+[numthreads(1, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+
+    if (index >= enemyCount)
+        return;
+
+    float2 position = enemyPositions[index];
+    float scale = enemyScales[index];
+    float stopProbability = stopProbabilities[index];
+    float2 restriction = moveRestrictions[index];
+
+    // 動作判定
+    if (ShouldStop(index, stopProbability))
+    {
+        stopProbabilities[index] = stopProbability;
+        return;
+    }
+
+    // 回避力を計算
+    float2 avoidForce = ComputeAvoidForce(index, position, scale);
+    
+    // ランダム移動方向を計算し、回避力を加算
+    float2 moveDirection = normalize(float2(Random(index, 0u), Random(index, 1u)) - 0.5);
+    
+    // 範囲制限を適用
+    moveDirection = ApplyBounds(moveDirection, restriction, restriction) + avoidForce;
+
+    // 移動を計算
     position += moveDirection * moveSpeed * deltaTime;
 
-    // 座標範囲内に収める
-    position = clamp(position, bounds[0], bounds[0]);
-
-    // 更新された位置を保存
+    // 結果を保存
     enemyPositions[index] = position;
+    moveRestrictions[index] = restriction;
+    stopProbabilities[index] = stopProbability;
 }

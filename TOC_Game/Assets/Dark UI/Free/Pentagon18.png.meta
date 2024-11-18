@@ -145,7 +145,10 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Pentagon18_0: 6179741655080230186
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
