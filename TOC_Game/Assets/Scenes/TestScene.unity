@@ -147,11 +147,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38bea10d228364741bf495ea25ee6d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generationRange: 25
+  generationRange: 10
   computeShader: {fileID: 7200000, guid: 424cf8c3af6785a4099d9edcf0f9af2d, type: 3}
-  enemyCount: 2000
+  enemyCount: 100
   moveSpeed: 1
   enemyPrefab: {fileID: 5762256463549980013, guid: ef96026cb0ae3ce4cb86a8c787f06227, type: 3}
+  scales:
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.84
+  - 0.84
+  - 0.84
+  - 1.68
 --- !u!4 &532563784
 Transform:
   m_ObjectHideFlags: 0
@@ -316,7 +330,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 30
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

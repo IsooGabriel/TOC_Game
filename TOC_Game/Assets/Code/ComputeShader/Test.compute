@@ -2,6 +2,8 @@
 
 RWStructuredBuffer<float2> enemyPositions; // 敵の位置
 StructuredBuffer<float> enemyScales; // 各敵のスケール
+RWStructuredBuffer<float> stopProbabilities; // 各敵の停止確率
+StructuredBuffer<float> bounds; // 各敵のスケール
 float deltaTime;
 float moveSpeed;
 uint enemyCount; // 敵の数
@@ -23,7 +25,6 @@ float Random(uint id, uint seed)
     return (randomValue & 0xFFFFFF) / 16777216.0; // 24ビット乱数を0〜1に正規化
 }
 
-
 [numthreads(1, 1, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID)
 {
@@ -35,20 +36,34 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 
     float2 position = enemyPositions[index];
     float scale = enemyScales[index]; // 現在の敵のスケール
+    float stopProbability = stopProbabilities[index]; // 停止確率
     float dynamicRadius = scale; // スケールに比例した回避半径
 
     float2 avoidForce = float2(0.0, 0.0);
     int neighborCount = 0;
 
+    // 停止確率による動作判定
+    if (Random(index, 2u) < stopProbability)
+    {
+        if (stopProbabilities[index] > 0.01f)
+        {
+            stopProbabilities[index] -= 0.002f;
+        }
+        return; // 一定確率で停止（動かない）
+    }
+    if (stopProbabilities[index] < 0.99f)
+    {
+        stopProbabilities[index] += 0.002f;
+    }
+
     // 他の敵との衝突をチェック
-    for (int i = 0; i < enemyCount; i++)
+    for (uint i = 0; i < enemyCount; i++)
     {
         if (i == index)
             continue; // 自分自身はスキップ
 
         float2 otherPos = enemyPositions[i];
-        float otherScale = enemyScales[i];
-        float combinedRadius = dynamicRadius + otherScale; // 自分と相手の半径を合計
+        float combinedRadius = dynamicRadius; // 自分の半径のみ
 
         float distance = length(position - otherPos);
 
@@ -66,13 +81,14 @@ void CSMain(uint3 id : SV_DispatchThreadID)
         avoidForce /= neighborCount;
         avoidForce = normalize(avoidForce);
     }
-    
+
     // 移動方向に回避力を加える
     float2 moveDirection = normalize(float2(Random(index, 0u), Random(index, 1u)) - 0.5) + avoidForce;
     position += moveDirection * moveSpeed * deltaTime;
 
+    // 座標範囲内に収める
+    position = clamp(position, bounds[0], bounds[0]);
+
     // 更新された位置を保存
     enemyPositions[index] = position;
 }
-
-
