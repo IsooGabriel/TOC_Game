@@ -149,8 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generationRange: 10
   computeShader: {fileID: 7200000, guid: 424cf8c3af6785a4099d9edcf0f9af2d, type: 3}
-  enemyCount: 100
-  moveSpeed: 1
+  enemyCount: 2
+  moveSpeed: 2
   enemyPrefab: {fileID: 5762256463549980013, guid: ef96026cb0ae3ce4cb86a8c787f06227, type: 3}
   scales:
   - 0.42
@@ -166,6 +166,8 @@ MonoBehaviour:
   - 0.84
   - 0.84
   - 1.68
+  bounds:
+  - 15
 --- !u!4 &532563784
 Transform:
   m_ObjectHideFlags: 0
