@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generationRange: 10
   computeShader: {fileID: 7200000, guid: 424cf8c3af6785a4099d9edcf0f9af2d, type: 3}
-  enemyCount: 2
+  enemyCount: 200
   moveSpeed: 2
   enemyPrefab: {fileID: 5762256463549980013, guid: ef96026cb0ae3ce4cb86a8c787f06227, type: 3}
   scales:

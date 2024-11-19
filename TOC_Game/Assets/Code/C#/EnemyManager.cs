@@ -14,9 +14,9 @@ public class EnemyManager2D : MonoBehaviour
     private ComputeBuffer boundsBuffer;  // 座標制限用のComputeBuffer
     private ComputeBuffer restrictionsBuffer; // 敵の数用のComputeBuffer
     private ComputeBuffer randomBuffer;  // ランダム用のComputeBuffer
-    private int[] random;
+    private uint[] random;
     private ComputeBuffer randomValuesBuffer; // ランダム値用のComputeBuffer
-    private int[] randomValues;
+    private float[] randomValues;
     private Vector2[] enemyPositions;   // CPU上での敵位置情報
     private float[] enemyScales;        // CPU上での敵スケール情報
     private float[] probabilities;      // CPU上での敵の停止確率情報
@@ -37,8 +37,8 @@ public class EnemyManager2D : MonoBehaviour
         probabilities = new float[enemyCount];
         enemies = new List<GameObject>();
         moveRestrictions = new Vector2[enemyCount];
-        random = new int[enemyCount];
-        randomValues = new int[enemyCount];
+        random = new uint[enemyCount];
+        randomValues = new float[enemyCount];
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -56,7 +56,7 @@ public class EnemyManager2D : MonoBehaviour
             enemyScales[i] = scale;
 
             // 停止確率を設定
-            probabilities[i] = 0.5f;
+            probabilities[i] = i % 3 == 0 ? 0.01f : 0.9f;
 
             enemies.Add(enemy);
         }
@@ -77,10 +77,10 @@ public class EnemyManager2D : MonoBehaviour
         restrictionsBuffer = new ComputeBuffer(enemyCount, sizeof(float) * 2); // 敵の数はfloat2
         restrictionsBuffer.SetData(moveRestrictions);
 
-        randomBuffer = new ComputeBuffer(enemyCount, sizeof(float)); // ランダムはfloat1
+        randomBuffer = new ComputeBuffer(enemyCount, sizeof(uint)); // ランダムはfloat1
         randomBuffer.SetData(random);
 
-        randomValuesBuffer = new ComputeBuffer(enemyCount, sizeof(int)); // ランダム値はint1
+        randomValuesBuffer = new ComputeBuffer(enemyCount, sizeof(float)); // ランダム値はint1
         randomValuesBuffer.SetData(randomValues);
     }
 
@@ -121,10 +121,10 @@ public class EnemyManager2D : MonoBehaviour
 
         stopProbabilities.GetData(probabilities);
         randomBuffer.GetData(random);
-        randomValuesBuffer.GetData(randomValues);   
+        randomValuesBuffer.GetData(randomValues);
         for (int i = 0; i < probabilities.Length; i++)
         {
-            Debug.Log(probabilities[i]);
+            Debug.Log("proba:" + probabilities[i]);
             Debug.Log("random: " + randomValues[i]);
         }
     }

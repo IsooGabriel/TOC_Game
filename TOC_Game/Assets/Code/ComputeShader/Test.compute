@@ -6,7 +6,7 @@ StructuredBuffer<float> enemyScales; // 各敵のスケール
 RWStructuredBuffer<float> stopProbabilities; // 各敵の停止確率
 RWStructuredBuffer<float2> moveRestrictions; // 各敵の移動制限 (1: 移動可能、0: 移動不可)
 StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用される）
-RWStructuredBuffer<int> random; // 乱数
+RWStructuredBuffer<uint> random; // 乱数
 RWStructuredBuffer<float> randomValues; // 乱数の値
 
 float deltaTime;
@@ -30,10 +30,10 @@ float Random(uint id, uint seed)
 
     // シードを更新
     random[id] ^= (id * 1664525u) ^ (seed * 1013904223u);
-    uint randomValue = XorShift(random[id]);
-    float random = float(randomValue) / float(uint(0xFFFFFFFF));
+    float randomValue = float(XorShift(random[id]));
+    float random = randomValue / float(0xFFFFFFFF);
     // 32ビット乱数を0〜1に正規化
-    return random; // 32ビット乱数を0〜1に
+    return random ; // 32ビット乱数を0〜1に
 }
 
 // --- Functions ---
@@ -151,7 +151,7 @@ float2 UpdateDirection(uint index, float2 position, float2 currentDirection, flo
 // 一定確率で方向転換
 float2 RandomizeDirection(uint index, float2 currentDirection)
 {
-    const float changeProbability = 0.9f; // 方向転換確率
+    const float changeProbability = 0.01f; // 方向転換確率
     if (Random(index, 3u) < changeProbability)
     {
         // 新しいランダム方向を設定
@@ -179,9 +179,16 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     {
         return;
     }
-
+    
+    if(restriction.x == 0 && restriction.y == 0)
+    {
+        restriction.x = Random(index, 6u) > 0.5 ? 1 : -1;
+        restriction.y = Random(index, 7u) > 0.5 ? 1 : -1;
+        return;
+    }
+    
     // 現在の移動方向を取得（初期値はランダム方向）
-    float2 moveDirection = normalize(float2(Random(index, 0u), Random(index, 1u)) - 0.5);
+    float2 moveDirection = restriction;
     bool directionChanged = false;
 
     // 壁や敵の影響で方向を変更
