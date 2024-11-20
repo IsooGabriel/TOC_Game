@@ -119,13 +119,15 @@ public class EnemyManager2D : MonoBehaviour
             enemies[i].transform.position = new Vector3(enemyPositions[i].x, enemyPositions[i].y, 0);
         }
 
+        // デバッグ用    
         stopProbabilities.GetData(probabilities);
-        randomBuffer.GetData(random);
         randomValuesBuffer.GetData(randomValues);
+        restrictionsBuffer.GetData(moveRestrictions);
         for (int i = 0; i < probabilities.Length; i++)
         {
             Debug.Log("proba:" + probabilities[i]);
             Debug.Log("random: " + randomValues[i]);
+            Debug.Log("restrictions: " + moveRestrictions[i]);  
         }
     }
 

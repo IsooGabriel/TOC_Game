@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38bea10d228364741bf495ea25ee6d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generationRange: 10
+  generationRange: 25
   computeShader: {fileID: 7200000, guid: 424cf8c3af6785a4099d9edcf0f9af2d, type: 3}
   enemyCount: 200
   moveSpeed: 2
@@ -161,13 +161,34 @@ MonoBehaviour:
   - 0.42
   - 0.42
   - 0.42
+  - 0.84
+  - 0.84
+  - 0.84
+  - 0.84
+  - 0.84
+  - 0.84
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.42
+  - 0.42
+  - 1.68
+  - 1.68
+  - 0.84
   - 0.42
   - 0.84
-  - 0.84
-  - 0.84
+  - 6.72
+  - 3.36
+  - 3.36
+  - 3.36
+  - 1.68
+  - 1.68
+  - 1.68
+  - 1.68
+  - 1.68
   - 1.68
   bounds:
-  - 15
+  - 28
 --- !u!4 &532563784
 Transform:
   m_ObjectHideFlags: 0
@@ -332,7 +353,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 30
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
