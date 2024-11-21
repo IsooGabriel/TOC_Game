@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f315dcbb877b154baff41d5bd065766, type: 3}
   m_Name: Pentagon
   m_EditorClassIdentifier: 
-  enemyName: Triangle
-  enemyID: 2
+  enemyName: Pentagon
+  enemyID: 3
   infometion: 
   prefab: {fileID: 5762256463549980013, guid: ef96026cb0ae3ce4cb86a8c787f06227, type: 3}
   level: 1
-  hp: 3
-  speed: 3
-  speedDown: 0.8
-  defense: 5
-  baseDamage: 1
+  hp: 20
+  speed: 0.2
+  speedDown: 0
+  defense: 30
+  baseDamage: 2
