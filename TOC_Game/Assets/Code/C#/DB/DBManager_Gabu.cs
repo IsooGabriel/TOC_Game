@@ -33,5 +33,59 @@ public class DBManager_Gabu : ScriptableObject
         return enemyDBs[ID] == null ? enemyDBs[0] : enemyDBs[ID];
     }
 
+    #region Enum
 
+    /// <summary>
+    /// 変更させるステータスとその計算方法
+    public enum E_FluctuateStats
+    {
+        HpAdd = 0,
+        HpMultiply,
+        HpSubtract,
+        HpDivide,
+
+        AtkAdd,
+        AtkMultiply,
+        AtkSubtract,
+        AtkDivide,
+
+        AtkSpeedAdd,
+        AtkSpeedMultiply,
+        AtkSpeedSubtract,
+        AtkSpeedDivide,
+
+        SpeedAdd,
+        SpeedMultiply,
+        SpeedSubtract,
+        SpeedDivide,
+
+        DefenseAdd,
+        DefenseMultiply,
+        DefenseSubtract,
+        DefenseDivide,
+
+        RerollSpeedAdd,
+        RerollSpeedMultiply,
+        RerollSpeedSubtract,
+        RerollSpeedDivide,
+
+        LevelAdd,
+        LevelMultiply,
+        LevelSubtract,
+        LevelDivide,
+    }
+
+    public enum E_EnemyType
+    {
+    }
+
+    public enum E_InGameUpGrade
+    {
+    }
+
+    public enum E_BaseUpGrade
+    {
+    }
+
+    #endregion
 }

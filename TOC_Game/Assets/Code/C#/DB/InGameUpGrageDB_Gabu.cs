@@ -1,16 +1,26 @@
+﻿using System.Numerics;
 using UnityEngine;
+using static DBManager_Gabu;
 
-public class InGameUpGrageDB_Gabu : MonoBehaviour
+[CreateAssetMenu(menuName = "CreateData/InGameUpGrage")]
+public class InGameUpGrageDB_Gabu : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Header("アップグレードの名前")]
+    public string UpGrageName = "Diamond";
+    public int UpGrageID = 0;
+    [Header("金のコスト")]
+    public BigInteger moneyCost = 0;
+    [Header("スターのコスト")]
+    public BigInteger starCost = 0;
+    //public int enemyLocalID = 0;
+    [TextArea, Header("詳細情報")]
+    public string infometion;   
+    [Header("画像")]
+    public Sprite prefab;
+    [Header("ツリー上での配置")]
+    public Vector2Int[] treePosition;
+    [Header("前提条件(必要なアップグレード)")]
+    public InGameUpGrageDB_Gabu[] premises;
+    [Header("変動させるステータス")]
+    public E_FluctuateStats[] fluctuateStats;
 }

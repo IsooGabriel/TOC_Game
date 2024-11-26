@@ -41,6 +41,7 @@ float Random(uint id, uint seed)
 // 停止確率を更新
 bool ShouldStop(uint index, inout float stopProbability)
 {
+    return false;
     const float minProbability = 0.005f; // 最小値
     const float maxProbability = 0.995f; // 最大値
     const float adjustment = 0.0005f; // 増減幅
@@ -138,6 +139,8 @@ float2 UpdateDirection(uint index, float2 position, float2 currentDirection, ino
         return newDirection;
     }
 
+    return newDirection;
+    
     // 回避力を計算
     float2 avoidForce = ComputeAvoidForce(index, position, dynamicRadius);
     if (length(avoidForce) > 0.01) // 避ける必要がある場合

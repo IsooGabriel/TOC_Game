@@ -1,16 +1,20 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerDB_Gabu : MonoBehaviour
+[CreateAssetMenu(menuName = "CreateData/Player")]
+public class PlayerDB_Gabu : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Header("プレイヤの名前")]
+    public string playerName = "Diamond";
+    public int playerID = 0;
+    //public int enemyLocalID = 0;
+    [TextArea, Header("詳細情報")]
+    public string infometion;
+    public GameObject prefab;
+    public int level = 1;
+    public int hp = 5;
+    public int atk = 1;
+    public float atkSpeed = 1;
+    public float speed = 1;
+    public float defense = 10;
+    public float rerollSpeed = 1;
 }
