@@ -48,7 +48,7 @@ public class PlayerShoot : MonoBehaviour
     void MoveBullet(GameObject bullet, Vector2 direction)
     {
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        rb.linearVelocity = direction * bulletSpeed;
+        //rb.linearVelocity = direction * bulletSpeed;
     }
 
     // Method to rotate the bullet to face the mouse direction
