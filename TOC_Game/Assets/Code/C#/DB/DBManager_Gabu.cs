@@ -33,10 +33,15 @@ public class DBManager_Gabu : ScriptableObject
         return enemyDBs[ID] == null ? enemyDBs[0] : enemyDBs[ID];
     }
 
+    /// <summary>
+    /// バフの種類と数値の辞書
+    /// </summary>
     public class FluctuateStatsDictionary
     {
         public E_FluctuateStats fluctuateStats;
         public float value;
+        [Header("変動させる優先度。数値が低い程先に計算される")]
+        public int priority;
     }
 
     #region Enum
