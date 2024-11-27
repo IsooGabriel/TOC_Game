@@ -33,46 +33,58 @@ public class DBManager_Gabu : ScriptableObject
         return enemyDBs[ID] == null ? enemyDBs[0] : enemyDBs[ID];
     }
 
+    public class FluctuateStatsDictionary
+    {
+        public E_FluctuateStats fluctuateStats;
+        public float value;
+    }
+
     #region Enum
 
     /// <summary>
     /// 変更させるステータスとその計算方法
+    /// </summary>
     public enum E_FluctuateStats
     {
-        HpAdd = 0,
-        HpMultiply,
-        HpSubtract,
-        HpDivide,
+        HP_ADD = 0,
+        HP_MULTIPLY,
+        HP_SUBTRACT,
+        HP_DIVIDE,
 
-        AtkAdd,
-        AtkMultiply,
-        AtkSubtract,
-        AtkDivide,
+        ATK_ADD,
+        ATK_MULTIPLY,
+        ATK_SUBTRACT,
+        ATK_DIVIDE,
 
-        AtkSpeedAdd,
-        AtkSpeedMultiply,
-        AtkSpeedSubtract,
-        AtkSpeedDivide,
+        ATK_SPEED_ADD,
+        ATK_SPEED_MULTIPLY,
+        ATK_SPEED_SUBTRACT,
+        ATK_SPEED_DIVIDE,
 
-        SpeedAdd,
-        SpeedMultiply,
-        SpeedSubtract,
-        SpeedDivide,
+        SPEED_ADD,
+        SPEED_MULTIPLY,
+        SPEED_SUBTRACT,
+        SPEED_DIVIDE,
 
-        DefenseAdd,
-        DefenseMultiply,
-        DefenseSubtract,
-        DefenseDivide,
+        DEFENSE_ADD,
+        DEFENSE_MULTIPLY,
+        DEFENSE_SUBTRACT,
+        DEFENSE_DIVIDE,
 
-        RerollSpeedAdd,
-        RerollSpeedMultiply,
-        RerollSpeedSubtract,
-        RerollSpeedDivide,
+        REROLL_SPEED_ADD,
+        REROLL_SPEED_MULTIPLY,
+        REROLL_SPEED_SUBTRACT,
+        REROLL_SPEED_DIVIDE,
 
-        LevelAdd,
-        LevelMultiply,
-        LevelSubtract,
-        LevelDivide,
+        LEVEL_ADD,
+        LEVEL_MULTIPLY,
+        LEVEL_SUBTRACT,
+        LEVEL_DIVIDE,
+
+        BUFF_ADD,
+        BUFF_MULTIPLY,
+        BUFF_SUBTRACT,
+        BUFF_DIVIDE
     }
 
     public enum E_EnemyType

@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6339a6d1868339d4eb660f6c3ed7878f, type: 3}
-  m_Name: AppAtk
+  m_Name: UpAtk
   m_EditorClassIdentifier: 
-  UpGrageName: Diamond
+  UpGrageName: damage up
   UpGrageID: 0
   infometion: 
   prefab: {fileID: 0}
-  treePosition: []
-  premises: []
   fluctuateStats: 04000000

@@ -18,9 +18,9 @@ public class BaseUpGrageDB_Gabu : ScriptableObject
     [Header("画像")]
     public Sprite prefab;
     [Header("ツリー上での配置")]
-    public Vector2Int[] treePosition;
+    public Vector2Int treePosition;
     [Header("前提条件(必要なアップグレード)")]
-    public InGameUpGrageDB_Gabu[] premises;
+    public BaseUpGrageDB_Gabu[] premises;
     [Header("変動させるステータス")]
     public E_FluctuateStats[] fluctuateStats;
 }
