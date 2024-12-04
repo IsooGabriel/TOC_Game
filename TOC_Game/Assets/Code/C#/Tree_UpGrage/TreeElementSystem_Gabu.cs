@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TreeElementSystem_Gabu : MonoBehaviour
 {
     [Header("アイコン")]
-    public Sprite sprite;
+    public Image image;
     [Header("詳細")]
     public TextMeshProUGUI tmp;
     [Header("バフの種類と数値")]
@@ -17,9 +17,9 @@ public class TreeElementSystem_Gabu : MonoBehaviour
 
     private void Start()
     {
-        if (sprite == null)
-        {
-            sprite = GetComponentInChildren<SpriteRenderer>()?.sprite;
+        if (image == null)
+        { 
+            image = GetComponentInChildren<Image>();
             Debug.LogWarning("spriteがnullだったため、子オブジェクトから割り当てました。");
         }
         if (tmp == null)

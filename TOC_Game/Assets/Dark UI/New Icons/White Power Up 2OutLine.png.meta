@@ -245,7 +245,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      White Power Up 2OutLine_0: -673365269119329377
+      White Power Up 2OutLine_1: -6415059245603305766
+      White Power Up 2OutLine_2: 8926009009148630823
+      White Power Up 2OutLine_3: -420605496120262012
+      White Power Up 2OutLine_4: -8625269057819851159
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

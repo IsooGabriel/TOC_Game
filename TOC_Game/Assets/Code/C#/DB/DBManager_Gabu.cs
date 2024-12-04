@@ -36,6 +36,7 @@ public class DBManager_Gabu : ScriptableObject
     /// <summary>
     /// バフの種類と数値の辞書
     /// </summary>
+    [System.Serializable]
     public class FluctuateStatsDictionary
     {
         public E_FluctuateStats fluctuateStats;
