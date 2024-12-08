@@ -1,10 +1,13 @@
 ﻿using DG.Tweening;
+using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ImageAnimation_Gabu : UISystem_Gabu
 {
     #region 変数
-    private Image image;
+    [SerializeField]
+    protected Image image;
     #endregion
 
     #region 関数

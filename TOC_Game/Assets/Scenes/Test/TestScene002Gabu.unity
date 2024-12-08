@@ -690,6 +690,7 @@ MonoBehaviour:
   _color: {r: 0.75, g: 0.75, b: 0.75, a: 1}
   _isAutoColor: 1
   _isMonochrome: 1
+  image: {fileID: 0}
 --- !u!1 &970873258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,8 +1785,8 @@ RectTransform:
   m_GameObject: {fileID: 1979176019}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.042, y: 0.042, z: 0.042}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.047, y: 0.047, z: 0.047}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2020839952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1807,14 +1808,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9166666, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.9166666, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1778686825030586111, guid: d7b3b753c15a7394fbbabba4f806bf88, type: 3}
+  m_Sprite: {fileID: 2102267877648569002, guid: 05326c2e6aaa061458e58b6a75dc91cc, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1841,7 +1842,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1979176019}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2c261ecc43342149992ea717159586c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f187ae7e94eb08409310b68718d2cdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 132949900}
@@ -1849,9 +1850,10 @@ MonoBehaviour:
   _unitPosition: {x: 0, y: 0, z: 0}
   _unitRotation: {x: 0, y: 0, z: 0}
   _unitScale: {x: 0, y: 0, z: 0}
-  _color: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  _color: {r: 1, g: 0.9166666, b: 0, a: 1}
   _isAutoColor: 0
-  _isMonochrome: 1
+  _isMonochrome: 0
+  image: {fileID: 1979176021}
 --- !u!1 &2020839951
 GameObject:
   m_ObjectHideFlags: 0
