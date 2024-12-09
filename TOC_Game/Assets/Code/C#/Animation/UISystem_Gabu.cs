@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UISystem_Gabu : MonoBehaviour
 {
@@ -25,13 +26,33 @@ public class UISystem_Gabu : MonoBehaviour
     [SerializeField, Header("基本色")]
     protected Color _color = new Color(0.75f, 0.75f, 0.75f);
 
-
     [SerializeField, Header("自動で色の彩度、明度を変更")]
     protected bool _isAutoColor = false;
     [SerializeField, Header("S(彩度)gaが変更されなくなる")]
     protected bool _isMonochrome = true;
 
-    enum AnimatorState
+    [SerializeField, Header("Disabledの時に使われる画像")]
+    protected Image _disabledImage;
+
+    protected float _normalScaleDuration = 0.4f;
+    protected float _highlightedScaleDuration = 0.2f;
+    protected float _pressedScaleDuration = 0f;
+    protected float _selectedScaleDuration = 0.2f;
+    protected float _disabledScaleDuration = 0.05f;
+
+    protected Ease _normalEase = Ease.InOutSine;
+    protected Ease _highlightedEase = Ease.OutBack;
+    protected Ease _pressedEase = Ease.InBack;
+    protected Ease _selectedEase = Ease.Linear;
+    protected Ease _disabledEase = Ease.Linear;
+
+    protected float _normalScaleMultiplier = 1.0f;
+    protected float _highlightedScaleMultiplier = 1.1f;
+    protected float _pressedScaleMultiplier = 1.05f;
+    protected float _selectedScaleMultiplier = 1.1f;
+    protected float _disabledScaleMultiplier = 1.0f;
+
+    enum AnimatorState : int
     {
         Normal = 0, Highlighted, Pressed, Selected, Disabled
     }
@@ -162,16 +183,15 @@ public class UISystem_Gabu : MonoBehaviour
         return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
     }
 
-
-
     protected virtual void NormalAnimation()
     {
         if (_i_currentAnimation == _i_lastAnimation)
         {
             return;
         }
-        _transform.DOScale(_unitScale, duration: 0.4f);
+        _transform.DOScale(_unitScale, _normalScaleDuration).SetEase(_normalEase);
     }
+
     protected virtual void HighlightedAnimation()
     {
         if (_i_currentAnimation == _i_lastAnimation)
@@ -181,13 +201,14 @@ public class UISystem_Gabu : MonoBehaviour
 
         if (_isMonochrome)
         {
-            _transform.DOScale(_unitScale * 1.1f, duration: 0.2f);
+            _transform.DOScale(_unitScale * _highlightedScaleMultiplier, _highlightedScaleDuration).SetEase(_highlightedEase);
         }
         else
         {
-            _transform.DOScale(_unitScale * 1.1f, duration: 0.2f);
+            _transform.DOScale(_unitScale * _highlightedScaleMultiplier, _highlightedScaleDuration).SetEase(_highlightedEase);
         }
     }
+
     protected virtual void PressedAnimation()
     {
         if (_i_currentAnimation == _i_lastAnimation)
@@ -197,13 +218,14 @@ public class UISystem_Gabu : MonoBehaviour
 
         if (_isMonochrome)
         {
-            _transform.DOScale(_unitScale * 1.05f, duration: 0f);
+            _transform.DOScale(_unitScale * _pressedScaleMultiplier, _pressedScaleDuration).SetEase(_pressedEase);
         }
         else
         {
-            _transform.DOScale(_unitScale * 1.05f, duration: 0f);
+            _transform.DOScale(_unitScale * _pressedScaleMultiplier, _pressedScaleDuration).SetEase(_pressedEase);
         }
     }
+
     protected virtual void SelectedAnimation()
     {
         if (_i_currentAnimation == _i_lastAnimation)
@@ -213,13 +235,14 @@ public class UISystem_Gabu : MonoBehaviour
 
         if (_isMonochrome)
         {
-            _transform.DOScale(_unitScale * 1.1f, duration: 0.2f);
+            _transform.DOScale(_unitScale * _selectedScaleMultiplier, _selectedScaleDuration).SetEase(_selectedEase);
         }
         else
         {
-            _transform.DOScale(_unitScale * 1.1f, duration: 0.2f);
+            _transform.DOScale(_unitScale * _selectedScaleMultiplier, _selectedScaleDuration).SetEase(_selectedEase);
         }
     }
+
     protected virtual void DisabledAnimation()
     {
         if (_i_currentAnimation == _i_lastAnimation)
@@ -229,11 +252,11 @@ public class UISystem_Gabu : MonoBehaviour
 
         if (_isMonochrome)
         {
-            _transform.DOScale(_unitScale, duration: 0.05f);
+            _transform.DOScale(_unitScale, _disabledScaleDuration).SetEase(_disabledEase);
         }
         else
         {
-            _transform.DOScale(_unitScale, duration: 0.05f);
+            _transform.DOScale(_unitScale, _disabledScaleDuration).SetEase(_disabledEase);
         }
     }
     #endregion
@@ -291,8 +314,10 @@ public class UISystem_Gabu : MonoBehaviour
             case (int)AnimatorState.Disabled:
                 DisabledAnimation();
                 break;
+            default:
+                Debug.LogWarning("予期しないアニメーションが参照されました");
+                break;
         }
-
         _i_lastAnimation = _i_currentAnimation;
     }
 }

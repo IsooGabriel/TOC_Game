@@ -715,7 +715,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.95
+  m_fontSize: 23.95
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -926,7 +926,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.5
+  m_fontSize: 45.35
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1182,7 +1182,7 @@ PrefabInstance:
       objectReference: {fileID: 8219123716966468903, guid: 37f9541a4f78a9d44b854c1f28397c74, type: 3}
     - target: {fileID: 4860943056380005353, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_Color.a
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4860943056380005353, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier
@@ -1198,11 +1198,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8791363217797021349, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1.08
+      value: 1.02
       objectReference: {fileID: 0}
     - target: {fileID: 8791363217797021349, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 8791363217797021349, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: 8791363217797021349, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1226,7 +1230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8848811365421832880, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_fontSize
-      value: 49.15
+      value: 46.75
       objectReference: {fileID: 0}
     - target: {fileID: 8848811365421832880, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_fontAsset
@@ -1260,7 +1264,8 @@ PrefabInstance:
       propertyPath: m_PixelsPerUnitMultiplier
       value: 16
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4800756815196738369, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4881500753866647012, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
     m_AddedGameObjects: []
@@ -1400,12 +1405,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4800756815196738369, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
+      propertyPath: tmp
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800756815196738369, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: button
       value: 
       objectReference: {fileID: 132949897}
+    - target: {fileID: 4800756815196738369, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
+      propertyPath: textAnimation_Gabu
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4860943056380005353, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_Color.a
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5301629430931344508, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: _animator
@@ -1423,6 +1436,10 @@ PrefabInstance:
       propertyPath: _animator
       value: 
       objectReference: {fileID: 132949900}
+    - target: {fileID: 6690431882937052376, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
+      propertyPath: _transform
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8791363217797021349, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
       propertyPath: m_AnchorMin.x
       value: -0.08
@@ -1431,8 +1448,10 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 11.4
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 6690431882937052376, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 157203723707401921, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89bfc14cf4da23e45b6eb190ade4c440, type: 3}
