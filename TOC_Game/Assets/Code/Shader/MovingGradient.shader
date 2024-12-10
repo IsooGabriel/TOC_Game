@@ -1,16 +1,16 @@
-Shader "UI/MonochromeMovingGradient"
+Shader "Custom/CenterGradientUI"
 {
-
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        _ScrollSpeed ("Scroll Speed", float) = 1.0
-        _Scroll ("Scroll Direction", float2) = (1, 0)
+        _Color1 ("Color 1", Color) = (0.0, 0.396, 0.322, 1.0) // #006552
+        _Color2 ("Color 2", Color) = (0.0, 1.0, 0.831, 1.0)   // #00FFD4
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        Tags { "Queue"="Overlay" "RenderType"="Transparent" "IgnoreProjector"="True" "Canvas"="UI" }
         LOD 100
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -31,12 +31,10 @@ Shader "UI/MonochromeMovingGradient"
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST; // Unityが自動で生成するテクスチャのST（スケールとオフセット）
-            float _ScrollSpeed; // スクロール速度
-            float2 _Scroll; // スクロール方向
+            fixed4 _Color1;
+            fixed4 _Color2;
 
-            v2f vert(appdata_t v)
+            v2f vert (appdata_t v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -44,21 +42,14 @@ Shader "UI/MonochromeMovingGradient"
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            fixed4 frag (v2f i) : SV_Target
             {
-                // 時間に基づくUVオフセット計算
-                float2 uv = i.uv;
-                uv.x += _ScrollSpeed * _Time * _Scroll.x; // X方向にスクロール
-                uv.y += _ScrollSpeed * _Time * _Scroll.y; // Y方向にスクロール
-                uv = frac(uv); // UVを0-1範囲内に制限
-
-                // テクスチャサンプリング
-                fixed4 col = tex2D(_MainTex, uv);
-                return col;
+                // Calculate gradient factor from UV
+                float gradientFactor = abs(i.uv.x - 0.5) * 2.0; // Central gradient spreading both sides
+                return lerp(_Color1, _Color2, gradientFactor);
             }
             ENDCG
         }
     }
-    FallBack "Diffuse"
-
+    FallBack "Unlit/Transparent"
 }

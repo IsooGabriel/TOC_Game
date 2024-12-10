@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gradation
-  m_Shader: {fileID: 4800000, guid: 19cbd16e7a4a5c24b8cabd74de5b0ba1, type: 3}
+  m_Name: StarGradation
+  m_Shader: {fileID: 4800000, guid: 60a14251be56c004983d67b46a85cce5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8fe3fce55b785cd4b858495be02b1ef3, type: 3}
+        m_Texture: {fileID: 2800000, guid: b7b0319bc346fa249b5fd60a0fa5cc84, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -62,15 +62,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CenterSpeed: 0.75
     - _EnableExternalAlpha: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Repeat: 1.5
+    - _Rotation: 40
     - _ScrollSpeed: 1
     - _Speed: 5
     - _SpeedMultipy: 1
     m_Colors:
     - _BaseColor: {r: 0, g: 0.39599997, b: 0.32099998, a: 1}
+    - _Center: {r: 21.86, g: 0.5, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color1: {r: 0, g: 1, b: 0.83137256, a: 1}
+    - _Color2: {r: 0, g: 0.39607844, b: 0.32156864, a: 1}
     - _ColorEnd: {r: 0, g: 1, b: 0.831, a: 1}
     - _ColorStart: {r: 0, g: 0.39599997, b: 0.32099998, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
