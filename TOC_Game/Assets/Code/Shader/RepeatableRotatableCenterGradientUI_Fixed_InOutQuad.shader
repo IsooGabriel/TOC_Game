@@ -1,4 +1,4 @@
-Shader "Custom/RepeatableRotatableCenterGradientUI_Fixed_InOutQuad_TimeShift"
+Shader "Custom/RepeatableRotatableCenterGradientUI_Fixed_InOutQuad"
 {
     Properties
     {
@@ -6,7 +6,7 @@ Shader "Custom/RepeatableRotatableCenterGradientUI_Fixed_InOutQuad_TimeShift"
         _Color2 ("Color 2", Color) = (0.0, 1.0, 0.831, 1.0)   // #00FFD4
         _Rotation ("Rotation (Degrees)", Range(0, 360)) = 0.0 // グラデーションの回転角
         _MainTex ("Mask Texture", 2D) = "white" {}            // マスク用テクスチャ
-        _CenterSpeed ("Center Speed", Float) = 0.5           // グラデーション中心の動きの速度
+        _Center ("Center Offset", Vector) = (0.5, 0.5, 0, 0)  // グラデーション中心のオフセット
         _Repeat ("Repeat Count", Float) = 1.0                 // グラデーションの反復回数
     }
     SubShader
@@ -39,16 +39,8 @@ Shader "Custom/RepeatableRotatableCenterGradientUI_Fixed_InOutQuad_TimeShift"
             fixed4 _Color2;
             float _Rotation;
             sampler2D _MainTex;
-            float _CenterSpeed;
+            float2 _Center;
             float _Repeat;
-
-            // 時間に基づいて_centerを計算
-            float2 GetDynamicCenter(float time)
-            {
-                float xOffset = time*_CenterSpeed;
-                float yOffset = 0;
-                return float2(xOffset, yOffset);
-            }
 
             v2f vert (appdata_t v)
             {
@@ -63,10 +55,6 @@ Shader "Custom/RepeatableRotatableCenterGradientUI_Fixed_InOutQuad_TimeShift"
                 // マスクテクスチャのアルファ値を取得
                 float maskAlpha = tex2D(_MainTex, i.uv).a;
 
-                // 時間に基づいてグラデーション中心を動かす
-                float time = _Time.y;  // グローバル時間を取得
-                float2 dynamicCenter = GetDynamicCenter(time);
-
                 // 回転角をラジアンに変換
                 float angle = radians(_Rotation);
 
@@ -77,7 +65,7 @@ Shader "Custom/RepeatableRotatableCenterGradientUI_Fixed_InOutQuad_TimeShift"
                 );
 
                 // UV座標を中心オフセット基準に変換し、回転を適用
-                float2 centeredUV = i.uv - dynamicCenter;
+                float2 centeredUV = i.uv - _Center;
                 float2 rotatedUV = mul(rotationMatrix, centeredUV) * _Repeat; // 反復回数を適用
 
                 // 反復時に偶数・奇数で反転
@@ -86,14 +74,16 @@ Shader "Custom/RepeatableRotatableCenterGradientUI_Fixed_InOutQuad_TimeShift"
                 float adjustedUV = lerp(repeatedUV, 1.0 - repeatedUV, flip);
 
                 // InOutQuadグラデーションの計算
-                float gradientFactor = adjustedUV;
-                if (gradientFactor < 0.5)
+                float gradientFactor;
+                if (adjustedUV < 0.5)
                 {
-                    gradientFactor = 2.0 * gradientFactor * gradientFactor; // 前半: 加速
+                    // 前半: 加速
+                    gradientFactor = 2.0 * adjustedUV * adjustedUV;
                 }
                 else
                 {
-                    gradientFactor = -1.0 + (4.0 - 2.0 * gradientFactor) * gradientFactor; // 後半: 減速
+                    // 後半: 減速
+                    gradientFactor = -1.0 + (4.0 - 2.0 * adjustedUV) * adjustedUV;
                 }
 
                 // グラデーション色の補間
