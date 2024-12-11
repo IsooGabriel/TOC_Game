@@ -1,10 +1,10 @@
-﻿using System.Net;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "CreateData/DB")]
 public class DBManager_Gabu : ScriptableObject
 {
     static DBManager_Gabu DBs;
+    // ゲッタ
     public static DBManager_Gabu DB
     {
         get
@@ -18,12 +18,12 @@ public class DBManager_Gabu : ScriptableObject
     }
 
     public EnemyDB_Gabu[] enemyDBs;
+    // ゲッタ
     public EnemyDB_Gabu GetEnemyDB(int ID)
     {
         if (ID < 0)
         {
-            Debug.LogError("IDは0以上である必要があります. " + ID);
-            return enemyDBs[0];
+            return enemyDBs[enemyDBs.Length - (int)Mathf.Repeat(ID, enemyDBs.Length + 1)];
         }
         if (ID > enemyDBs.Length)
         {
@@ -31,6 +31,39 @@ public class DBManager_Gabu : ScriptableObject
             return enemyDBs[0];
         }
         return enemyDBs[ID] == null ? enemyDBs[0] : enemyDBs[ID];
+    }
+
+    public InGameUpGrageDB_Gabu[] inGameUpGrageDBs;
+    // ゲッタ
+    public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
+    {
+        if (ID < 0)
+        {
+            return inGameUpGrageDBs[inGameUpGrageDBs.Length - (int)Mathf.Repeat(ID, inGameUpGrageDBs.Length + 1)];
+
+        }
+        if (ID > inGameUpGrageDBs.Length)
+        {
+            Debug.LogError("IDがデータベースの長さを超えています. " + ID);
+            return inGameUpGrageDBs[0];
+        }
+        return inGameUpGrageDBs[ID] == null ? inGameUpGrageDBs[0] : inGameUpGrageDBs[ID];
+    }
+
+    public BaseUpGrageDB_Gabu[] baseUpGrageDBs;
+    // ゲッタ
+    public BaseUpGrageDB_Gabu GetBaseUpGrageDB(int ID)
+    {
+        if (ID < 0)
+        {
+            return baseUpGrageDBs[baseUpGrageDBs.Length - (int)Mathf.Repeat(ID, baseUpGrageDBs.Length + 1)];
+        }
+        if (ID > baseUpGrageDBs.Length)
+        {
+            Debug.LogError("IDがデータベースの長さを超えています. " + ID);
+            return baseUpGrageDBs[0];
+        }
+        return baseUpGrageDBs[ID] == null ? baseUpGrageDBs[0] : baseUpGrageDBs[ID];
     }
 
     /// <summary>

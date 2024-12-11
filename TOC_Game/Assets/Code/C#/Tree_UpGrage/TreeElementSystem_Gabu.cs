@@ -1,36 +1,22 @@
 ﻿using UnityEngine;
-using TMPro;
-using static DBManager_Gabu;
 using UnityEngine.UI;
 
 public class TreeElementSystem_Gabu : MonoBehaviour
 {
     [Header("アイコン")]
     public Image image;
-    [Header("詳細")]
-    public TextMeshProUGUI tmp;
-    [Header("バフの種類と数値")]
-    public FluctuateStatsDictionary fluctuateStatsDictionary;
     public Button button;
     public ImageAnimation_Gabu imageAnimation_Gabu;
     public TextAnimation_Gabu textAnimation_Gabu;
+    public BaseUpGrageDB_Gabu baseUpGrageDB_Gabu;
+    // baseUpGrageDB_Gabuから情報を取得して、表示する
 
     private void Start()
     {
         if (image == null)
-        { 
+        {
             image = GetComponentInChildren<Image>();
             Debug.LogWarning("spriteがnullだったため、子オブジェクトから割り当てました。");
-        }
-        if (tmp == null)
-        {
-            tmp = GetComponentInChildren<TextMeshProUGUI>();
-            Debug.LogWarning("tmpがnullだったため、子オブジェクトから割り当てました。");
-        }
-        if (fluctuateStatsDictionary == null)
-        {
-            fluctuateStatsDictionary = GetComponentInChildren<FluctuateStatsDictionary>();
-            Debug.LogWarning("fluctuateStatsDictionaryがnullだったため、子オブジェクトから割り当てました。");
         }
         if (button == null)
         {
@@ -47,5 +33,9 @@ public class TreeElementSystem_Gabu : MonoBehaviour
             textAnimation_Gabu = GetComponentInChildren<TextAnimation_Gabu>();
             Debug.LogWarning("textAnimation_Gabuがnullだったため、子オブジェクトから割り当てました。");
         }
+
+        gameObject.name = baseUpGrageDB_Gabu.name;
+        image.sprite = baseUpGrageDB_Gabu.prefab;
+        image.color = baseUpGrageDB_Gabu.color;
     }
 }

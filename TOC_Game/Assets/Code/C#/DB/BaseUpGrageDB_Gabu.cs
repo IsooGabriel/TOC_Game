@@ -17,10 +17,12 @@ public class BaseUpGrageDB_Gabu : ScriptableObject
     public string infometion;
     [Header("画像")]
     public Sprite prefab;
+    [Header("イメージ色")]
+    public Color color;
     [Header("ツリー上での配置")]
     public Vector2Int treePosition;
     [Header("前提条件(必要なアップグレード)")]
     public BaseUpGrageDB_Gabu[] premises;
     [Header("変動させるステータス")]
-    public E_FluctuateStats[] fluctuateStats;
+    public FluctuateStatsDictionary[] fluctuateStats;
 }
