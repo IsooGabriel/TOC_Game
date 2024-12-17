@@ -4,6 +4,7 @@
 public class DBManager_Gabu : ScriptableObject
 {
     static DBManager_Gabu DBs;
+    public int AccountID = 0;
     // ゲッタ
     public static DBManager_Gabu DB
     {
@@ -66,13 +67,29 @@ public class DBManager_Gabu : ScriptableObject
         return baseUpGrageDBs[ID] == null ? baseUpGrageDBs[0] : baseUpGrageDBs[ID];
     }
 
+    public PlayerDB_Gabu[] playerDBs;
+    // ゲッタ
+    public PlayerDB_Gabu GetPlayerDB(int ID)
+    {
+        if (ID < 0)
+        {
+            return playerDBs[playerDBs.Length - (int)Mathf.Repeat(ID, playerDBs.Length + 1)];
+        }
+        if (ID > playerDBs.Length)
+        {
+            Debug.LogError("IDがデータベースの長さを超えています. " + ID);
+            return playerDBs[0];
+        }
+        return playerDBs[ID] == null ? playerDBs[0] : playerDBs[ID];
+    }
+
     /// <summary>
     /// バフの種類と数値の辞書
     /// </summary>
     [System.Serializable]
     public class FluctuateStatsDictionary
     {
-        public E_FluctuateStats fluctuateStats;
+        public E_FLUCTUATE_STATS fluctuateStats;
         public float value;
         [Header("変動させる優先度。数値が低い程先に計算される")]
         public int priority;
@@ -83,7 +100,7 @@ public class DBManager_Gabu : ScriptableObject
     /// <summary>
     /// 変更させるステータスとその計算方法
     /// </summary>
-    public enum E_FluctuateStats
+    public enum E_FLUCTUATE_STATS
     {
         HP_ADD = 0,
         HP_MULTIPLY,
@@ -126,15 +143,15 @@ public class DBManager_Gabu : ScriptableObject
         BUFF_DIVIDE
     }
 
-    public enum E_EnemyType
+    public enum E_ENEMY_TYPE
     {
     }
 
-    public enum E_InGameUpGrade
+    public enum E_IN_GAME_UPGRADE
     {
     }
 
-    public enum E_BaseUpGrade
+    public enum E_BASE_UPGRADE
     {
     }
 

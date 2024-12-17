@@ -18,5 +18,5 @@ public class InGameUpGrageDB_Gabu : ScriptableObject
     [Header("画像")]
     public Sprite prefab;
     [Header("変動させるステータス")]
-    public E_FluctuateStats[] fluctuateStats;
+    public E_FLUCTUATE_STATS[] fluctuateStats;
 }
