@@ -62,12 +62,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CenterSpeed: 2
+    - _AddTime: 0
+    - _CenterSpeed: -0.15
     - _EnableExternalAlpha: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Repeat: 0.2
-    - _Rotation: 0
+    - _Repeat: 1
+    - _Rotation: 45
     - _ScrollSpeed: 1
     - _Speed: 5
     - _SpeedMultipy: 1
@@ -75,7 +76,7 @@ Material:
     - _BaseColor: {r: 0, g: 0.39599997, b: 0.32099998, a: 1}
     - _Center: {r: 21.86, g: 0.5, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 1, g: 1, b: 0.19999999, a: 1}
+    - _Color1: {r: 1, g: 1, b: 0, a: 1}
     - _Color2: {r: 1, g: 0.6666667, b: 0, a: 1}
     - _ColorEnd: {r: 0, g: 1, b: 0.831, a: 1}
     - _ColorStart: {r: 0, g: 0.39599997, b: 0.32099998, a: 1}

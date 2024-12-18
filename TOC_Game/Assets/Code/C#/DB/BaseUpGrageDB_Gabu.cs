@@ -25,4 +25,6 @@ public class BaseUpGrageDB_Gabu : ScriptableObject
     public BaseUpGrageDB_Gabu[] premises;
     [Header("変動させるステータス")]
     public FluctuateStatsDictionary[] fluctuateStats;
+    [Header("グラデーションのマテリアル")]
+    public E_GRADATION_MATERIAL material = E_GRADATION_MATERIAL.NONE;
 }

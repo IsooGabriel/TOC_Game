@@ -95,6 +95,8 @@ public class DBManager_Gabu : ScriptableObject
         public int priority;
     }
 
+    public Material[] gradationMaterials = new Material[999];
+
     #region Enum
 
     /// <summary>
@@ -155,5 +157,21 @@ public class DBManager_Gabu : ScriptableObject
     {
     }
 
+    public enum E_GRADATION_MATERIAL:int
+    {
+        NONE = -1,
+        WHITE = 0,
+        RED,
+        GREEN,
+        BLUE,
+        CYAN,
+        MAGENTA,
+        YELLOW,
+        PURPLE,
+        ORANGE,
+        BLACK = 99,
+        BtoC = 304,
+        BGI_BtoC = 334
+    }
     #endregion
 }
