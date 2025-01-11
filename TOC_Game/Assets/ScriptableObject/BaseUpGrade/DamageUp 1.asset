@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5374234eece06b4da7c64fa91a08f8f, type: 3}
-  m_Name: DamageUp
+  m_Name: DamageUp 1
   m_EditorClassIdentifier: 
   UpGrageName: damage up
   UpGrageID: 0
@@ -20,7 +20,7 @@ MonoBehaviour:
   treePosition: {x: 0, y: 0}
   premises: []
   fluctuateStats:
-  - fluctuateStats: 4
-    value: 10
-    priority: 1
-  material: 1
+  - fluctuateStats: 0
+    value: 5
+    priority: 0
+  material: 2

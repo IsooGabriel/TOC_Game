@@ -33,7 +33,7 @@ public class TreeManager_Gabu : MonoBehaviour
             tes.image.sprite = element.prefab;
             tes.image.color = element.color;
             tes.image.material = DB.gradationMaterials[(int)element.material];
-            tes.baseUpGrageDB_Gabu = element;
+            tes.baseUpGrageDB = element;
             tes.button.onClick.AddListener(() => SerectElement(element.UpGrageID));// クリックされたアップグレードの情報を表示する
             if (!DB.playerDBs[DB.AccountID].baseUpGrages[element.UpGrageID])
             {

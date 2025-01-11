@@ -3,7 +3,7 @@
 [CreateAssetMenu(menuName = "CreateData/DB")]
 public class DBManager_Gabu : ScriptableObject
 {
-    static DBManager_Gabu DBs;
+    private static DBManager_Gabu DBs;
     public int AccountID = 0;
     // ゲッタ
     public static DBManager_Gabu DB
@@ -66,6 +66,8 @@ public class DBManager_Gabu : ScriptableObject
         }
         return baseUpGrageDBs[ID] == null ? baseUpGrageDBs[0] : baseUpGrageDBs[ID];
     }
+
+    public Sprite arrow;
 
     public PlayerDB_Gabu[] playerDBs;
     // ゲッタ
