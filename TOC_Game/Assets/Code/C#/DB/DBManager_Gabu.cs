@@ -12,7 +12,7 @@ public class DBManager_Gabu : ScriptableObject
         {
             if (DBs == null)
             {
-                DBs = (DBManager_Gabu)Resources.Load("DataBase");
+                DBs = (DBManager_Gabu)Resources.Load("DB");
             }
             return DBs;
         }
@@ -35,8 +35,9 @@ public class DBManager_Gabu : ScriptableObject
     }
 
     public InGameUpGrageDB_Gabu[] inGameUpGrageDBs;
-    // ゲッタ
-    public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
+
+// ゲッタ
+public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
     {
         if (ID < 0)
         {
@@ -85,6 +86,8 @@ public class DBManager_Gabu : ScriptableObject
         return playerDBs[ID] == null ? playerDBs[0] : playerDBs[ID];
     }
 
+
+
     /// <summary>
     /// バフの種類と数値の辞書
     /// </summary>
@@ -97,9 +100,12 @@ public class DBManager_Gabu : ScriptableObject
         public int priority;
     }
 
+    public Sprite[] UIStatusIcons = new Sprite[6];
+
     public Material[] gradationMaterials = new Material[999];
 
-    #region Enum
+
+    #region 列挙型
 
     /// <summary>
     /// 変更させるステータスとその計算方法
@@ -175,5 +181,17 @@ public class DBManager_Gabu : ScriptableObject
         BtoC = 304,
         BGI_BtoC = 334
     }
+
+    public enum UIStatusType
+    {
+        None =0,
+        確認済,
+        未確認,
+        ロック,
+        新規,
+        注意,
+        重要,
+    }
+
     #endregion
 }

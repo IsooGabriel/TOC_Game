@@ -22,7 +22,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a6be48e0bab5e049a5afd1317a8af9b, type: 2}
   - {fileID: 11400000, guid: c218fc74fc0e46345967a3ffdecdfca4, type: 2}
   arrow: {fileID: 21300000, guid: 3fe7248f7d8fe7c43a3490d5d351ee86, type: 3}
-  playerDBs: []
+  playerDBs:
+  - {fileID: 11400000, guid: e0f0c2deab88639429bd08770209416b, type: 2}
+  UIStatusIcons:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 4fa7a2c5ad85feb4991c2ddc865d25c7, type: 3}
+  - {fileID: 21300000, guid: f004d321f2825c44d929e3d0f5844b8c, type: 3}
+  - {fileID: 21300000, guid: f9e4c141412ca6345963f9ece84aae0a, type: 3}
+  - {fileID: 21300000, guid: f004d321f2825c44d929e3d0f5844b8c, type: 3}
+  - {fileID: 21300000, guid: a11d716ada219fe4683e6147d610043e, type: 3}
+  - {fileID: 21300000, guid: af19b810ad81d8741ba1583f72a9d93c, type: 3}
   gradationMaterials:
   - {fileID: 0}
   - {fileID: 2100000, guid: 1e654ca5ba5c31f4786055c7281a8b7b, type: 2}

@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: DamageUp 1
   m_EditorClassIdentifier: 
   UpGrageName: damage up
-  UpGrageID: 0
+  UpGrageID: 1
   infometion: up shot damage
-  prefab: {fileID: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
-  treePosition: {x: 0, y: 0}
-  premises: []
+  prefab: {fileID: 21300000, guid: ff885d2457ed2194885eb7115ae6f535, type: 3}
+  color: {r: 1, g: 1, b: 1, a: 1}
+  treePosition: {x: 2, y: 1}
+  premises:
+  - {fileID: 11400000, guid: 7a6be48e0bab5e049a5afd1317a8af9b, type: 2}
   fluctuateStats:
   - fluctuateStats: 0
     value: 5

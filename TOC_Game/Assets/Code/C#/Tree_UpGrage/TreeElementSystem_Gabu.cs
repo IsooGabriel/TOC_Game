@@ -3,15 +3,89 @@ using UnityEngine.UI;
 
 public class TreeElementSystem_Gabu : MonoBehaviour
 {
+    #region 変数
     [Header("アイコン")]
     public Image image;
     public Button button;
+    public Image statsIcone;
     public ImageAnimation_Gabu imageAnimation;
     public TextAnimation_Gabu textAnimation;
     public BaseUpGrageDB_Gabu baseUpGrageDB;
+    public STATS stats = 0;
     public readonly float elementSize = 100;
 
     // baseUpGrageDB_Gabuから情報を取得して、表示する
+
+    public enum STATS
+    {
+        None = 0,
+        未開放 = 1,
+        開放済み = 2,
+        開放不可 = 3,
+        新規 = 4,
+    }
+
+    #endregion
+
+    #region 関数
+
+    public int SetOpened()
+    {
+        stats = STATS.開放済み;
+        button.interactable = true;
+        statsIcone.sprite = DBManager_Gabu.DB.UIStatusIcons[(int)stats];
+
+        if (statsIcone.sprite == null)
+        {
+            statsIcone.gameObject.SetActive(false);
+        }
+
+        return (int)stats;
+    }
+
+    public int SetUnreleased()
+    {
+        stats = STATS.未開放;
+        button.interactable = true;
+        statsIcone.sprite = DBManager_Gabu.DB.UIStatusIcons[(int)stats];
+
+        if (statsIcone.sprite == null)
+        {
+            statsIcone.gameObject.SetActive(false);
+        }
+
+        return (int)stats;
+    }
+
+    public int SetUnopenable()
+    {
+        stats = STATS.開放不可;
+        button.interactable = false;
+        statsIcone.sprite = DBManager_Gabu.DB.UIStatusIcons[(int)stats];
+
+        if (statsIcone.sprite == null)
+        {
+            statsIcone.gameObject.SetActive(false);
+        }
+
+        return (int)stats;
+    }
+
+    public int SetNew()
+    {
+        stats = STATS.新規;
+        button.interactable = true;
+        statsIcone.sprite = DBManager_Gabu.DB.UIStatusIcons[(int)stats];
+
+        if (statsIcone.sprite == null)
+        {
+            statsIcone.gameObject.SetActive(false);
+        }
+
+        return (int)stats;
+    }
+
+    #endregion
 
     private void Start()
     {

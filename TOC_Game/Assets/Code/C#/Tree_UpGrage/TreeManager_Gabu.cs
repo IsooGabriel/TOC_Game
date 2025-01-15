@@ -1,11 +1,12 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static DBManager_Gabu;
 
 public class TreeManager_Gabu : MonoBehaviour
 {
-    //public List<GameObject> elements;
+    public List<GameObject> elements;
     public GameObject elementPrefab;
     public TextMeshProUGUI titleTMP;
     public TextMeshProUGUI detaliTMP;
@@ -17,7 +18,7 @@ public class TreeManager_Gabu : MonoBehaviour
     // prefabに変更を加え複製する、
     // DBからデータを取得して、TreeElementSystem_Gabuの配列に格納する、解放の有無を確認する
     private void Awake()
-    {
+    {        
         if (elementPrefab.GetComponent<TreeElementSystem_Gabu>() == null)
         {
             Debug.LogWarning("TreeElementSystem_Gabuがアタッチされていません");
@@ -37,7 +38,7 @@ public class TreeManager_Gabu : MonoBehaviour
             tes.button.onClick.AddListener(() => SerectElement(element.UpGrageID));// クリックされたアップグレードの情報を表示する
             if (!DB.playerDBs[DB.AccountID].baseUpGrages[element.UpGrageID])
             {
-                tes.button.interactable = false;
+                tes.SetUnreleased();
             }
             else
             {
