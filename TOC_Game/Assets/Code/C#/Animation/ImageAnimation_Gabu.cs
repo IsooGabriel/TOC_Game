@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class ImageAnimation_Gabu : UISystem_Gabu
 {
-    #region Variables
+    #region 変数
     protected Image image;
 
     protected Color _normalColor;
@@ -12,9 +12,10 @@ public class ImageAnimation_Gabu : UISystem_Gabu
     protected Color _pressedColor;
     protected Color _selectedColor;
     protected Color _disabledColor;
+
     #endregion
 
-    #region Functions
+    #region 関数
     protected override void NormalAnimation()
     {
         if (_i_currentAnimation == _i_lastAnimation)
@@ -85,6 +86,13 @@ public class ImageAnimation_Gabu : UISystem_Gabu
             image = GetComponent<Image>();
         }
 
+        base.Start();
+
+        if (!_isReset)
+        {
+            return;
+        }
+
         // Set default values
         _normalScaleDuration = 0.2f;
         _highlightedScaleDuration = 0.2f;
@@ -112,6 +120,5 @@ public class ImageAnimation_Gabu : UISystem_Gabu
         _selectedEase = Ease.OutBack;
         _disabledEase = Ease.InOutExpo;
 
-        base.Start();
     }
 }

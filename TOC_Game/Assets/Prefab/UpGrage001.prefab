@@ -138,6 +138,22 @@ MonoBehaviour:
   _isAutoColor: 0
   _isMonochrome: 0
   _disabledImage: {fileID: 0}
+  _isReset: 0
+  _normalScaleDuration: 0.4
+  _highlightedScaleDuration: 0.2
+  _pressedScaleDuration: 0
+  _selectedScaleDuration: 0.2
+  _disabledScaleDuration: 0.05
+  _normalEase: 4
+  _highlightedEase: 27
+  _pressedEase: 26
+  _selectedEase: 1
+  _disabledEase: 1
+  _normalScaleMultiplier: 1
+  _highlightedScaleMultiplier: 1.1
+  _pressedScaleMultiplier: 1.05
+  _selectedScaleMultiplier: 1.1
+  _disabledScaleMultiplier: 1
 --- !u!1 &1636974438114256900
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +602,22 @@ MonoBehaviour:
   _isAutoColor: 1
   _isMonochrome: 1
   _disabledImage: {fileID: 7361057112142874801}
+  _isReset: 1
+  _normalScaleDuration: 0.4
+  _highlightedScaleDuration: 0.2
+  _pressedScaleDuration: 0
+  _selectedScaleDuration: 0.2
+  _disabledScaleDuration: 0.05
+  _normalEase: 4
+  _highlightedEase: 27
+  _pressedEase: 26
+  _selectedEase: 1
+  _disabledEase: 1
+  _normalScaleMultiplier: 1
+  _highlightedScaleMultiplier: 1.1
+  _pressedScaleMultiplier: 1.05
+  _selectedScaleMultiplier: 1.1
+  _disabledScaleMultiplier: 1
 --- !u!114 &6690431882937052376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,6 +639,22 @@ MonoBehaviour:
   _isAutoColor: 0
   _isMonochrome: 1
   _disabledImage: {fileID: 7361057112142874801}
+  _isReset: 1
+  _normalScaleDuration: 0.4
+  _highlightedScaleDuration: 0.2
+  _pressedScaleDuration: 0
+  _selectedScaleDuration: 0.2
+  _disabledScaleDuration: 0.05
+  _normalEase: 4
+  _highlightedEase: 27
+  _pressedEase: 26
+  _selectedEase: 1
+  _disabledEase: 1
+  _normalScaleMultiplier: 1
+  _highlightedScaleMultiplier: 1.1
+  _pressedScaleMultiplier: 1.05
+  _selectedScaleMultiplier: 1.1
+  _disabledScaleMultiplier: 1
 --- !u!1 &7083574813189133141
 GameObject:
   m_ObjectHideFlags: 0

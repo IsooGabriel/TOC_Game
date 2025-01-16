@@ -89,6 +89,13 @@ public class TextAnimation_Gabu : UISystem_Gabu
             tmp = GetComponent<TextMeshProUGUI>();
         }
 
+        base.Start();
+
+        if (!_isReset)
+        {
+            return;
+        }
+
         // 各プロパティの初期値を設定
         _normalScaleDuration = 0.4f;
         _highlightedScaleDuration = 0.2f;
@@ -108,6 +115,5 @@ public class TextAnimation_Gabu : UISystem_Gabu
         _selectedEase = Ease.OutBack;
         _disabledEase = Ease.Linear;
 
-        base.Start();
     }
 }

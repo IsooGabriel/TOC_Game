@@ -34,22 +34,39 @@ public class UISystem_Gabu : MonoBehaviour
     [SerializeField, Header("Disabledの時に使われる画像")]
     protected Image _disabledImage;
 
+    [SerializeField, Header("実行時リセット")]
+    protected bool _isReset = false;
+    [SerializeField, Header("--- 各種アニメーション変数 ---")]
     protected float _normalScaleDuration = 0.4f;
+    [SerializeField]
     protected float _highlightedScaleDuration = 0.2f;
+    [SerializeField]
     protected float _pressedScaleDuration = 0f;
+    [SerializeField]
     protected float _selectedScaleDuration = 0.2f;
+    [SerializeField]
     protected float _disabledScaleDuration = 0.05f;
 
+    [SerializeField]
     protected Ease _normalEase = Ease.InOutSine;
+    [SerializeField]
     protected Ease _highlightedEase = Ease.OutBack;
+    [SerializeField]
     protected Ease _pressedEase = Ease.InBack;
+    [SerializeField]
     protected Ease _selectedEase = Ease.Linear;
+    [SerializeField]
     protected Ease _disabledEase = Ease.Linear;
 
+    [SerializeField]
     protected float _normalScaleMultiplier = 1.0f;
+    [SerializeField]
     protected float _highlightedScaleMultiplier = 1.1f;
+    [SerializeField]
     protected float _pressedScaleMultiplier = 1.05f;
+    [SerializeField]
     protected float _selectedScaleMultiplier = 1.1f;
+    [SerializeField]
     protected float _disabledScaleMultiplier = 1.0f;
 
     enum AnimatorState : int
