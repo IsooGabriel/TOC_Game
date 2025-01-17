@@ -11,14 +11,16 @@ public class TreeManager_Gabu : MonoBehaviour
     public TextMeshProUGUI titleTMP;
     public TextMeshProUGUI detaliTMP;
     public TextMeshProUGUI moneyCostTMP;
+    public GameObject moneyTextObject;
     public TextMeshProUGUI starCostTMP;
+    public GameObject starTextObject;
     public TextMeshProUGUI unlockTMP;
     public Button unlickButton;
 
     // prefabに変更を加え複製する、
     // DBからデータを取得して、TreeElementSystem_Gabuの配列に格納する、解放の有無を確認する
     private void Awake()
-    {        
+    {
         if (elementPrefab.GetComponent<TreeElementSystem_Gabu>() == null)
         {
             Debug.LogWarning("TreeElementSystem_Gabuがアタッチされていません");
@@ -53,8 +55,27 @@ public class TreeManager_Gabu : MonoBehaviour
     {
         titleTMP.text = DB.baseUpGrageDBs[upgradeID].name;
         detaliTMP.text = DB.baseUpGrageDBs[upgradeID].infometion;
-        moneyCostTMP.text = DB.baseUpGrageDBs[upgradeID].moneyCost.ToString("NO");
-        starCostTMP.text = DB.baseUpGrageDBs[upgradeID].starCost.ToString("NO");
+        Debug.Log("money: " + DB.baseUpGrageDBs[upgradeID].moneyCost);
+
+        // お金とスターのコストを表示する
+        if (DB.baseUpGrageDBs[upgradeID].moneyCost == 0)
+        {
+            moneyTextObject.SetActive(false);
+        }
+        else
+        {
+            moneyTextObject.SetActive(true);
+        }
+        moneyCostTMP.text = DB.baseUpGrageDBs[upgradeID].moneyCost.ToString("N0");
+        if (DB.baseUpGrageDBs[upgradeID].starCost == 0)
+        {
+            starTextObject.SetActive(false);
+        }
+        else
+        {
+            starTextObject.SetActive(true);
+        }
+        starCostTMP.text = DB.baseUpGrageDBs[upgradeID].starCost.ToString("N0");
 
         if (DB.playerDBs[DB.AccountID].baseUpGrages[upgradeID])
         {

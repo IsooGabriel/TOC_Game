@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UpGrageName: damage up
   UpGrageID: 0
+  moneyCost: 10
+  starCost: 0
   infometion: up shot damage
   prefab: {fileID: 21300000, guid: 4aa4dc909b586c14198e6883472062be, type: 3}
   color: {r: 0, g: 0, b: 0, a: 1}
   treePosition: {x: 0, y: 0}
-  premises: []
+  premises:
+  - {fileID: 11400000, guid: c218fc74fc0e46345967a3ffdecdfca4, type: 2}
   fluctuateStats:
   - fluctuateStats: 6
     value: 1

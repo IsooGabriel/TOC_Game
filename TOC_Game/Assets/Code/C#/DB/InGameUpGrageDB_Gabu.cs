@@ -9,9 +9,9 @@ public class InGameUpGrageDB_Gabu : ScriptableObject
     public string UpGrageName = "Diamond";
     public int UpGrageID = 0;
     [Header("金のコスト")]
-    public BigInteger moneyCost = 0;
+    public long moneyCost = 0;
     [Header("スターのコスト")]
-    public BigInteger starCost = 0;
+    public long starCost = 0;
     //public int enemyLocalID = 0;
     [TextArea, Header("詳細情報")]
     public string infometion;   

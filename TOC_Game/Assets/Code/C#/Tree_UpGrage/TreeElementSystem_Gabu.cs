@@ -117,28 +117,37 @@ public class TreeElementSystem_Gabu : MonoBehaviour
         // 開放条件グレードアップへの座標にDBManager_Gabuのarrowを表示する。矢印のスプライトはSlicedでインスタンス
         if (baseUpGrageDB.premises.Length > 0)
         {
-            for (int i = 0; i < baseUpGrageDB.premises.Length; i++)
+            Canvas canvas = GetComponentInParent<Canvas>(); // 親Canvasを取得
+            if (canvas == null)
             {
-                // 矢印のGameObjectを生成し、親をrectTransformに設定します
-                GameObject imageGameObject = Instantiate(image.gameObject, transform);
-                imageGameObject.name = "Arrow";
-                RectTransform arrowRectTransform = imageGameObject.GetComponent<RectTransform>();
-                arrowRectTransform.SetParent(transform);
-                arrowRectTransform.pivot = new Vector2(0.5f, 0);
-                Image arrowImage = imageGameObject.GetComponent<Image>();
-                arrowImage.sprite = DBManager_Gabu.DB.arrow;
-                arrowImage.type = Image.Type.Sliced;
+                Debug.LogError("Canvasが見つかりません");
+                return;
+            }
+            if (baseUpGrageDB.premises.Length > 0)
+            {
+                for (int i = 0; i < baseUpGrageDB.premises.Length; i++)
+                {
+                    // 矢印のGameObjectを生成し、親をrectTransformに設定します
+                    GameObject imageGameObject = Instantiate(image.gameObject, transform);
+                    imageGameObject.name = "Arrow";
+                    RectTransform arrowRectTransform = imageGameObject.GetComponent<RectTransform>();
+                    arrowRectTransform.SetParent(transform);
+                    arrowRectTransform.pivot = new Vector2(0.5f, 0);
+                    Image arrowImage = imageGameObject.GetComponent<Image>();
+                    arrowImage.sprite = DBManager_Gabu.DB.arrow;
+                    arrowImage.type = Image.Type.Sliced;
 
-                // baseUpGrageDB.premises[i]とelementSizeの差に基づいて、imageGameObjectのscale.yを設定します
-                float distance = Vector2.Distance(gameObject.transform.position, baseUpGrageDB.premises[i].treePosition) - elementSize;
-                Vector3 scale = arrowRectTransform.localScale;
-                scale.y = distance;
-                arrowRectTransform.localScale = scale;
+                    // baseUpGrageDB.premises[i]とelementSizeの差に基づいて、imageGameObjectのscale.yを設定します
+                    float distance = Vector2.Distance(gameObject.transform.position, baseUpGrageDB.premises[i].treePosition) - elementSize;
+                    Vector3 scale = arrowRectTransform.localScale;
+                    scale.y = Mathf.Abs(distance);
+                    arrowRectTransform.localScale = scale;
 
-                // baseUpGrageDB.premises[i]の方向に合わせて、imageGameObjectの回転を設定します
-                Vector2 direction = ((Vector2)baseUpGrageDB.premises[i].treePosition).normalized;
-                Quaternion rotation = Quaternion.LookRotation(direction);
-                arrowRectTransform.rotation = rotation;
+                    // baseUpGrageDB.premises[i]の方向に合わせて、imageGameObjectの回転を設定します
+                    Vector2 direction = ((Vector2)baseUpGrageDB.premises[i].treePosition).normalized;
+                    Quaternion rotation = Quaternion.LookRotation(direction);
+                    arrowRectTransform.rotation = rotation;
+                }
             }
         }
     }

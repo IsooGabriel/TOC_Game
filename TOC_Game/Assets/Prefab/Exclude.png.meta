@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 3fe7248f7d8fe7c43a3490d5d351ee86
+guid: 3b81552a3e313a94cb3a03d8e1a3912e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4346244404228752641
-    second: Arrow_0
+      213: 7530133896131401480
+    second: Exclude_0
+  - first:
+      213: 7597586833866249116
+    second: Exclude_1
+  - first:
+      213: 1665174118717120343
+    second: Exclude_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +52,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 21}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -113,23 +119,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Arrow_0
+      name: Exclude_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 24
-        height: 90
+        width: 311
+        height: 941
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 12, y: 1, z: 12, w: 21}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ffa7ae2edb90fa3c0800000000000000
-      internalID: -4346244404228752641
+      spriteID: 8075a06d1e8608860800000000000000
+      internalID: 7530133896131401480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Exclude_1
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 442
+        width: 56
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9358ceb8fc007960800000000000000
+      internalID: 7597586833866249116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Exclude_2
+      rect:
+        serializedVersion: 2
+        x: 974
+        y: 280
+        width: 52
+        height: 411
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75fde4bd903eb1710800000000000000
+      internalID: 1665174118717120343
       vertices: []
       indices: 
       edges: []
@@ -138,15 +188,14 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ae4ac283de33d8f4ebd46e673802c4ff
-    internalID: 1586368986
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Arrow_0: -4346244404228752641
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
