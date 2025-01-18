@@ -177,9 +177,10 @@ public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
         YELLOW,
         PURPLE,
         ORANGE,
-        BLACK = 99,
-        BtoC = 304,
-        BGI_BtoC = 334
+        BLACK,
+        BtoC,
+        BGI_BtoC,
+        矢印,
     }
 
     public enum UIStatusType

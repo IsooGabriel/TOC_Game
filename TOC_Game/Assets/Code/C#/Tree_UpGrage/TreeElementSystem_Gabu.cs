@@ -11,8 +11,13 @@ public class TreeElementSystem_Gabu : MonoBehaviour
     public ImageAnimation_Gabu imageAnimation;
     public TextAnimation_Gabu textAnimation;
     public BaseUpGrageDB_Gabu baseUpGrageDB;
+    public LineRenderer LineRenderer;
     public STATS stats = 0;
-    public readonly float elementSize = 100;
+    public readonly float elementSize = 0.75f;
+    public readonly float arrowSizeX = 10f;
+    public readonly float arrowSizeY = 10f;
+    public readonly float lineStartWidth = 0.05f;
+    public readonly float lineEndWidth = 0.07f;
 
     // baseUpGrageDB_Gabuから情報を取得して、表示する
 
@@ -85,6 +90,45 @@ public class TreeElementSystem_Gabu : MonoBehaviour
         return (int)stats;
     }
 
+    void DrawConnection(Vector3 startPos, Vector3 endPos)
+    {
+        LineRenderer.positionCount = 2;
+        LineRenderer.startWidth = lineStartWidth;
+        LineRenderer.endWidth = lineEndWidth;
+        LineRenderer.SetPosition(0, startPos);
+        LineRenderer.SetPosition(1, endPos);
+        LineRenderer.startColor = new Color32(25, 25, 25, 255); // 始点の色
+        LineRenderer.endColor = new Color32(25, 25, 25, 240); // 終点の色
+        LineRenderer.material = DBManager_Gabu.DB.gradationMaterials[(int)DBManager_Gabu.E_GRADATION_MATERIAL.矢印];
+
+        // 矢印を配置
+        PlaceArrow(startPos, endPos);
+    }
+
+    void PlaceArrow(Vector3 startPos, Vector3 endPos)
+    {
+        GameObject arrowInstance = Instantiate(image.gameObject, transform);
+        Image arrowImage = arrowInstance.GetComponent<Image>();
+        RectTransform arrowRectTransform = arrowInstance.GetComponent<RectTransform>();
+        arrowImage.sprite = DBManager_Gabu.DB.arrow;
+        arrowImage.material = null;
+        arrowRectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+        // ピボットを中央下（Center-Mid）に設定
+        arrowRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        arrowRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        arrowRectTransform.sizeDelta = new Vector2(arrowSizeX, arrowSizeY);
+
+        // 矢印の位置を線の中心に設定
+        Vector3 midPoint = (startPos + endPos) / 2;
+        arrowInstance.transform.position = midPoint;
+
+        // 矢印の回転を設定
+        Vector3 direction = endPos - startPos;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+        arrowInstance.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
     #endregion
 
     private void Start()
@@ -109,10 +153,18 @@ public class TreeElementSystem_Gabu : MonoBehaviour
             textAnimation = GetComponentInChildren<TextAnimation_Gabu>();
             Debug.LogWarning("textAnimation_Gabuがnullだったため、子オブジェクトから割り当てました。");
         }
+        if (LineRenderer == null)
+        {
+            LineRenderer = gameObject.AddComponent<LineRenderer>();
+            Debug.LogWarning("LineAlignmentがnullだったため、インスタンスしました。");
+        }
 
         gameObject.name = baseUpGrageDB.name;
         image.sprite = baseUpGrageDB.prefab;
         image.color = baseUpGrageDB.color;
+
+        transform.localScale = new Vector3(transform.localScale.x * elementSize, transform.localScale.y * elementSize, 1);
+
 
         // 開放条件グレードアップへの座標にDBManager_Gabuのarrowを表示する。矢印のスプライトはSlicedでインスタンス
         if (baseUpGrageDB.premises.Length > 0)
@@ -123,31 +175,16 @@ public class TreeElementSystem_Gabu : MonoBehaviour
                 Debug.LogError("Canvasが見つかりません");
                 return;
             }
-            if (baseUpGrageDB.premises.Length > 0)
+
+            for (int i = 0; i < baseUpGrageDB.premises.Length; i++)
             {
-                for (int i = 0; i < baseUpGrageDB.premises.Length; i++)
-                {
-                    // 矢印のGameObjectを生成し、親をrectTransformに設定します
-                    GameObject imageGameObject = Instantiate(image.gameObject, transform);
-                    imageGameObject.name = "Arrow";
-                    RectTransform arrowRectTransform = imageGameObject.GetComponent<RectTransform>();
-                    arrowRectTransform.SetParent(transform);
-                    arrowRectTransform.pivot = new Vector2(0.5f, 0);
-                    Image arrowImage = imageGameObject.GetComponent<Image>();
-                    arrowImage.sprite = DBManager_Gabu.DB.arrow;
-                    arrowImage.type = Image.Type.Sliced;
+                // baseUpGrageDB.premises[i]とelementSizeの差に基づいて、imageGameObjectのscale.yを設定します
+                Vector2 currentPosition = gameObject.transform.position;
+                Vector2 targetPosition = baseUpGrageDB.premises[i].treePosition;
+                float distance = Vector2.Distance(currentPosition, targetPosition) - elementSize;
 
-                    // baseUpGrageDB.premises[i]とelementSizeの差に基づいて、imageGameObjectのscale.yを設定します
-                    float distance = Vector2.Distance(gameObject.transform.position, baseUpGrageDB.premises[i].treePosition) - elementSize;
-                    Vector3 scale = arrowRectTransform.localScale;
-                    scale.y = Mathf.Abs(distance);
-                    arrowRectTransform.localScale = scale;
+                DrawConnection(currentPosition, targetPosition);
 
-                    // baseUpGrageDB.premises[i]の方向に合わせて、imageGameObjectの回転を設定します
-                    Vector2 direction = ((Vector2)baseUpGrageDB.premises[i].treePosition).normalized;
-                    Quaternion rotation = Quaternion.LookRotation(direction);
-                    arrowRectTransform.rotation = rotation;
-                }
             }
         }
     }
