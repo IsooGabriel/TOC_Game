@@ -3,13 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static DBManager_Gabu;
+using static DataSaverLoader_Gabu;
+using Unity.VisualScripting;
 
 public class TreeManager_Gabu : MonoBehaviour
 {
 
     #region 変数
 
-    public List<GameObject> elements;
+    public List<TreeElementSystem_Gabu> elements;
     public GameObject elementPrefab;
     public TextMeshProUGUI titleTMP;
     public TextMeshProUGUI detaliTMP;
@@ -18,7 +20,9 @@ public class TreeManager_Gabu : MonoBehaviour
     public TextMeshProUGUI starCostTMP;
     public GameObject starTextObject;
     public TextMeshProUGUI unlockTMP;
-    public Button unlickButton;
+    public Button unlockButton;
+
+    public PlayerAssetsUISystem_Gabu playerAssetsUISystem;
 
     #endregion
 
@@ -29,7 +33,9 @@ public class TreeManager_Gabu : MonoBehaviour
     {
         titleTMP.text = DB.baseUpGrageDBs[upgradeID].name;
         detaliTMP.text = DB.baseUpGrageDBs[upgradeID].infometion;
-        Debug.Log("money: " + DB.baseUpGrageDBs[upgradeID].moneyCost);
+
+        unlockButton.onClick.RemoveAllListeners();
+        unlockButton.onClick.AddListener(() => UnlockElement(upgradeID));
 
         // お金とスターのコストを表示する
         if (DB.baseUpGrageDBs[upgradeID].moneyCost == 0)
@@ -54,7 +60,7 @@ public class TreeManager_Gabu : MonoBehaviour
         if (DB.playerDBs[DB.AccountID].baseUpGrages[upgradeID])
         {
             unlockTMP.text = "解放済み";
-            unlickButton.interactable = false;
+            unlockButton.interactable = false;
         }
         else
         {
@@ -69,22 +75,60 @@ public class TreeManager_Gabu : MonoBehaviour
             {
                 case (true, true):
                     unlockTMP.text = "解放可能";
-                    unlickButton.interactable = true;
+                    unlockButton.interactable = true;
                     break;
                 case (false, true):
                     unlockTMP.text = "お金が足りません";
-                    unlickButton.interactable = false;
+                    unlockButton.interactable = false;
                     break;
                 case (true, false):
                     unlockTMP.text = "スターが足りません";
-                    unlickButton.interactable = false;
+                    unlockButton.interactable = false;
                     break;
                 case (false, false):
                     unlockTMP.text = "お金とスターが足りません";
-                    unlickButton.interactable = false;
+                    unlockButton.interactable = false;
                     break;
             }
         }
+
+        foreach (var element in elements)
+        {
+            if (element.baseUpGrageDB.UpGrageID == upgradeID)
+            {
+                element.CheckStats();
+            }
+        }
+    }
+
+    public void UnlockElement(int upgradeID)
+    {
+        if (DB.playerDBs[DB.AccountID].money < (ulong)DB.baseUpGrageDBs[upgradeID].moneyCost || DB.playerDBs[DB.AccountID].stars < (ulong)DB.baseUpGrageDBs[upgradeID].starCost)
+        {
+            return;
+        }
+
+        foreach (var element in elements)
+        {
+            if (element.baseUpGrageDB.UpGrageID == upgradeID)
+            {
+                element.button.interactable = true;
+                element.SetOpened();
+                break;
+            }
+        }
+
+        DB.playerDBs[DB.AccountID].money -= (ulong)DB.baseUpGrageDBs[upgradeID].moneyCost;
+        DB.playerDBs[DB.AccountID].stars -= (ulong)DB.baseUpGrageDBs[upgradeID].starCost;
+        DB.playerDBs[DB.AccountID].baseUpGrages[upgradeID] = true;
+
+        SerectElement(upgradeID);
+
+        // DBの保存
+        DataSaverLoader_Gabu.DataSave();
+
+        playerAssetsUISystem.UpdateMoney();
+        playerAssetsUISystem.UpdateStar();
     }
 
     #endregion
@@ -103,6 +147,7 @@ public class TreeManager_Gabu : MonoBehaviour
         {
             GameObject obj = Instantiate(elementPrefab, transform);
             TreeElementSystem_Gabu tes = obj.GetComponent<TreeElementSystem_Gabu>();
+            elements.Add(tes);
             obj.name = element.name;
             obj.transform.localPosition = new Vector3(element.treePosition.x, element.treePosition.y, 0);
             tes.image.sprite = element.prefab;
@@ -110,6 +155,8 @@ public class TreeManager_Gabu : MonoBehaviour
             tes.image.material = DB.gradationMaterials[(int)element.material];
             tes.baseUpGrageDB = element;
             tes.button.onClick.AddListener(() => SerectElement(element.UpGrageID));// クリックされたアップグレードの情報を表示する
+            tes.CheckStats();
+
             if (!DB.playerDBs[DB.AccountID].baseUpGrages[element.UpGrageID])
             {
                 tes.SetUnreleased();
@@ -118,7 +165,14 @@ public class TreeManager_Gabu : MonoBehaviour
             {
                 tes.button.interactable = true;
             }
-            //elements.Add(obj);
+        }
+
+        SerectElement(0);
+
+        if (playerAssetsUISystem == null)
+        {
+            playerAssetsUISystem = gameObject.GetComponent<PlayerAssetsUISystem_Gabu>();
+            Debug.LogWarning("PlayerAssetsUISystem_Gabuがnullだったため、アセットから探しました。");
         }
     }
 

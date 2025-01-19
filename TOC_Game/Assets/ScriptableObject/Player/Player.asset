@@ -23,7 +23,7 @@ MonoBehaviour:
   speed: 1
   defense: 10
   rerollSpeed: 1
-  money: 10000000000
+  money: 9999999460
   stars: 10000000000
-  baseUpGrages: 0000
+  baseUpGrages: 0100000000000000000000
   inGameUpGrages: 00

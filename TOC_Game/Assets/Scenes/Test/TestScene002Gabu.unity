@@ -1943,7 +1943,8 @@ MonoBehaviour:
   starCostTMP: {fileID: 8848811364261283517}
   starTextObject: {fileID: 6212694153073327188}
   unlockTMP: {fileID: 549613398}
-  unlickButton: {fileID: 649452493756339139}
+  unlockButton: {fileID: 649452493756339139}
+  playerAssetsUISystem: {fileID: 1010279040}
 --- !u!114 &1010279040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3443,6 +3444,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1767879466}
+  - component: {fileID: 1767879467}
   m_Layer: 5
   m_Name: MoneyAndStars
   m_TagString: Untagged
@@ -3471,6 +3473,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &1767879467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767879465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1696be29517f449459026f7a3a4452df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moneyTMP: {fileID: 1103619556}
+  moneySpace: {fileID: 1478142721}
+  starTMP: {fileID: 621734730}
+  starSpace: {fileID: 767756207}
 --- !u!1 &1990839578
 GameObject:
   m_ObjectHideFlags: 0
@@ -3805,7 +3823,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2843925497268597198}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1010279039}
+        m_TargetAssemblyTypeName: TreeManager_Gabu, Assembly-CSharp
+        m_MethodName: UnlockElement
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &710924989230602922
 GameObject:
   m_ObjectHideFlags: 0

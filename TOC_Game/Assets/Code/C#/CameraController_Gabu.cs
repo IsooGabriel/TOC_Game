@@ -57,14 +57,12 @@ public class CameraController_Gabu : MonoBehaviour
 
     private void OnDragCameraStart(InputAction.CallbackContext context)
     {
-        Debug.Log("OnDragCameraStart");
         // マウスドラッグの開始位置を記録
         dragOrigin = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         isDragging = true;
     }
     private void OnDragCamera(InputAction.CallbackContext context)
     {
-        Debug.Log("OnDragCamera");
         if (isDragging)
         {
             // マウスドラッグによるカメラ移動
@@ -75,7 +73,6 @@ public class CameraController_Gabu : MonoBehaviour
     }
     private void OnDragCameraEnd(InputAction.CallbackContext context)
     {
-        Debug.Log("OnDragCameraEnd");
         // ドラッグ終了
         isDragging = false;
     }
@@ -83,7 +80,6 @@ public class CameraController_Gabu : MonoBehaviour
 
     private void OnZoomCamera(InputAction.CallbackContext context)
     {
-        Debug.Log($"OnZoom:{context.ReadValue<float>()}");
         // マウススクロールによるカメラのズーム
         float scrollValue = context.ReadValue<float>() * zoomSpeed;
         camera.orthographicSize = Mathf.Clamp(camera.orthographicSize - scrollValue, minZoom, maxZoom);

@@ -4,6 +4,7 @@ using static DBManager_Gabu;
 public class DataSaverLoader_Gabu : MonoBehaviour
 {
     public static string FileName = "AccountDataBase";
+
     #region データセーバー、ローダ
 
     static public void DataSave()

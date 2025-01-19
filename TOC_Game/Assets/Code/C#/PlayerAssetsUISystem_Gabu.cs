@@ -13,14 +13,6 @@ public class PlayerAssetsUISystem_Gabu : MonoBehaviour
 
     void Start()
     {
-        if (DB.playerDBs[DB.AccountID].money <= 0)
-        {
-            moneySpace.SetActive(false);
-        }
-        else
-        {
-            moneySpace.SetActive(true);
-        }
 
         if (DB.playerDBs[DB.AccountID].stars <= 0)
         {
@@ -37,14 +29,6 @@ public class PlayerAssetsUISystem_Gabu : MonoBehaviour
 
     public void UpdateMoney()
     {
-        if (DB.playerDBs[DB.AccountID].money <= 0)
-        {
-            moneySpace.SetActive(false);
-        }
-        else
-        {
-            moneySpace.SetActive(true);
-        }
         moneyTMP.text = DB.playerDBs[DB.AccountID].money.ToString("N0");
     }
 

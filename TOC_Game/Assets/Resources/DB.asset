@@ -29,6 +29,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f34d67d49387b8e40b35c7e04af8bc8c, type: 2}
   - {fileID: 11400000, guid: fae8448413de8ba49b1aae791a91bbf3, type: 2}
   - {fileID: 11400000, guid: 61ef9fe1681c5e5438df4a2b632686cc, type: 2}
+  - {fileID: 11400000, guid: 17748f7255a45a4459f8f1bf4cc83a21, type: 2}
   arrow: {fileID: -4041817219303023981, guid: 50d7767951e5dd348827bf28a72c537c, type: 3}
   playerDBs:
   - {fileID: 11400000, guid: e0f0c2deab88639429bd08770209416b, type: 2}

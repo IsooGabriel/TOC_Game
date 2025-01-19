@@ -90,6 +90,43 @@ public class TreeElementSystem_Gabu : MonoBehaviour
         return (int)stats;
     }
 
+    public void CheckStats()
+    {
+
+       if (DBManager_Gabu.DB.playerDBs[DBManager_Gabu.DB.AccountID].baseUpGrages[baseUpGrageDB.UpGrageID])
+        {
+            SetOpened();
+        }
+        else
+        {
+            if (baseUpGrageDB.premises.Length > 0)
+            {
+                bool isUnopenable = true;
+                foreach (var premise in baseUpGrageDB.premises)
+                {
+                    if (DBManager_Gabu.DB.playerDBs[DBManager_Gabu.DB.AccountID].baseUpGrages[premise.UpGrageID])
+                    {
+                        isUnopenable = false;
+                        break;
+                    }
+                }
+                if (isUnopenable)
+                {
+                    SetUnopenable();
+                }
+                else
+                {
+                    SetUnreleased();
+                }
+            }
+            else
+            {
+                SetUnreleased();
+            }
+        }
+    }
+
+
     void DrawConnection(Vector3 startPos, Vector3 endPos)
     {
         LineRenderer.positionCount = 2;
