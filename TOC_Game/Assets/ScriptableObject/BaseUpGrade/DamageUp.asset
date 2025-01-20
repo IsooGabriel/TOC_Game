@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5374234eece06b4da7c64fa91a08f8f, type: 3}
   m_Name: DamageUp
   m_EditorClassIdentifier: 
-  UpGrageName: damage up
-  UpGrageID: 0
+  UpGrageName: Updated Name
+  UpGradeID: 0
   moneyCost: 10
   starCost: 0
   infometion: up shot damage
@@ -25,4 +25,5 @@ MonoBehaviour:
   - fluctuateStats: 6
     value: 1
     priority: 2
+  customUpGrade: {fileID: 0}
   material: 0

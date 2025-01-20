@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5374234eece06b4da7c64fa91a08f8f, type: 3}
   m_Name: DamageUp 3
   m_EditorClassIdentifier: 
-  UpGrageName: b
+  UpGrageName: Updated Name
   UpGradeID: 3
   moneyCost: 100
   starCost: 0
@@ -26,4 +26,5 @@ MonoBehaviour:
   - fluctuateStats: 0
     value: 5
     priority: 0
+  customUpGrade: {fileID: 0}
   material: 8
