@@ -8,7 +8,7 @@ public class BaseUpGrageDB_Gabu : ScriptableObject
 
     [Header("アップグレードの名前")]
     public string UpGrageName = "Diamond";
-    public int UpGrageID = 0;
+    public int UpGradeID = 0;
     [Header("金のコスト")]
     public long moneyCost = 0;
     [Header("スターのコスト")]

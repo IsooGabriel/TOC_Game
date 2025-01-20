@@ -120,5 +120,28 @@ public class ImageAnimation_Gabu : UISystem_Gabu
         _selectedEase = Ease.OutBack;
         _disabledEase = Ease.InOutExpo;
 
+        _i_currentAnimation = CheckAnimationState();
+        switch (_i_currentAnimation)
+        {
+            case (int)AnimatorState.Normal:
+                NormalAnimation();
+                break;
+            case (int)AnimatorState.Highlighted:
+                HighlightedAnimation();
+                break;
+            case (int)AnimatorState.Pressed:
+                PressedAnimation();
+                break;
+            case (int)AnimatorState.Selected:
+                SelectedAnimation();
+                break;
+            case (int)AnimatorState.Disabled:
+                DisabledAnimation();
+                break;
+            default:
+                Debug.LogWarning("予期しないアニメーションが参照されました");
+                break;
+        }
+        _i_lastAnimation = _i_currentAnimation;
     }
 }

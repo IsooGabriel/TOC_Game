@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DamageUp 1
   m_EditorClassIdentifier: 
   UpGrageName: damage up
-  UpGrageID: 1
+  UpGradeID: 1
   moneyCost: 100
   starCost: 0
   infometion: up shot damage

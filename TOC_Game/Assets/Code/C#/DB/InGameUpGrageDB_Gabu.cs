@@ -6,7 +6,7 @@ using static DBManager_Gabu;
 public class InGameUpGrageDB_Gabu : ScriptableObject
 {
     [Header("アップグレードの名前")]
-    public string UpGrageName = "Diamond";
+    public string UpGradeName = "Diamond";
     public int UpGrageID = 0;
     [Header("金のコスト")]
     public long moneyCost = 0;

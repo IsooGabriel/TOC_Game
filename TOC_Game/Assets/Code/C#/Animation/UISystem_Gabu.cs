@@ -69,7 +69,7 @@ public class UISystem_Gabu : MonoBehaviour
     [SerializeField]
     protected float _disabledScaleMultiplier = 1.0f;
 
-    enum AnimatorState : int
+    protected enum AnimatorState : int
     {
         Normal = 0, Highlighted, Pressed, Selected, Disabled
     }
@@ -304,6 +304,7 @@ public class UISystem_Gabu : MonoBehaviour
         {
             _color = ChengeHSV(_color, s: 0.65f, v: 0.7f);
         }
+
     }
 
     protected virtual void Update()
@@ -312,7 +313,7 @@ public class UISystem_Gabu : MonoBehaviour
         {
             return;
         }
-
+        
         _i_currentAnimation = CheckAnimationState();
         switch (_i_currentAnimation)
         {

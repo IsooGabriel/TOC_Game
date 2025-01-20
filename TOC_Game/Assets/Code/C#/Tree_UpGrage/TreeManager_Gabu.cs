@@ -11,7 +11,7 @@ public class TreeManager_Gabu : MonoBehaviour
 
     #region 変数
 
-    public List<TreeElementSystem_Gabu> elements;
+    public TreeElementSystem_Gabu[] elements;
     public GameObject elementPrefab;
     public TextMeshProUGUI titleTMP;
     public TextMeshProUGUI detaliTMP;
@@ -94,7 +94,7 @@ public class TreeManager_Gabu : MonoBehaviour
 
         foreach (var element in elements)
         {
-            if (element.baseUpGrageDB.UpGrageID == upgradeID)
+            if (element.baseUpGrageDB.UpGradeID == upgradeID)
             {
                 element.CheckStats();
             }
@@ -108,19 +108,35 @@ public class TreeManager_Gabu : MonoBehaviour
             return;
         }
 
-        foreach (var element in elements)
-        {
-            if (element.baseUpGrageDB.UpGrageID == upgradeID)
-            {
-                element.button.interactable = true;
-                element.SetOpened();
-                break;
-            }
-        }
 
         DB.playerDBs[DB.AccountID].money -= (ulong)DB.baseUpGrageDBs[upgradeID].moneyCost;
         DB.playerDBs[DB.AccountID].stars -= (ulong)DB.baseUpGrageDBs[upgradeID].starCost;
         DB.playerDBs[DB.AccountID].baseUpGrages[upgradeID] = true;
+
+        if (elements[upgradeID].baseUpGrageDB.UpGradeID == upgradeID)
+        {
+            elements[upgradeID].button.interactable = true;
+            elements[upgradeID].SetOpened();
+
+        }
+        else
+        {
+            foreach (var element in elements)
+            {
+                if (element.baseUpGrageDB.UpGradeID == upgradeID)
+                {
+                    element.button.interactable = true;
+                    element.SetOpened();
+                    break;
+                }
+            }
+
+        }
+
+        foreach (var element in elements)
+        {
+            element.CheckStats();
+        }
 
         SerectElement(upgradeID);
 
@@ -143,21 +159,28 @@ public class TreeManager_Gabu : MonoBehaviour
             elementPrefab.AddComponent<TreeElementSystem_Gabu>();
         }
 
+        elements = new TreeElementSystem_Gabu[DB.baseUpGrageDBs.Length];
+
         foreach (var element in DB.baseUpGrageDBs)  // アップグレードをインスタンス
         {
             GameObject obj = Instantiate(elementPrefab, transform);
             TreeElementSystem_Gabu tes = obj.GetComponent<TreeElementSystem_Gabu>();
-            elements.Add(tes);
+            if (element.UpGradeID >= elements.Length)
+            {
+                Debug.LogError("アップグレードのIDが配列の長さを超えています");
+                continue;
+            }
+            elements[element.UpGradeID] = tes;
             obj.name = element.name;
             obj.transform.localPosition = new Vector3(element.treePosition.x, element.treePosition.y, 0);
             tes.image.sprite = element.prefab;
             tes.image.color = element.color;
             tes.image.material = DB.gradationMaterials[(int)element.material];
             tes.baseUpGrageDB = element;
-            tes.button.onClick.AddListener(() => SerectElement(element.UpGrageID));// クリックされたアップグレードの情報を表示する
+            tes.button.onClick.AddListener(() => SerectElement(element.UpGradeID));// クリックされたアップグレードの情報を表示する
             tes.CheckStats();
 
-            if (!DB.playerDBs[DB.AccountID].baseUpGrages[element.UpGrageID])
+            if (!DB.playerDBs[DB.AccountID].baseUpGrages[element.UpGradeID])
             {
                 tes.SetUnreleased();
             }

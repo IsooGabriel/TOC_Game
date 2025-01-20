@@ -93,7 +93,7 @@ public class TreeElementSystem_Gabu : MonoBehaviour
     public void CheckStats()
     {
 
-       if (DBManager_Gabu.DB.playerDBs[DBManager_Gabu.DB.AccountID].baseUpGrages[baseUpGrageDB.UpGrageID])
+        if (DBManager_Gabu.DB.playerDBs[DBManager_Gabu.DB.AccountID].baseUpGrages[baseUpGrageDB.UpGradeID])
         {
             SetOpened();
         }
@@ -101,12 +101,12 @@ public class TreeElementSystem_Gabu : MonoBehaviour
         {
             if (baseUpGrageDB.premises.Length > 0)
             {
-                bool isUnopenable = true;
+                bool isUnopenable = false;
                 foreach (var premise in baseUpGrageDB.premises)
                 {
-                    if (DBManager_Gabu.DB.playerDBs[DBManager_Gabu.DB.AccountID].baseUpGrages[premise.UpGrageID])
+                    if (!DBManager_Gabu.DB.playerDBs[DBManager_Gabu.DB.AccountID].baseUpGrages[premise.UpGradeID])
                     {
-                        isUnopenable = false;
+                        isUnopenable = true;
                         break;
                     }
                 }
@@ -224,5 +224,6 @@ public class TreeElementSystem_Gabu : MonoBehaviour
 
             }
         }
+        CheckStats();
     }
 }
