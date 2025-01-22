@@ -19,17 +19,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 250c6af23876e7440bc9c29942fc9416, type: 2}
   inGameUpGrageDBs: []
   baseUpGrageDBs:
-  - {fileID: 11400000, guid: 7a6be48e0bab5e049a5afd1317a8af9b, type: 2}
-  - {fileID: 11400000, guid: c218fc74fc0e46345967a3ffdecdfca4, type: 2}
-  - {fileID: 11400000, guid: 5350ef34eae88e14680f3f7fad77c1ce, type: 2}
-  - {fileID: 11400000, guid: 79e613a31203e854d9f017f5fa29ec59, type: 2}
-  - {fileID: 11400000, guid: 0b96bb58629d2b94e9231b04802f0349, type: 2}
-  - {fileID: 11400000, guid: ad2dbc8fb07724848ac0211db9694ead, type: 2}
-  - {fileID: 11400000, guid: f655178856ca60a48a8f2d0c02714f53, type: 2}
-  - {fileID: 11400000, guid: f34d67d49387b8e40b35c7e04af8bc8c, type: 2}
-  - {fileID: 11400000, guid: fae8448413de8ba49b1aae791a91bbf3, type: 2}
-  - {fileID: 11400000, guid: 61ef9fe1681c5e5438df4a2b632686cc, type: 2}
-  - {fileID: 11400000, guid: 17748f7255a45a4459f8f1bf4cc83a21, type: 2}
+  - {fileID: 0}
   arrow: {fileID: -4041817219303023981, guid: 50d7767951e5dd348827bf28a72c537c, type: 3}
   playerDBs:
   - {fileID: 11400000, guid: e0f0c2deab88639429bd08770209416b, type: 2}

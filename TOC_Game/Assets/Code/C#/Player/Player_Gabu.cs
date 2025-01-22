@@ -56,9 +56,9 @@ public class Player_Gabu : MonoBehaviour
         Debug.Log("Player attacks with power: " + atk);
     }
 
-    public void CanAttack()
+    public bool CanAttack()
     {
-
+        return true;
     }
 
     public void TakeDamage(int damage)
