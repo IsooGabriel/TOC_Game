@@ -12,12 +12,13 @@ public class PlayerDB_Gabu : ScriptableObject
     public string infometion;
     public GameObject prefab;
     public int level = 1;
-    public int hp = 5;
-    public int atk = 1;
+    public long hp = 5;
+    public long atk = 1;
     public float atkSpeed = 1;
     public float speed = 1;
     public float defense = 10;
     public float rerollSpeed = 1;
+    public long ammo = 1;
     public ulong money = 0;
     public ulong stars = 0;
     public List<bool> baseUpGrages = new List<bool>();

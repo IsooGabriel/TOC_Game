@@ -36,8 +36,8 @@ public class DBManager_Gabu : ScriptableObject
 
     public InGameUpGrageDB_Gabu[] inGameUpGrageDBs;
 
-// ゲッタ
-public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
+    // ゲッタ
+    public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
     {
         if (ID < 0)
         {
@@ -52,9 +52,9 @@ public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
         return inGameUpGrageDBs[ID] == null ? inGameUpGrageDBs[0] : inGameUpGrageDBs[ID];
     }
 
-    public BaseUpGrageDB_Gabu[] baseUpGrageDBs;
+    public BaseUpGradeDB_StatChangeSkill_Gabu[] baseUpGrageDBs;
     // ゲッタ
-    public BaseUpGrageDB_Gabu GetBaseUpGrageDB(int ID)
+    public BaseUpGradeDB_StatChangeSkill_Gabu GetBaseUpGrageDB(int ID)
     {
         if (ID < 0)
         {
@@ -150,7 +150,13 @@ public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
         BUFF_ADD,
         BUFF_MULTIPLY,
         BUFF_SUBTRACT,
-        BUFF_DIVIDE
+        BUFF_DIVIDE,
+
+        AMMO_ADD,
+        AMMO_MULTIPLY,
+        AMMO_SUBTRACT,
+        AMMO_DIVIDE,
+
     }
 
     public enum E_ENEMY_TYPE
@@ -165,7 +171,7 @@ public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
     {
     }
 
-    public enum E_GRADATION_MATERIAL:int
+    public enum E_GRADATION_MATERIAL : int
     {
         NONE = -1,
         WHITE = 0,
@@ -185,7 +191,7 @@ public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
 
     public enum UIStatusType
     {
-        None =0,
+        None = 0,
         確認済,
         未確認,
         ロック,

@@ -10,7 +10,7 @@ public class TreeElementSystem_Gabu : MonoBehaviour
     public Image statsIcone;
     public ImageAnimation_Gabu imageAnimation;
     public TextAnimation_Gabu textAnimation;
-    public BaseUpGrageDB_Gabu baseUpGrageDB;
+    public BaseUpGradeDB_StatChangeSkill_Gabu baseUpGrageDB;
     public LineRenderer LineRenderer;
     public STATS stats = 0;
     public readonly float elementSize = 0.75f;

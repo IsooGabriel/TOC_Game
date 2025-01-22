@@ -7,14 +7,14 @@ public class UpdateDB_Gabu : MonoBehaviour
 
     // エディタ上でのみ実行される
     [SerializeField]
-    BaseUpGrageDB_Gabu[] DBs = null;
+    BaseUpGradeDB_StatChangeSkill_Gabu[] DBs = null;
 
     private void Start()
     {
         foreach (var db in DBs)
         {
             // ここで必要な処理を行う
-            db.UpGrageName = "Updated Name"; // 例: 名前を更新
+            db.UpGradeName = "Updated Name"; // 例: 名前を更新
 
             // ScriptableObject を保存
             EditorUtility.SetDirty(db);
@@ -33,7 +33,7 @@ public class UpdateDB_Gabu : MonoBehaviour
         foreach (var db in DBs)
         {
             // ここで必要な処理を行う
-            db.UpGrageName = "Updated Name"; // 例: 名前を更新
+            db.UpGradeName = "Updated Name"; // 例: 名前を更新
                                              // ScriptableObject を保存
             EditorUtility.SetDirty(db);
             AssetDatabase.SaveAssets();

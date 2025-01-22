@@ -4,7 +4,7 @@ using static DBManager_Gabu;
 public class UpGrageTreeSystem_Gabu : MonoBehaviour
 {
     [SerializeField,Header("スキルツリーを構成するアップグレード一覧")]
-    private BaseUpGrageDB_Gabu[] baseUpGrageDBs;
+    private BaseUpGradeDB_StatChangeSkill_Gabu[] baseUpGrageDBs;
     [SerializeField]
     private GameObject prefab;
 
