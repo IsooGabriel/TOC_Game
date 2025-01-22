@@ -9,21 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5374234eece06b4da7c64fa91a08f8f, type: 3}
+  m_Script: {fileID: 11500000, guid: 21c3aaf9aafef5d43944ca6879a99e8f, type: 3}
   m_Name: DamageUp
   m_EditorClassIdentifier: 
-  UpGrageName: Updated Name
+  UpGradeName: Diamond
   UpGradeID: 0
-  moneyCost: 10
+  moneyCost: 1000
   starCost: 0
-  infometion: up shot damage
+  infometion: 'mmore money
+
+
+'
   prefab: {fileID: 21300000, guid: 4aa4dc909b586c14198e6883472062be, type: 3}
-  color: {r: 0, g: 0, b: 0, a: 1}
-  treePosition: {x: 0, y: 0}
+  color: {r: 1, g: 0, b: 0, a: 1}
+  treePosition: {x: 1, y: 1}
   premises: []
-  fluctuateStats:
-  - fluctuateStats: 6
-    value: 1
-    priority: 2
-  customUpGrade: {fileID: 0}
-  material: 0
+  fluctuateStats: []
+  priority: 0
+  customObject: {fileID: 0}
+  material: 4
