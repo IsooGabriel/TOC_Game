@@ -10,6 +10,8 @@ public class EnemyDB_Gabu : ScriptableObject
     [TextArea, Header("詳細情報")]
     public string infometion;
     public GameObject prefab;
+    public uint dropMoney = 1;
+    public uint dropStar = 0;
     public int level = 1;
     public int hp = 5;
     public float speed = 1;

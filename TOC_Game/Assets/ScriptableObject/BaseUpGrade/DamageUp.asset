@@ -12,10 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5374234eece06b4da7c64fa91a08f8f, type: 3}
   m_Name: DamageUp
   m_EditorClassIdentifier: 
-  UpGrageName: damage up
-  UpGrageID: 0
+  UpGrageName: Updated Name
+  UpGradeID: 0
+  moneyCost: 10
+  starCost: 0
   infometion: up shot damage
-  prefab: {fileID: 0}
+  prefab: {fileID: 21300000, guid: 4aa4dc909b586c14198e6883472062be, type: 3}
+  color: {r: 0, g: 0, b: 0, a: 1}
   treePosition: {x: 0, y: 0}
   premises: []
-  fluctuateStats: 04000000
+  fluctuateStats:
+  - fluctuateStats: 6
+    value: 1
+    priority: 2
+  customUpGrade: {fileID: 0}
+  material: 0

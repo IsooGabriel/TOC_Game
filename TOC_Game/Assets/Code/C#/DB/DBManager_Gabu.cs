@@ -1,29 +1,30 @@
-﻿using System.Net;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "CreateData/DB")]
 public class DBManager_Gabu : ScriptableObject
 {
-    static DBManager_Gabu DBs;
+    private static DBManager_Gabu DBs;
+    public int AccountID = 0;
+    // ゲッタ
     public static DBManager_Gabu DB
     {
         get
         {
             if (DBs == null)
             {
-                DBs = (DBManager_Gabu)Resources.Load("DataBase");
+                DBs = (DBManager_Gabu)Resources.Load("DB");
             }
             return DBs;
         }
     }
 
     public EnemyDB_Gabu[] enemyDBs;
+    // ゲッタ
     public EnemyDB_Gabu GetEnemyDB(int ID)
     {
         if (ID < 0)
         {
-            Debug.LogError("IDは0以上である必要があります. " + ID);
-            return enemyDBs[0];
+            return enemyDBs[enemyDBs.Length - (int)Mathf.Repeat(ID, enemyDBs.Length + 1)];
         }
         if (ID > enemyDBs.Length)
         {
@@ -33,18 +34,83 @@ public class DBManager_Gabu : ScriptableObject
         return enemyDBs[ID] == null ? enemyDBs[0] : enemyDBs[ID];
     }
 
-    public class FluctuateStatsDictionary
+    public InGameUpGrageDB_Gabu[] inGameUpGrageDBs;
+
+    // ゲッタ
+    public InGameUpGrageDB_Gabu GetInGameUpGrageDB(int ID)
     {
-        public E_FluctuateStats fluctuateStats;
-        public float value;
+        if (ID < 0)
+        {
+            return inGameUpGrageDBs[inGameUpGrageDBs.Length - (int)Mathf.Repeat(ID, inGameUpGrageDBs.Length + 1)];
+
+        }
+        if (ID > inGameUpGrageDBs.Length)
+        {
+            Debug.LogError("IDがデータベースの長さを超えています. " + ID);
+            return inGameUpGrageDBs[0];
+        }
+        return inGameUpGrageDBs[ID] == null ? inGameUpGrageDBs[0] : inGameUpGrageDBs[ID];
     }
 
-    #region Enum
+    public BaseUpGradeDB_StatChangeSkill_Gabu[] baseUpGrageDBs;
+    // ゲッタ
+    public BaseUpGradeDB_StatChangeSkill_Gabu GetBaseUpGrageDB(int ID)
+    {
+        if (ID < 0)
+        {
+            return baseUpGrageDBs[baseUpGrageDBs.Length - (int)Mathf.Repeat(ID, baseUpGrageDBs.Length + 1)];
+        }
+        if (ID > baseUpGrageDBs.Length)
+        {
+            Debug.LogError("IDがデータベースの長さを超えています. " + ID);
+            return baseUpGrageDBs[0];
+        }
+        return baseUpGrageDBs[ID] == null ? baseUpGrageDBs[0] : baseUpGrageDBs[ID];
+    }
+
+    public Sprite arrow;
+
+    public PlayerDB_Gabu[] playerDBs;
+    // ゲッタ
+    public PlayerDB_Gabu GetPlayerDB(int ID)
+    {
+        if (ID < 0)
+        {
+            return playerDBs[playerDBs.Length - (int)Mathf.Repeat(ID, playerDBs.Length + 1)];
+        }
+        if (ID > playerDBs.Length)
+        {
+            Debug.LogError("IDがデータベースの長さを超えています. " + ID);
+            return playerDBs[0];
+        }
+        return playerDBs[ID] == null ? playerDBs[0] : playerDBs[ID];
+    }
+
+
+
+    /// <summary>
+    /// バフの種類と数値の辞書
+    /// </summary>
+    [System.Serializable]
+    public class FluctuateStatsDictionary
+    {
+        public E_FLUCTUATE_STATS fluctuateStats;
+        public float value;
+        [Header("変動させる優先度。数値が低い程先に計算される")]
+        public int priority;
+    }
+
+    public Sprite[] UIStatusIcons = new Sprite[6];
+
+    public Material[] gradationMaterials = new Material[999];
+
+
+    #region 列挙型
 
     /// <summary>
     /// 変更させるステータスとその計算方法
     /// </summary>
-    public enum E_FluctuateStats
+    public enum E_FLUCTUATE_STATS
     {
         HP_ADD = 0,
         HP_MULTIPLY,
@@ -84,19 +150,54 @@ public class DBManager_Gabu : ScriptableObject
         BUFF_ADD,
         BUFF_MULTIPLY,
         BUFF_SUBTRACT,
-        BUFF_DIVIDE
+        BUFF_DIVIDE,
+
+        AMMO_ADD,
+        AMMO_MULTIPLY,
+        AMMO_SUBTRACT,
+        AMMO_DIVIDE,
+
     }
 
-    public enum E_EnemyType
+    public enum E_ENEMY_TYPE
     {
     }
 
-    public enum E_InGameUpGrade
+    public enum E_IN_GAME_UPGRADE
     {
     }
 
-    public enum E_BaseUpGrade
+    public enum E_BASE_UPGRADE
     {
+    }
+
+    public enum E_GRADATION_MATERIAL : int
+    {
+        NONE = -1,
+        WHITE = 0,
+        RED,
+        GREEN,
+        BLUE,
+        CYAN,
+        MAGENTA,
+        YELLOW,
+        PURPLE,
+        ORANGE,
+        BLACK,
+        BtoC,
+        BGI_BtoC,
+        矢印,
+    }
+
+    public enum UIStatusType
+    {
+        None = 0,
+        確認済,
+        未確認,
+        ロック,
+        新規,
+        注意,
+        重要,
     }
 
     #endregion
