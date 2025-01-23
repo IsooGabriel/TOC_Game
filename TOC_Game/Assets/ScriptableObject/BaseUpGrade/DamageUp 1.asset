@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: DamageUp 1
   m_EditorClassIdentifier: 
   UpGradeName: Diamond
-  UpGradeID: 0
-  moneyCost: 0
+  UpGradeID: 1
+  moneyCost: 10
   starCost: 0
   infometion: 
-  prefab: {fileID: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
-  treePosition: {x: 9, y: 99}
-  premises: []
-  fluctuateStats: []
+  prefab: {fileID: 21300000, guid: 4aa4dc909b586c14198e6883472062be, type: 3}
+  color: {r: 0, g: 0, b: 0, a: 1}
+  treePosition: {x: 0, y: 2}
+  premises:
+  - {fileID: 11400000, guid: 7a6be48e0bab5e049a5afd1317a8af9b, type: 2}
+  fluctuateStats:
+  - fluctuateStats: 0
+    value: 100
+    priority: 0
   priority: 0
   customObject: {fileID: 0}
-  material: -1
+  material: 2

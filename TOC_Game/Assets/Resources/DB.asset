@@ -19,7 +19,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 250c6af23876e7440bc9c29942fc9416, type: 2}
   inGameUpGrageDBs: []
   baseUpGrageDBs:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 7a6be48e0bab5e049a5afd1317a8af9b, type: 2}
+  - {fileID: 11400000, guid: 71589b0a4afb05a49873e04bbef1ac8d, type: 2}
   arrow: {fileID: -4041817219303023981, guid: 50d7767951e5dd348827bf28a72c537c, type: 3}
   playerDBs:
   - {fileID: 11400000, guid: e0f0c2deab88639429bd08770209416b, type: 2}

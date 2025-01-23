@@ -17,11 +17,14 @@ MonoBehaviour:
   moneyCost: 0
   starCost: 0
   infometion: 
-  prefab: {fileID: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
+  prefab: {fileID: 21300000, guid: cfad8ef0b5f68ac46bd02b3156b377a4, type: 3}
+  color: {r: 0, g: 0, b: 0, a: 1}
   treePosition: {x: 0, y: 0}
   premises: []
-  fluctuateStats: []
+  fluctuateStats:
+  - fluctuateStats: 0
+    value: 10
+    priority: 0
   priority: 0
   customObject: {fileID: 0}
-  material: -1
+  material: 2
