@@ -157,6 +157,11 @@ public class DBManager_Gabu : ScriptableObject
         AMMO_SUBTRACT,
         AMMO_DIVIDE,
 
+        CRITICAL_CHANCE_ADD,
+        CRITICAL_CHANCE_MULTIPLY,
+        CRITICAL_DAMAGE_ADD,
+        CRITICAL_DAMAGE_MULTIPLY,
+
     }
 
     public enum E_ENEMY_TYPE

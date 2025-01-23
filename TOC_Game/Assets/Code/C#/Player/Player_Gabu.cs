@@ -15,6 +15,8 @@ public class Player_Gabu : MonoBehaviour
     public float rerollSpeed = 1;
     public long ammo = 1;
     public float Buff = 0;
+    public float criticalChance = 0;
+    public float criticalDmg = 0;
 
     public float atkCT = 0;
     public float rerollTime = 0;
