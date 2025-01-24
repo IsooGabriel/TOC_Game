@@ -2,6 +2,8 @@
 
 public abstract class EntityBase : MonoBehaviour
 {
+    #region 変数
+
     public int level = 1;
     public long maxHP = 100;
     public long currentHP;
@@ -18,6 +20,11 @@ public abstract class EntityBase : MonoBehaviour
     public float rerollTime = 0;
 
     public GameObject shotTemplete = null;
+    public EntityUIBase entityUIBase = null;
+
+#endregion
+
+    #region 関数
 
     public virtual void TakeDamage(long opponentAtk, long opponentLevel)
     {
@@ -25,10 +32,15 @@ public abstract class EntityBase : MonoBehaviour
         {
             return;
         }
+
         float levelMultiplier = Mathf.Pow(1.1f, level - opponentLevel); // 1レベル差ごとに10%増減
         long damage = (long)Mathf.Max(1, (opponentAtk - defense) * levelMultiplier);
         damage = (long)(damage * (Buff / 100));
         currentHP -= damage;
+
+        // エフェクトやアニメーションの処理
+        entityUIBase.TakeDamage();
+
         if (currentHP <= 0)
         {
             Die();
@@ -45,6 +57,7 @@ public abstract class EntityBase : MonoBehaviour
         GameObject shotObj = Instantiate(shotTemplete, transform.position, rotation);
         shotObj.transform.parent = transform.parent;
         shotObj.GetComponent<Shot_Gabu>().attacker = this;
+        entityUIBase.Attack();
     }
 
     public virtual bool CanAttack()
@@ -58,7 +71,6 @@ public abstract class EntityBase : MonoBehaviour
             return true;
         }
         return ammo > 0;
-
     }
 
     public abstract void Reroll();
@@ -69,4 +81,14 @@ public abstract class EntityBase : MonoBehaviour
     }
 
     public abstract void Die();
+
+#endregion
+
+    public virtual void Update()
+    {
+        if (atkCT > 0)
+        {
+            atkCT -= Time.deltaTime;
+        }
+    }
 }

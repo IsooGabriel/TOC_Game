@@ -77,13 +77,4 @@ public class Player_Gabu : EntityBase
         skillManager = new SkillManager_Gabu();
         skillManager.UseAllSkills(this);
     }
-
-    void Update()
-    {
-        if (atkCT > 0)
-        {
-            atkCT -= Time.deltaTime;
-        }
-    }
-
 }

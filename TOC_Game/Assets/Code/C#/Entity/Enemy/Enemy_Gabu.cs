@@ -2,8 +2,10 @@
 
 public class Enemy_Gabu : EntityBase
 {
+    public Rigidbody2D rb;
 
     #region 関数
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
