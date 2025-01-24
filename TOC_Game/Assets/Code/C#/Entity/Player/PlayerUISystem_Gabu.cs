@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 
-public class PlayerUISystem_Gabu : MonoBehaviour
+public class PlayerUISystem_Gabu : EntityUIBase
 {
     public TextMeshProUGUI ammoTmpro = null;
     public GameObject messageTemprete = null;
@@ -11,8 +11,30 @@ public class PlayerUISystem_Gabu : MonoBehaviour
         ammoTmpro.text = ammo.ToString();
     }
 
-    public void Die()
+    public override void TakeDamage()
+    {
+    }
+
+    public override void Die()
     {
 
+    }
+
+    public override void Attack()
+    {
+    }
+
+
+    public override void Buffed(long value)
+    {
+
+    }
+
+    public override void Dash(Quaternion direction)
+    {
+    }
+
+    public override void stopDash()
+    {
     }
 }

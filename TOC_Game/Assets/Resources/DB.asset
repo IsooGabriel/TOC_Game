@@ -13,27 +13,23 @@ MonoBehaviour:
   m_Name: DB
   m_EditorClassIdentifier: 
   AccountID: 0
-  enemyDBs:
-  - {fileID: 11400000, guid: 0ac5ba9e76e85b24094ee97deaa78bf3, type: 2}
-  - {fileID: 11400000, guid: 78238e0b31500524f9c0e8a17867b820, type: 2}
-  - {fileID: 11400000, guid: 250c6af23876e7440bc9c29942fc9416, type: 2}
+  enemyDBs: []
   inGameUpGrageDBs: []
   baseUpGrageDBs:
   - {fileID: 11400000, guid: 7a6be48e0bab5e049a5afd1317a8af9b, type: 2}
   - {fileID: 11400000, guid: 33c859263b177314e8a8321c1eafe0c6, type: 2}
-  - {fileID: 11400000, guid: 1e5f3986fc8390c448b839c3bef5a64f, type: 2}
+  - {fileID: 11400000, guid: e79f9433d0aa5604eb1996be4066692c, type: 2}
   - {fileID: 11400000, guid: 393016fdfa4651348bc95bdffda13b8f, type: 2}
   arrow: {fileID: -4041817219303023981, guid: 50d7767951e5dd348827bf28a72c537c, type: 3}
   playerDBs:
   - {fileID: 11400000, guid: e0f0c2deab88639429bd08770209416b, type: 2}
   UIStatusIcons:
   - {fileID: 0}
-  - {fileID: 21300000, guid: 4fa7a2c5ad85feb4991c2ddc865d25c7, type: 3}
-  - {fileID: 21300000, guid: f004d321f2825c44d929e3d0f5844b8c, type: 3}
-  - {fileID: 21300000, guid: f9e4c141412ca6345963f9ece84aae0a, type: 3}
-  - {fileID: 21300000, guid: f004d321f2825c44d929e3d0f5844b8c, type: 3}
-  - {fileID: 21300000, guid: a11d716ada219fe4683e6147d610043e, type: 3}
-  - {fileID: 21300000, guid: af19b810ad81d8741ba1583f72a9d93c, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   gradationMaterials:
   - {fileID: 2100000, guid: 1e654ca5ba5c31f4786055c7281a8b7b, type: 2}
   - {fileID: 2100000, guid: 6cd7fef9726dab147820c83830cf7c90, type: 2}
@@ -48,7 +44,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f09498e5bc802584fa63f7b88c1c6c6f, type: 2}
   - {fileID: 2100000, guid: 86df2709538752946989b55eba999aac, type: 2}
   - {fileID: 2100000, guid: 3a61804d3bd269947a5b2644a9dd3a20, type: 2}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
