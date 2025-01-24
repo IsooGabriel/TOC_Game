@@ -48,6 +48,12 @@ public class BaseUpGradeDB_StatChangeSkill_Gabu : UpGrade_Gabu
     private void BuffSubtract(Player_Gabu player, float value) { player.Buff -= value; }
     private void BuffDivide(Player_Gabu player, float value) { player.Buff /= value; }
 
+    private void CriticalChanceAdd(Player_Gabu player, float value) { player.criticalChance += value; }
+    private void CriticalChanceMultiply(Player_Gabu player, float value) { player.criticalChance *= value; }
+
+    private void CriticalDamageAdd(Player_Gabu player, float value) { player.criticalDmg += value; }
+    private void CriticalDamageMultiply(Player_Gabu player, float value) { player.criticalDmg *= value; }
+
     #endregion
 
     public override void Execute(Player_Gabu player)
@@ -161,6 +167,19 @@ public class BaseUpGradeDB_StatChangeSkill_Gabu : UpGrade_Gabu
                     break;
                 case E_FLUCTUATE_STATS.BUFF_DIVIDE:
                     BuffDivide(player, fluctuateStat.value);
+                    break;
+
+                case E_FLUCTUATE_STATS.CRITICAL_CHANCE_ADD:
+                    CriticalChanceAdd(player, fluctuateStat.value);
+                    break;
+                case E_FLUCTUATE_STATS.CRITICAL_CHANCE_MULTIPLY:
+                    CriticalChanceMultiply(player, fluctuateStat.value);
+                    break;
+                case E_FLUCTUATE_STATS.CRITICAL_DAMAGE_ADD:
+                    CriticalDamageAdd(player, fluctuateStat.value);
+                    break;
+                case E_FLUCTUATE_STATS.CRITICAL_DAMAGE_MULTIPLY:
+                    CriticalDamageMultiply(player, fluctuateStat.value);
                     break;
 
                 default:
