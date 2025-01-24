@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DamageUp 3
   m_EditorClassIdentifier: 
   UpGradeName: Diamond
-  UpGradeID: 0
+  UpGradeID: 3
   moneyCost: 1000
   starCost: 0
   infometion: aim++

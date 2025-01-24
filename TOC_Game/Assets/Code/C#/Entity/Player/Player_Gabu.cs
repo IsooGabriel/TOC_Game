@@ -6,7 +6,6 @@ public class Player_Gabu : EntityBase
     #region 変数
 
     public SkillManager_Gabu skillManager;
-    public PlayerUISystem_Gabu playerUISystem;
 
     #endregion
 
@@ -55,7 +54,7 @@ public class Player_Gabu : EntityBase
 
     public override void Die()
     {
-        playerUISystem.Die();
+        entityUIBase    .Die();
     }
 
     #endregion

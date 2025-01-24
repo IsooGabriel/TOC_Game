@@ -4,13 +4,13 @@ public class movimento : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float smoothTime = 0.1f; // Smoothing factor
-
+    public EntityBase entity;
     private Vector2 movement;
     private Vector2 velocity = Vector2.zero;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -25,5 +25,9 @@ public class movimento : MonoBehaviour
 
         // Smoothly move the player
         transform.position = Vector2.SmoothDamp(transform.position, transform.position + (Vector3)movement, ref velocity, smoothTime, moveSpeed, Time.deltaTime);
+
+
+
     }
+
 }
