@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player 1
   m_EditorClassIdentifier: 
   playerName: Diamond
-  playerID: 0
+  playerID: 1
   infometion: 
   prefab: {fileID: 0}
   level: 1
@@ -23,3 +23,8 @@ MonoBehaviour:
   speed: 1
   defense: 10
   rerollSpeed: 1
+  ammo: 1
+  money: 0
+  stars: 0
+  baseUpGrages: 
+  inGameUpGrages: 

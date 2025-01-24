@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UpGradeName: Diamond
   UpGradeID: 0
-  moneyCost: 1000
+  moneyCost: 0
   starCost: 0
-  infometion: 'mmore money
-
-
-'
-  prefab: {fileID: 21300000, guid: 4aa4dc909b586c14198e6883472062be, type: 3}
-  color: {r: 1, g: 0, b: 0, a: 1}
-  treePosition: {x: 1, y: 1}
+  infometion: 
+  prefab: {fileID: 21300000, guid: cfad8ef0b5f68ac46bd02b3156b377a4, type: 3}
+  color: {r: 0, g: 0, b: 0, a: 1}
+  treePosition: {x: 0, y: 0}
   premises: []
-  fluctuateStats: []
+  fluctuateStats:
+  - fluctuateStats: 0
+    value: 10
+    priority: 0
   priority: 0
   customObject: {fileID: 0}
-  material: 4
+  material: 2
