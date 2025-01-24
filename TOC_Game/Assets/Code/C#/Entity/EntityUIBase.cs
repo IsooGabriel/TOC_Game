@@ -11,6 +11,6 @@ public abstract class EntityUIBase : ColorSystem
     public abstract void stopDash();
     public abstract void TakeDamage();
     public abstract void Attack();
-    public abstract void Buffed(int value);
+    public abstract void Buffed(long value);
     public abstract void Die();
 }
