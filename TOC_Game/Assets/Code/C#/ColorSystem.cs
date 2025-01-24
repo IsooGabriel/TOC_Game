@@ -111,5 +111,38 @@ public abstract class ColorSystem : MonoBehaviour
         Color newColor = currentColor + new Color(h, s, v);
         return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
     }
+
+    /// <summary>
+    /// RGBをHSVに変換し彩度の引き算を行い再びRGBに戻す関数です。足し算もあります
+    /// </summary>
+    /// <param name="currentColor"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public Color SubtractionSaturation(Color currentColor, float s)
+    {
+        Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
+        Color newColor = new Color(currentColor.r, currentColor.g - s, currentColor.b);
+        return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
+    }
+
+    /// <summary>
+    /// RGBをHSVに変換し彩度を変更を行い再びRGBに戻す関数です。引き算もあります
+    /// </summary>
+    /// <param name="currentColor"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public Color ChengeSaturation(Color currentColor, float s)
+    {
+        Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
+        Color newColor = new Color(currentColor.r, s, currentColor.b);
+        return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
+    }
+
+    public float GetSaturation(Color currentColor)
+    {
+        Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
+        return currentColor.g;
+    }
+
     #endregion
 }

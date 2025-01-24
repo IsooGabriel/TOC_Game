@@ -5,7 +5,9 @@ public class Player_Gabu : EntityBase
 {
     #region 変数
 
+    public PlayerUISystem_Gabu uiSystem;
     public SkillManager_Gabu skillManager;
+    public PlayerMovement playerMovement;
 
     #endregion
 
@@ -23,6 +25,11 @@ public class Player_Gabu : EntityBase
         powerUp.Apply(this);
     }
 
+    public void Aim()
+    {
+        uiSystem.Aim();
+    }
+
     public override void Reroll()
     {
         // DBに保存されている弾数より多い場合はリロールしない
@@ -37,6 +44,7 @@ public class Player_Gabu : EntityBase
             rerollSpeed -= Time.deltaTime;
             if (rerollSpeed <= 0)
             {
+                uiSystem.Reroll();
                 ammo += 1;
             }
             return;
@@ -54,7 +62,7 @@ public class Player_Gabu : EntityBase
 
     public override void Die()
     {
-        entityUIBase    .Die();
+        entityUIBase.Die();
     }
 
     #endregion
@@ -75,5 +83,12 @@ public class Player_Gabu : EntityBase
 
         skillManager = new SkillManager_Gabu();
         skillManager.UseAllSkills(this);
+
+        if(entityUIBase == null)
+        {
+            entityUIBase = uiSystem;
+        }
+
+        playerMovement.player = this;
     }
 }

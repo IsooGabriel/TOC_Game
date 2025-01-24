@@ -51,8 +51,8 @@ public class BaseUpGradeDB_StatChangeSkill_Gabu : UpGrade_Gabu
     private void CriticalChanceAdd(Player_Gabu player, float value) { player.criticalChance += value; }
     private void CriticalChanceMultiply(Player_Gabu player, float value) { player.criticalChance *= value; }
 
-    private void CriticalDamageAdd(Player_Gabu player, float value) { player.criticalDmg += value; }
-    private void CriticalDamageMultiply(Player_Gabu player, float value) { player.criticalDmg *= value; }
+    private void CriticalDamageAdd(Player_Gabu player, float value) { player.criticalDamage += value; }
+    private void CriticalDamageMultiply(Player_Gabu player, float value) { player.criticalDamage *= value; }
 
     #endregion
 

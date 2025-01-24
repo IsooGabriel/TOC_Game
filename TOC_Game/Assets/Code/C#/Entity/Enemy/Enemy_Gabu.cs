@@ -11,7 +11,7 @@ public class Enemy_Gabu : EntityBase
     {
         if (collision.tag == "Player")
         {
-            collision.GetComponent<EntityBase>().TakeDamage(atk, level);
+            collision.GetComponent<EntityBase>().TakeDamage(atk, level, criticalChance, criticalDamage);
         }
     }
 

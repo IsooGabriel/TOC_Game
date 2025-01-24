@@ -1,31 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class EnemyUISystem : EntityUIBase
 {
+
+    #region 関数
+
     public override void Dash(Quaternion direction)
     {
-        // ダッシュ時のUI処理
+        return;
     }
     public override void stopDash()
     {
-        // ダッシュ停止時のUI処理
-    }
-    public override void TakeDamage()
-    {
-        // ダメージを受けた時のUI処理
-    }
-    public override void Attack()
-    {
-        // 攻撃時のUI処理
-    }
-    public override void Die()
-    {
-        // 死亡時のUI処理
+        return;
     }
     public override void Buffed(long value)
     {
-        // バフ時のUI処理
     }
 
+    private void Start()
+    {
+        normalSaturation = GetSaturation(entityImage.color);
+    }
+
+    #endregion
 }

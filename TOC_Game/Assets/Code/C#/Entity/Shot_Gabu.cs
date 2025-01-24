@@ -17,7 +17,7 @@ public class Shot_Gabu : MonoBehaviour
     {
         if (other.tag == targetTag)
         {
-            other.GetComponent<EntityBase>().TakeDamage(attacker.atk, attacker.level);
+            other.GetComponent<EntityBase>().TakeDamage(attacker.atk, attacker.level, attacker.criticalChance, attacker.criticalDamage);
             Destroy(gameObject);
         }
     }

@@ -3,6 +3,7 @@ using TMPro;
 
 public class PlayerUISystem_Gabu : EntityUIBase
 {
+    public SpriteRenderer spriteRenderer = null;
     public TextMeshProUGUI ammoTmpro = null;
     public GameObject messageTemprete = null;
 
@@ -36,5 +37,14 @@ public class PlayerUISystem_Gabu : EntityUIBase
 
     public override void stopDash()
     {
+    }
+
+    public void Reroll()
+    {
+    }
+
+    public void Aim()
+    {
+
     }
 }
