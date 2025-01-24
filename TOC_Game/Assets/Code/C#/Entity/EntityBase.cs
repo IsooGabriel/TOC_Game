@@ -9,6 +9,8 @@ public abstract class EntityBase : MonoBehaviour
     public long currentHP;
     public long atk = 10;
     public float atkSpeed = 1;
+    public float criticalChance = 0;
+    public float criticalDmg = 1f;
     public float speed = 1;
     public float defense = 10;
     public float rerollSpeed = 1;
