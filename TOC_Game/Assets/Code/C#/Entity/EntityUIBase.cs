@@ -5,12 +5,17 @@ public abstract class EntityUIBase : ColorSystem
 {
     #region 変数
 
+    public bool isDash = false;
+
     public EntityBase entity = null;
     public GameObject damageEfect = null;
     public SpriteRenderer entityImage = null;
 
+
     public Color normalColor = new Color(255f, 255f, 255f);
     public float normalSaturation = 0f;
+    public Vector3 normalScale = Vector3.one;
+
     public float damageSaturation = 50f;
     public float damageEffectTime = 0.4f;
     public Ease damageEase = Ease.InFlash;
@@ -28,17 +33,18 @@ public abstract class EntityUIBase : ColorSystem
 
     public float buffSaturation = 50f;
     public float buffEffectTime = 0.7f;
-    public Ease buffEase = Ease.InOutBounce;
+    public Ease buffEase = Ease.InOutCirc;
     public float buffHueChengeAmount = 20f;
-    public Ease buffHueEase = Ease.InOutBounce;
+    public Ease buffHueEase = Ease.InOutCirc;
     public float buffValueChengeAmount = 20f;
-    public Ease buffValueEase = Ease.InOutBounce;
+    public Ease buffValueEase = Ease.InOutCirc;
+    string buffAnimationId = "BuffedAnimation"; // buffで使われるアニメーションID
 
     #endregion
 
     #region 関数
 
-    public abstract void Dash(Quaternion direction);
+    public abstract void Dash(Vector2 direction);
     public abstract void stopDash();
     public virtual void TakeDamage()
     {
@@ -58,13 +64,11 @@ public abstract class EntityUIBase : ColorSystem
     }
     public virtual void Buffed(float value)
     {
-        // この関数で生成されるアニメーション専用のID
-        string animationId = "BuffedAnimation";
 
         // `value == 0` の場合、現在のアニメーションだけを停止して終了
         if (value == 0)
         {
-            DOTween.Kill(animationId, complete: true); // この関数のアニメーションのみ停止
+            DOTween.Kill(buffAnimationId, complete: true); // この関数のアニメーションのみ停止
             return;
         }
 
@@ -76,33 +80,33 @@ public abstract class EntityUIBase : ColorSystem
             // バフの場合: 色相の変更
             sequence.Append(entityImage.DOColor(AddHue(normalColor, buffHueChengeAmount), buffEffectTime / 2)
                 .SetEase(buffHueEase)
-                .SetId(animationId));
+                .SetId(buffAnimationId));
             sequence.Append(entityImage.DOColor(SubtractionHue(normalColor, buffHueChengeAmount), buffEffectTime / 2)
                 .SetEase(buffEase)
-                .SetId(animationId));
+                .SetId(buffAnimationId));
         }
         else
         {
             // デバフの場合: 明度の変更
             sequence.Append(entityImage.DOColor(AddValue(normalColor, buffValueChengeAmount), buffEffectTime / 2)
                 .SetEase(buffValueEase)
-                .SetId(animationId));
+                .SetId(buffAnimationId));
             sequence.Append(entityImage.DOColor(SubtractionValue(normalColor, buffValueChengeAmount), buffEffectTime / 2)
                 .SetEase(buffValueEase)
-                .SetId(animationId));
+                .SetId(buffAnimationId));
         }
 
         // 彩度のアニメーションを追加
         sequence.Append(entityImage.DOColor(SubtractionSaturation(normalColor, buffSaturation), buffEffectTime / 2)
             .SetEase(buffEase)
-            .SetId(animationId));
+            .SetId(buffAnimationId));
         sequence.Append(entityImage.DOColor(AddSaturation(normalColor, buffSaturation), buffEffectTime / 2)
             .SetEase(buffEase)
-            .SetId(animationId));
+            .SetId(buffAnimationId));
 
         // 繰り返しアニメーション設定
         sequence.SetLoops(-1, LoopType.Restart);
-        sequence.SetId(animationId); // シーケンス全体にもIDを設定
+        sequence.SetId(buffAnimationId); // シーケンス全体にもIDを設定
     }
     public virtual float BuffChengeHue(float value)
     {
@@ -124,5 +128,6 @@ public abstract class EntityUIBase : ColorSystem
     {
         normalSaturation = GetSaturation(entityImage.color);
         normalColor = entityImage.color;
+        normalScale = entityImage.transform.localScale;
     }
 }

@@ -41,10 +41,12 @@ public class Player_Gabu : EntityBase
         // リロール中の処理
         if (rerollTime > 0)
         {
-            rerollSpeed -= Time.deltaTime;
-            if (rerollSpeed <= 0)
+            rerollTime -= Time.deltaTime;
+            uiSystem.Reroll(rerollTime);
+
+            if (rerollTime <= 0)
             {
-                uiSystem.Reroll();
+                uiSystem.Rerolled();
                 ammo += 1;
             }
             return;

@@ -7,7 +7,7 @@ public class EnemyUISystem : EntityUIBase
 
     #region 関数
 
-    public override void Dash(Quaternion direction)
+    public override void Dash(Vector2 direction)
     {
         return;
     }
@@ -19,8 +19,6 @@ public class EnemyUISystem : EntityUIBase
     {
         return;
     }
-
-
 
     #endregion
 }
