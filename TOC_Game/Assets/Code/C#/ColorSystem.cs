@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEditor.Animations;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public abstract class ColorSystem : MonoBehaviour
@@ -112,6 +113,13 @@ public abstract class ColorSystem : MonoBehaviour
         return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
     }
 
+    public Color AddSaturation(Color currentColor, float s)
+    {
+        Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
+        Color newColor = new Color(currentColor.r, currentColor.g + s, currentColor.b);
+        return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
+    }
+
     /// <summary>
     /// RGBをHSVに変換し彩度の引き算を行い再びRGBに戻す関数です。足し算もあります
     /// </summary>
@@ -142,6 +150,34 @@ public abstract class ColorSystem : MonoBehaviour
     {
         Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
         return currentColor.g;
+    }
+
+    public Color AddHue(Color currentColor, float h)
+    {
+        Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
+        Color newColor = new Color(currentColor.r + h, currentColor.g, currentColor.b);
+        return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
+    }
+
+    public Color SubtractionHue(Color currentColor, float h)
+    {
+        Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
+        Color newColor = new Color(currentColor.r - h, currentColor.g, currentColor.b);
+        return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
+    }
+
+    public Color AddValue(Color currentColor, float v)
+    {
+        Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
+        Color newColor = new Color(currentColor.r, currentColor.g, currentColor.b + v);
+        return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
+    }   
+
+    public Color SubtractionValue(Color currentColor, float v)
+    {
+        Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
+        Color newColor = new Color(currentColor.r, currentColor.g, currentColor.b - v);
+        return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
     }
 
     #endregion

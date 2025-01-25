@@ -15,14 +15,12 @@ public class EnemyUISystem : EntityUIBase
     {
         return;
     }
-    public override void Buffed(long value)
+    public override void Buffed(float value)
     {
+        return;
     }
 
-    private void Start()
-    {
-        normalSaturation = GetSaturation(entityImage.color);
-    }
+
 
     #endregion
 }

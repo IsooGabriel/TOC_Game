@@ -26,7 +26,7 @@ public class PlayerUISystem_Gabu : EntityUIBase
     }
 
 
-    public override void Buffed(long value)
+    public override void Buffed(float value)
     {
 
     }
