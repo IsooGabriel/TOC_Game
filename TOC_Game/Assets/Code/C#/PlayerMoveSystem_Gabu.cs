@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class PlayerMoveSystem_Gabu : MonoBehaviour
 {
-    PlayerInput playerInput;
+    UnityEngine.InputSystem.PlayerInput playerInput;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

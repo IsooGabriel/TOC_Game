@@ -43,6 +43,7 @@ public abstract class EntityBase : MonoBehaviour
         if(Random.Range(0f, 1f) < opponentCriticalChance)
         {
             damage = (long)(damage * opponentCriticalDamage);
+            entityUIBase.Critical();
         }
 
         currentHP -= damage;

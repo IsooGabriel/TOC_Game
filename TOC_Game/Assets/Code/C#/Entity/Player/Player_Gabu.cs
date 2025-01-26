@@ -7,13 +7,37 @@ public class Player_Gabu : EntityBase
 
     public PlayerUISystem_Gabu uiSystem;
     public SkillManager_Gabu skillManager;
-    public PlayerMovement playerMovement;
+    public PlayerInputManager playerMovement;
+
+    public float holdTime = 0f;
+    public readonly float openShopTime = 0.45f;
 
     #endregion
 
 
     #region 関数
 
+    public void AttackButton(Quaternion rotation)
+    {
+        if (!isInBase)
+        {
+            Attack(rotation);
+            return;
+        }
+
+        holdTime += Time.deltaTime;
+        if(holdTime >= openShopTime)
+        {
+            uiSystem.Shop();
+            return;
+        }
+        Attack(rotation);
+    }
+
+    public void Move(Vector2 direction)
+    {
+        uiSystem.Dash(direction);
+    }
 
     public void UseSkill(int skillID)
     {
@@ -34,6 +58,10 @@ public class Player_Gabu : EntityBase
     {
         // DBに保存されている弾数より多い場合はリロールしない
         if (ammo >= DB.playerDBs[DB.AccountID].ammo)
+        {
+            return;
+        }
+        if (!isInBase)
         {
             return;
         }
@@ -67,6 +95,22 @@ public class Player_Gabu : EntityBase
         entityUIBase.Die();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Base")
+        {
+            isInBase = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Base")
+        {
+            isInBase = false;
+        }
+    }
+
     #endregion
 
     void Start()
@@ -86,7 +130,7 @@ public class Player_Gabu : EntityBase
         skillManager = new SkillManager_Gabu();
         skillManager.UseAllSkills(this);
 
-        if(entityUIBase == null)
+        if (entityUIBase == null)
         {
             entityUIBase = uiSystem;
         }

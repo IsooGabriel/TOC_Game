@@ -7,38 +7,45 @@ public abstract class EntityUIBase : ColorSystem
 
     public bool isDash = false;
 
-    public EntityBase entity = null;
-    public GameObject damageEfect = null;
-    public SpriteRenderer entityImage = null;
-
-
+    
+    public  EntityBase entity = null;
+    
+    public  GameObject damageEfect = null; 
+    
+    public  SpriteRenderer entityImage = null;
+            
+            
     public Color normalColor = new Color(255f, 255f, 255f);
     public float normalSaturation = 0f;
     public Vector3 normalScale = Vector3.one;
+            
+    public readonly float damageSaturation = 50f;
+    public readonly float damageEffectTime = 0.4f;
+    public readonly Ease damageEase = Ease.InFlash;
 
-    public float damageSaturation = 50f;
-    public float damageEffectTime = 0.4f;
-    public Ease damageEase = Ease.InFlash;
-
-    public float attackSaturation = 50f;
-    public float attackEffectTime = 0.7f;
-    public Ease attackEase = Ease.InOutBounce;
-
-    public float dieSaturation = 50f;
-    public Ease dieColorEase = Ease.OutCubic;
-    public float dieEffectTime = 0.7f;
-    public Ease dieScaleEase = Ease.InBack;
-    public float dieRotate = 720f;
-    public Ease dieRotateEase = Ease.InQuint;
-
-    public float buffSaturation = 50f;
-    public float buffEffectTime = 0.7f;
-    public Ease buffEase = Ease.InOutCirc;
-    public float buffHueChengeAmount = 20f;
-    public Ease buffHueEase = Ease.InOutCirc;
-    public float buffValueChengeAmount = 20f;
-    public Ease buffValueEase = Ease.InOutCirc;
-    string buffAnimationId = "BuffedAnimation"; // buffで使われるアニメーションID
+    public readonly float attackSaturation = 50f;
+    public readonly float attackEffectTime = 0.7f;
+    public readonly Ease attackEase = Ease.InOutBounce;
+            
+    public readonly float dieSaturation = 50f;
+    public readonly Ease dieColorEase = Ease.OutCubic;
+    public readonly float dieEffectTime = 0.7f;
+    public readonly Ease dieScaleEase = Ease.InBack;
+    public readonly float dieRotate = 720f;
+    public readonly Ease dieRotateEase = Ease.InQuint;
+            
+    public readonly float buffSaturation = 50f;
+    public readonly float buffEffectTime = 0.7f;
+    public readonly Ease buffEase = Ease.InOutCirc;
+    public readonly float buffHueChengeAmount = 20f;
+    public readonly Ease buffHueEase = Ease.InOutCirc;
+    public readonly float buffValueChengeAmount = 20f;
+    public readonly Ease buffValueEase = Ease.InOutCirc;
+    public readonly string buffAnimationId = "BuffedAnimation"; // buffで使われるアニメーションID
+            
+    public readonly float criticalEffectTime = 0.7f;
+    public readonly Ease criticalEase = Ease.InOutCirc;
+    public readonly long criticalBlinkDamage = 10000L;
 
     #endregion
 
@@ -58,10 +65,17 @@ public abstract class EntityUIBase : ColorSystem
     }
     public virtual void Die()
     {
-        entityImage.transform.DOScale(Vector3.zero, dieEffectTime).SetEase(dieScaleEase);
-        entityImage.DOColor(new Color(180f, 180f, 180f), dieEffectTime / 2).SetEase(dieColorEase);
+        entityImage.transform.DOShakeScale(dieEffectTime, 5f, 10, 10f, true).SetEase(dieScaleEase);
+        entityImage.transform.DOScale(Vector3.zero, dieEffectTime/2).SetEase(dieScaleEase).SetDelay(dieEffectTime/2);
+        entityImage.DOColor(new Color(180f, 180f, 180f), dieEffectTime / 2).SetEase(dieColorEase).SetDelay(dieEffectTime/2);
         entityImage.transform.DORotate(new Vector3(0, 0, dieRotate), dieEffectTime).SetEase(dieRotateEase);
     }
+
+    public virtual void Critical()
+    {
+        Camera.main.DOShakePosition(criticalEffectTime, 3f, 10, 1, true);
+    }
+
     public virtual void Buffed(float value)
     {
 
@@ -129,5 +143,7 @@ public abstract class EntityUIBase : ColorSystem
         normalSaturation = GetSaturation(entityImage.color);
         normalColor = entityImage.color;
         normalScale = entityImage.transform.localScale;
+        VitualStart();
     }
+    public abstract void VitualStart();
 }

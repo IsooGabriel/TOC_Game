@@ -26,7 +26,7 @@ public class CameraController_Gabu : MonoBehaviour
     private void OnEnable()
     {
         // PlayerInputコンポーネントを取得し、アクションを有効化
-        var playerInput = GetComponent<PlayerInput>();
+        var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         playerInput.actions["Move"].performed += OnMoveCamera;
         playerInput.actions["Move"].canceled += OnMoveCamera;
         playerInput.actions["Drag"].started += OnDragCameraStart;
@@ -38,7 +38,7 @@ public class CameraController_Gabu : MonoBehaviour
     private void OnDisable()
     {
         // PlayerInputコンポーネントを取得し、アクションを無効化
-        var playerInput = GetComponent<PlayerInput>();
+        var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         playerInput.actions["Move"].performed -= OnMoveCamera;
         playerInput.actions["Move"].canceled -= OnMoveCamera;
         playerInput.actions["Drag"].started -= OnDragCameraStart;

@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using static DBManager_Gabu;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerInputManager : MonoBehaviour
 {
     #region Variáveis
 
     public float moveSpeed = 5f; // Velocidade do movimento
     private Vector2 moveInput; // Input de movimento
     private Transform playerTransform; // Transform do jogador
-
-    private float pressStartTime; // ボタンを押した時刻
-    private const float longPressThreshold = 0.5f; // 長押しの閾値（秒）
 
     public Player_Gabu player;
 
@@ -22,54 +20,58 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         // Ativar as ações de input
-        var playerInput = GetComponent<PlayerInput>();
+        var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         playerInput.actions["Move"].performed += OnMovePlayer;
         playerInput.actions["Move"].canceled += OnMovePlayer;
         playerInput.actions["Attack"].performed += OnAttack;
         playerInput.actions["Attack"].canceled += OnAttack;
+        playerInput.actions["Reroll"].started += OnRerollStarted;
+        playerInput.actions["Reroll"].performed += OnRerollCanceled;
+        playerInput.actions["Reroll"].canceled += OnRerollCanceled;
     }
 
     private void OnDisable()
     {
         // Desativar as ações de input
-        var playerInput = GetComponent<PlayerInput>();
+        var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         playerInput.actions["Move"].performed -= OnMovePlayer;
         playerInput.actions["Move"].canceled -= OnMovePlayer;
         playerInput.actions["Attack"].performed -= OnAttack;
         playerInput.actions["Attack"].canceled -= OnAttack;
+        playerInput.actions["Reroll"].started -= OnRerollStarted;
+        playerInput.actions["Reroll"].performed -= OnRerollCanceled;
+        playerInput.actions["Reroll"].canceled -= OnRerollCanceled;
     }
 
     private void OnMovePlayer(InputAction.CallbackContext context)
     {
         // Captura o input de movimento (teclado, controle, etc)
         moveInput = context.ReadValue<Vector2>();
+        player.Move(moveInput);
     }
 
     private void OnAttack(InputAction.CallbackContext context)
     {
         // Vector3をquaternionに変換
         Quaternion rotation = Quaternion.Euler(MovePlayerDirectly());
-        player.Attack(rotation);
+        player.AttackButton(rotation);
     }
 
     // ボタンが押された瞬間
-    private void OnButtonStarted(InputAction.CallbackContext context)
+    private void OnRerollStarted(InputAction.CallbackContext context)
     {
-        pressStartTime = Time.time; // ボタンを押した時刻を記録
+        player.rerollTime = player.rerollSpeed;
     }
-
+    private void OnRerollPreform(InputAction.CallbackContext context)
+    {
+        player.Reroll();
+    }
     // ボタンが放された瞬間
-    private void OnButtonCanceled(InputAction.CallbackContext context)
+    private void OnRerollCanceled(InputAction.CallbackContext context)
     {
-        float pressDuration = Time.time - pressStartTime; // ボタンを押していた時間を計算
-
-        if (pressDuration >= longPressThreshold)
-        {
-        }
-        else
-        {
-        }
+        return;
     }
+
 
     private Vector3 MovePlayerDirectly()
     {
@@ -83,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Obter o componente Transform
         playerTransform = GetComponent<Transform>();
+        moveSpeed = DB.playerDBs[DB.AccountID].speed;
     }
     private void Update()
     {

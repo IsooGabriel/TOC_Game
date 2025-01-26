@@ -21,4 +21,10 @@ public class EnemyUISystem : EntityUIBase
     }
 
     #endregion
+
+    public override void VitualStart()
+    {
+        return;
+        throw new System.NotImplementedException();
+    }
 }
