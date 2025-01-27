@@ -24,11 +24,6 @@ public class Shot_Gabu : MonoBehaviour
 
     #endregion
 
-    private void Start()
-    {
-
-    }
-
     public void Update()
     {
         transform.position += transform.right * speed * Time.deltaTime;
