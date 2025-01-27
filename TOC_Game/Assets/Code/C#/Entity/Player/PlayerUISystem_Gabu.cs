@@ -42,12 +42,6 @@ public class PlayerUISystem_Gabu : EntityUIBase
         ammoTmpro.text = ammo.ToString();
     }
 
-    public override void Attack()
-    {
-        base.Attack();
-        UpdateAmmo(entity.ammo);
-    }
-
     public override void Dash(Vector2 direction)
     {
         return;

@@ -79,7 +79,7 @@ public class PlayerInputManager : MonoBehaviour
     private Vector3 MovePlayerDirectly()
     {
         // Calcula o deslocamento baseado no input
-        return new Vector3(moveInput.x, moveInput.y, 0) * moveSpeed * Time.deltaTime;
+        return new Vector3(moveInput.x, moveInput.y, 0) ;
     }
 
     #endregion
@@ -93,7 +93,7 @@ public class PlayerInputManager : MonoBehaviour
     private void Update()
     {
         // Atualizar a movimentação direta
-        playerTransform.position += MovePlayerDirectly();
+        playerTransform.position += MovePlayerDirectly() * moveSpeed * Time.deltaTime;
     }
 
 }

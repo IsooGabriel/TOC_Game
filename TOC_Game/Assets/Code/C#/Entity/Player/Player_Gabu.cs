@@ -26,8 +26,8 @@ public class Player_Gabu : EntityBase
                 return;
             }
             Attack(rotation);
-            uiSystem.UpdateAmmo(ammo);
             ammo--;
+            uiSystem.UpdateAmmo(ammo);
             return;
         }
 
@@ -39,6 +39,8 @@ public class Player_Gabu : EntityBase
         }
 
         Attack(rotation);
+        ammo--;
+        uiSystem.UpdateAmmo(ammo);
     }
 
     public void Move(Vector2 direction)
