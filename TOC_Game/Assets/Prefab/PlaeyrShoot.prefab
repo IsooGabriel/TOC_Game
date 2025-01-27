@@ -169,6 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76599c027f8d034fb18020bb65d20d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 10
   attacker: {fileID: 0}
   targetTag: Enemy

@@ -50,6 +50,7 @@ public class PlayerUISystem_Gabu : EntityUIBase
 
     public override void Dash(Vector2 direction)
     {
+        return;
         // アニメーション用シーケンスを作成
         DG.Tweening.Sequence sequence = DOTween.Sequence();
         float tweenTime = dashTime * dashTimeMultiplier / 2;
@@ -70,7 +71,7 @@ public class PlayerUISystem_Gabu : EntityUIBase
             sequence.Append(entityImage.transform.DOScaleX(normalScale.x / dashScale, tweenTime)
                 .SetEase(dashEase));
 
-            sequence.SetLoops(-1, LoopType.Restart);// 繰り返しアニメーション設定
+            sequence.SetLoops(-1, LoopType.Yoyo);// 繰り返しアニメーション設定
             sequence.SetId(dashXAnimationID); // シーケンス全体にもIDを設定
             return;
         }
@@ -153,6 +154,7 @@ public class PlayerUISystem_Gabu : EntityUIBase
     public override void VitualStart()
     {
         dashTimeMultiplier = DB.playerDBs[DB.AccountID].speed;
+        UpdateAmmo(entity.ammo);
     }
 
 }

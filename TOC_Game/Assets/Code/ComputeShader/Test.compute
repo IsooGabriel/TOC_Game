@@ -12,6 +12,7 @@ RWStructuredBuffer<float> randomValues; // 乱数の値
 float deltaTime;
 float moveSpeed;
 uint enemyCount; // 敵の数
+uint operationID; // 演算ID
 
 // XORシフト乱数生成器
 uint XorShift(inout uint state)
@@ -132,7 +133,7 @@ float2 UpdateDirection(uint index, float2 position, float2 currentDirection, ino
     changed = false;
 
     // 壁判定を最優先でチェック
-    float2 newDirection = ApplyBounds(index,currentDirection, position, restriction, restriction);
+    float2 newDirection = ApplyBounds(index, currentDirection, position, restriction, restriction);
     if (newDirection.x != currentDirection.x || newDirection.y != currentDirection.y)
     {
         changed = true; // 壁にぶつかったため変更
@@ -168,8 +169,13 @@ float2 RandomizeDirection(uint index, float2 currentDirection)
 [numthreads(1, 1, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID)
 {
+    
     uint index = id.x;
 
+    if ((index - operationID) % 10 != 0)
+    {
+        return;
+    }
     if (index >= enemyCount)
         return;
 

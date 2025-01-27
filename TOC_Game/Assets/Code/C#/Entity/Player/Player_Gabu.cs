@@ -21,16 +21,23 @@ public class Player_Gabu : EntityBase
     {
         if (!isInBase)
         {
+            if (ammo <= 0 || atkCT > 0)
+            {
+                return;
+            }
             Attack(rotation);
+            uiSystem.UpdateAmmo(ammo);
+            ammo--;
             return;
         }
 
         holdTime += Time.deltaTime;
-        if(holdTime >= openShopTime)
+        if (holdTime >= openShopTime)
         {
             uiSystem.Shop();
             return;
         }
+
         Attack(rotation);
     }
 
@@ -137,4 +144,5 @@ public class Player_Gabu : EntityBase
 
         playerMovement.player = this;
     }
+
 }

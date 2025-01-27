@@ -135,7 +135,7 @@ RectTransform:
   m_Father: {fileID: 8491431395797862555}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -781,7 +781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &973053007906225453
 Transform:
   m_ObjectHideFlags: 0
@@ -1038,7 +1038,7 @@ MonoBehaviour:
   defense: 10
   rerollSpeed: 1
   ammo: 1
-  Buff: 0
+  Buff: 0.1
   isInBase: 0
   atkCT: 0
   rerollTime: 0
@@ -1441,7 +1441,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1596863411298868003
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1510,7 +1510,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.69
+  m_Value: 0.4
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1952,7 +1952,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Message
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 207886198683892964, guid: 057ce8f712fcc874fb7fb93f27c24803, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

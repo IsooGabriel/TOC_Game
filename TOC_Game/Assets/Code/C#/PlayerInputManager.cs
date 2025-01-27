@@ -23,8 +23,7 @@ public class PlayerInputManager : MonoBehaviour
         var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         playerInput.actions["Move"].performed += OnMovePlayer;
         playerInput.actions["Move"].canceled += OnMovePlayer;
-        playerInput.actions["Attack"].performed += OnAttack;
-        playerInput.actions["Attack"].canceled += OnAttack;
+        playerInput.actions["Attack"].canceled += Attack;
         playerInput.actions["Reroll"].started += OnRerollStarted;
         playerInput.actions["Reroll"].performed += OnRerollCanceled;
         playerInput.actions["Reroll"].canceled += OnRerollCanceled;
@@ -36,8 +35,7 @@ public class PlayerInputManager : MonoBehaviour
         var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         playerInput.actions["Move"].performed -= OnMovePlayer;
         playerInput.actions["Move"].canceled -= OnMovePlayer;
-        playerInput.actions["Attack"].performed -= OnAttack;
-        playerInput.actions["Attack"].canceled -= OnAttack;
+        playerInput.actions["Attack"].canceled -= Attack;
         playerInput.actions["Reroll"].started -= OnRerollStarted;
         playerInput.actions["Reroll"].performed -= OnRerollCanceled;
         playerInput.actions["Reroll"].canceled -= OnRerollCanceled;
@@ -50,11 +48,16 @@ public class PlayerInputManager : MonoBehaviour
         player.Move(moveInput);
     }
 
-    private void OnAttack(InputAction.CallbackContext context)
+    private void Attack(InputAction.CallbackContext context)
     {
-        // Vector3をquaternionに変換
-        Quaternion rotation = Quaternion.Euler(MovePlayerDirectly());
-        player.AttackButton(rotation);
+        // マウスカーソルの位置を取得し、ワールド座標に変換
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPosition.z = 0; // 2Dゲームの場合、Z座標を0に設定
+
+        // プレイヤーの位置とマウスカーソルの位置から発射角度を計算
+        Vector3 direction = (mouseWorldPosition - transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        player.AttackButton(Quaternion.Euler(0,0,angle));
     }
 
     // ボタンが押された瞬間

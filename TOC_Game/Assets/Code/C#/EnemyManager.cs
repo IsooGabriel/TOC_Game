@@ -6,7 +6,7 @@ public class EnemyManager2D : MonoBehaviour
 {
     public float generationRange = 15f;
     public ComputeShader computeShader;  // Compute Shaderをアタッチ
-    public int enemyCount = 100;         // 敵の数
+    public uint enemyCount = 100;         // 敵の数
     public float moveSpeed = 1.0f;       // 敵の移動速度
     private ComputeBuffer enemyBuffer;   // 敵位置情報用のComputeBuffer
     private ComputeBuffer scaleBuffer;   // 敵スケール情報用のComputeBuffer
@@ -17,6 +17,7 @@ public class EnemyManager2D : MonoBehaviour
     private uint[] random;
     private ComputeBuffer randomValuesBuffer; // ランダム値用のComputeBuffer
     private float[] randomValues;
+    private uint OperationID;
     private Vector2[] enemyPositions;   // CPU上での敵位置情報
     private float[] enemyScales;        // CPU上での敵スケール情報
     private float[] probabilities;      // CPU上での敵の停止確率情報
@@ -39,6 +40,7 @@ public class EnemyManager2D : MonoBehaviour
         moveRestrictions = new Vector2[enemyCount];
         random = new uint[enemyCount];
         randomValues = new float[enemyCount];
+        OperationID = 0;
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -62,30 +64,32 @@ public class EnemyManager2D : MonoBehaviour
         }
 
         // ComputeBufferの設定
-        enemyBuffer = new ComputeBuffer(enemyCount, sizeof(float) * 2); // 2Dなのでfloat2
+        enemyBuffer = new ComputeBuffer((int)enemyCount, sizeof(float) * 2); // 2Dなのでfloat2
         enemyBuffer.SetData(enemyPositions);
 
-        scaleBuffer = new ComputeBuffer(enemyCount, sizeof(float)); // スケールはfloat1
+        scaleBuffer = new ComputeBuffer((int)enemyCount, sizeof(float)); // スケールはfloat1
         scaleBuffer.SetData(enemyScales);
 
-        stopProbabilities = new ComputeBuffer(enemyCount, sizeof(float)); // 停止確率はfloat1
+        stopProbabilities = new ComputeBuffer((int)enemyCount, sizeof(float)); // 停止確率はfloat1
         stopProbabilities.SetData(probabilities);
 
         boundsBuffer = new ComputeBuffer(1, sizeof(float)); // 座標範囲はfloat2
         boundsBuffer.SetData(bounds); // 座標範囲の最小値
 
-        restrictionsBuffer = new ComputeBuffer(enemyCount, sizeof(float) * 2); // 敵の数はfloat2
+        restrictionsBuffer = new ComputeBuffer((int)enemyCount, sizeof(float) * 2); // 敵の数はfloat2
         restrictionsBuffer.SetData(moveRestrictions);
 
-        randomBuffer = new ComputeBuffer(enemyCount, sizeof(uint)); // ランダムはfloat1
+        randomBuffer = new ComputeBuffer((int)enemyCount, sizeof(uint)); // ランダムはfloat1
         randomBuffer.SetData(random);
 
-        randomValuesBuffer = new ComputeBuffer(enemyCount, sizeof(float)); // ランダム値はint1
+        randomValuesBuffer = new ComputeBuffer((int)enemyCount, sizeof(float)); // ランダム値はint1
         randomValuesBuffer.SetData(randomValues);
     }
 
     void Update()
     {
+        OperationID = (uint)Mathf.Repeat(OperationID++,10);
+
         int kernel = computeShader.FindKernel("CSMain");
 
         if (kernel < 0)
@@ -99,7 +103,8 @@ public class EnemyManager2D : MonoBehaviour
         computeShader.SetBuffer(kernel, "enemyScales", scaleBuffer);
         computeShader.SetFloat("deltaTime", Time.deltaTime);
         computeShader.SetFloat("moveSpeed", moveSpeed);
-        computeShader.SetInt("enemyCount", enemyCount); // 敵の数を渡す
+        computeShader.SetInt("enemyCount", (int)enemyCount); // 敵の数を渡す
+        computeShader.SetInt("operationID", (int)OperationID);
         computeShader.SetBuffer(kernel, "stopProbabilities", stopProbabilities);
         computeShader.SetBuffer(kernel, "bounds", boundsBuffer);
         computeShader.SetBuffer(kernel, "moveRestrictions", restrictionsBuffer);

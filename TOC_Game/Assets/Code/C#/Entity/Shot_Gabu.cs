@@ -31,6 +31,6 @@ public class Shot_Gabu : MonoBehaviour
 
     public void Update()
     {
-        transform.position += transform.forward * speed * Time.deltaTime;
+        transform.position += transform.right * speed * Time.deltaTime;
     }
 }
