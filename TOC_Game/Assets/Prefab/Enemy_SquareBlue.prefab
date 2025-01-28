@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7248337036724983131}
-  - component: {fileID: 8904898056629366531}
   - component: {fileID: 5799974377929036526}
+  - component: {fileID: 6461127679623743613}
+  - component: {fileID: 3187380921473699416}
   m_Layer: 7
   m_Name: Enemy_SquareBlue
   m_TagString: Enemy
@@ -27,21 +28,71 @@ Transform:
   m_GameObject: {fileID: 5762256463549980013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1077445446355202148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &8904898056629366531
-PolygonCollider2D:
+--- !u!114 &5799974377929036526
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5762256463549980013}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7806f20342b582447b5182205537d4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 1
+  maxHP: 100
+  currentHP: 0
+  atk: 10
+  atkSpeed: 1
+  criticalChance: 0
+  criticalDamage: 1
+  speed: 1
+  defense: 10
+  rerollSpeed: 1
+  ammo: 1
+  Buff: 100
+  isInBase: 0
+  atkCT: 0
+  rerollTime: 0
+  shotTemplete: {fileID: 0}
+  entityUIBase: {fileID: 6461127679623743613}
+  ID: 0
+  enemyManager: {fileID: 0}
+--- !u!114 &6461127679623743613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5762256463549980013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a207a839a39e7d3429b7c71780f40354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDash: 0
+  entity: {fileID: 5799974377929036526}
+  damageEfect: {fileID: 0}
+  entityImage: {fileID: 4142381189832524713}
+  normalColor: {r: 255, g: 255, b: 255, a: 1}
+  normalSaturation: 0
+  normalScale: {x: 1, y: 1, z: 1}
+--- !u!60 &3187380921473699416
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5762256463549980013}
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -80,41 +131,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.25}
-      - {x: -0.25, y: 0}
-      - {x: 0, y: -0.25}
-      - {x: 0.25, y: 0}
+    - - {x: 0.00007741712, y: 0.72639143}
+      - {x: -0.724253, y: 0.0010177195}
+      - {x: 0.00033788383, y: -0.72419995}
+      - {x: 0.7277039, y: -0.0009630844}
   m_UseDelaunayMesh: 0
---- !u!114 &5799974377929036526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5762256463549980013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7806f20342b582447b5182205537d4b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: 1
-  maxHP: 100
-  currentHP: 0
-  atk: 10
-  atkSpeed: 1
-  criticalChance: 0
-  criticalDmg: 1
-  speed: 1
-  defense: 10
-  rerollSpeed: 1
-  ammo: 1
-  Buff: 0
-  isInBase: 0
-  atkCT: 0
-  rerollTime: 0
-  shotTemplete: {fileID: 0}
-  entityUIBase: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1 &6657577295191685778
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +164,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.42, y: 0.42, z: 0.42}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7248337036724983131}

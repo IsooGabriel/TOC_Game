@@ -15,7 +15,7 @@ public abstract class EntityBase : MonoBehaviour
     public float defense = 10;
     public float rerollSpeed = 1;
     public long ammo = 1;
-    public float Buff = 0;
+    public float Buff = 100;
     public bool isInBase = false;
 
     public float atkCT = 0;
@@ -29,7 +29,7 @@ public abstract class EntityBase : MonoBehaviour
 
     #region 関数
 
-    public virtual void TakeDamage(long opponentAtk, long opponentLevel, float opponentCriticalChance, float opponentCriticalDamage)
+    public virtual void TakeDamage(long opponentAtk, long opponentLevel, float opponentCriticalChance, float opponentCriticalDamage, float buff)
     {
         if (currentHP <= 0)
         {
@@ -38,7 +38,7 @@ public abstract class EntityBase : MonoBehaviour
 
         float levelMultiplier = Mathf.Pow(1.1f, level - opponentLevel); // 1レベル差ごとに10%増減
         long damage = (long)Mathf.Max(1, (opponentAtk - defense) * levelMultiplier);
-        damage = (long)(damage * (Buff / 100));
+        damage = (long)(damage * (buff / 100));
 
         if(Random.Range(0f, 1f) < opponentCriticalChance)
         {

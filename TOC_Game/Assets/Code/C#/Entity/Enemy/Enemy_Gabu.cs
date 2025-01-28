@@ -1,19 +1,17 @@
-﻿using UnityEngine;
+﻿using UnityEditorInternal;
+using UnityEngine;
+using System.Threading;
 
 public class Enemy_Gabu : EntityBase
 {
-    public Rigidbody2D rb;
+    #region 変数
+
+    public uint ID = 0;
+    public EnemyManager enemyManager;
+
+    #endregion
 
     #region 関数
-
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            collision.GetComponent<EntityBase>().TakeDamage(atk, level, criticalChance, criticalDamage);
-        }
-    }
 
     public override void Reroll()
     {
@@ -23,7 +21,18 @@ public class Enemy_Gabu : EntityBase
 
     public override void Die()
     {
-        // ディド処理
+        entityUIBase.Die();
+        Thread.Sleep((int)entityUIBase.dieEffectTime*1000); // エフェクトが終わるまで待機、1000倍してミリ秒に変換
+        Reset();
+        enemyManager.ResetEnemy(ID);
+    }
+
+    public void Reset()
+    {
+        currentHP = maxHP;
+        rerollSpeed = 999;
+        ammo = 999999;
+        Buff = 100;
     }
 
     #endregion

@@ -8,8 +8,7 @@ RWStructuredBuffer<float2> moveRestrictions; // 各敵の移動制限 (1: 移動
 StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用される）
 RWStructuredBuffer<uint> random; // 乱数
 RWStructuredBuffer<float> randomValues; // 乱数の値
-RWStructuredBuffer<bool> survival; // 生存フラグ
-AppendStructuredBuffer<uint> resetIDs;
+AppendStructuredBuffer<uint> attackIDs;
 
 float deltaTime;
 float moveSpeed;
@@ -17,6 +16,7 @@ uint enemyCount; // 敵の数
 uint operationID; // 演算ID
 float2 playerPosition; // プレイヤーの位置
 float detectionRange;
+float attackRange;
 
 // XORシフト乱数生成器
 uint XorShift(inout uint state)
@@ -130,11 +130,10 @@ float2 ApplyBounds(uint index, float2 direction, float2 position, float2 restric
     return direction;
 }
 
-void Die()
+bool IsInAttackRange(float2 position, float myScale)
 {
-    // 生存フラグをtrueに設定
-    survival[operationID] = true;
-    resetIDs.Append(operationID);
+    float distanceToPlayer = distance(playerPosition, position);
+    return distanceToPlayer <= attackRange* myScale;
 }
 
 // --- Functions ---
@@ -185,12 +184,6 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     uint index = id.x;
     if (index >= enemyCount)
         return;
-
-    if (survival[index])
-    {
-        Die();
-        return;
-    }
     
     if ((10 + index - operationID) % 10 != 0)
     {
@@ -207,6 +200,13 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     // 距離を計算（2D空間）
     float distanceToPlayer = distance(playerPosition, position);
 
+    // 攻撃範囲内かどうかを判定
+    if (IsInAttackRange(position, scale))
+    {
+        attackIDs.Append(index);
+        return;
+    }
+    
     // 範囲内かどうかを判定
     if (distanceToPlayer <= detectionRange)
     {

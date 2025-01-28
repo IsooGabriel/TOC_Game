@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager2D : MonoBehaviour
+public class EnemyManager : MonoBehaviour
 {
     #region 変数
 
-    public float generationRange = 15f;
+    [SerializeField, Header("生成範囲")]
+    public readonly float generationRange = 15f;
+    [SerializeField, Header("生成しない範囲")]
+    private readonly float notgenerationRange = 5f; // 敵の生成範囲
     public ComputeShader computeShader;  // Compute Shaderをアタッチ
-    public uint enemyCount = 100;         // 敵の数
+    public readonly uint enemyCount = 10;         // 敵の数
     public float moveSpeed = 1.0f;       // 敵の移動速度
 
     private ComputeBuffer enemyBuffer;   // 敵位置情報用のComputeBuffer
@@ -28,14 +29,20 @@ public class EnemyManager2D : MonoBehaviour
     private ComputeBuffer randomValuesBuffer; // ランダム値用のComputeBuffer
     private float[] randomValues;
 
-    private ComputeBuffer survivalBuffer;  // 敵の生存情報用のComputeBuffer
-    public bool[] enemySurvival;
-
     private ComputeBuffer resetBuffer;  // リセット用のComputeBuffer
     private List<uint> resetEnemy;
 
+    private ComputeBuffer attackBuffer;  // 攻撃用のComputeBuffer
+    private List<uint> attackEnemy;
+
+    // カウンタ取得用のバッファ
+    private ComputeBuffer countBuffer;
+    private int[] count = new int[1];
+
+    public EntityBase player;           // プレイヤー
     public Vector2 playerPosition = Vector2.zero;  // プレイヤーの位置
     private float detectionRange = 10f;  // プレイヤーの検出範囲
+    private float attackRange = 0.95f;      // プレイヤーの攻撃範囲
     private uint OperationID;           // 行動する敵の範囲
     private Vector2[] enemyPositions;   // CPU上での敵位置情報
     private float[] enemyScales;        // CPU上での敵スケール情報
@@ -50,12 +57,56 @@ public class EnemyManager2D : MonoBehaviour
         3.36f
         };                         // 敵のスケール
     public float[] bounds = { 25f };   // 座標制限
+
     private GameObject[] enemies;   // 敵オブジェクトの配列
-    private EntityBase[] enemyEntity; // 敵のEntityBaseの配列
+
+    int kernel;
 
     #endregion
 
+
     #region 関数
+
+
+    private void SetAttack(List<uint> targetEnemies)
+    {
+        for (int i = 1; i < targetEnemies.Count; i++)
+        {
+            if (targetEnemies[(int)i] >= enemyCount)
+            {
+                continue;
+            }
+            uint ID = targetEnemies[(int)i];
+            Enemy_Gabu entity = enemies[(int)ID].GetComponent<Enemy_Gabu>();
+            player.TakeDamage(entity.atk, entity.level, entity.criticalChance, entity.criticalDamage, entity.Buff);
+        }
+    }
+
+    public void ResetEnemy(uint ID)
+    {
+
+        float direction = Random.Range(-1f, 1f); // -1 から 1 の範囲でランダムに方向を決定
+        Vector2 position = new Vector2(direction * generationRange, (1 - Mathf.Abs(direction)) * generationRange);
+        enemyPositions[ID] = position;
+        enemies[(int)ID].transform.position = position;
+
+    }
+
+    void OnDestroy()
+    {
+        // ComputeBufferを解放
+        if (enemyBuffer != null) enemyBuffer.Release();
+        if (scaleBuffer != null) scaleBuffer.Release();
+        if (stopProbabilities != null) stopProbabilities.Release();
+        if (boundsBuffer != null) boundsBuffer.Release();
+        if (restrictionsBuffer != null) restrictionsBuffer.Release();
+        if (randomBuffer != null) randomBuffer.Release();
+        if (randomValuesBuffer != null) randomValuesBuffer.Release();
+    }
+
+
+    #endregion
+
 
     void Start()
     {
@@ -67,14 +118,24 @@ public class EnemyManager2D : MonoBehaviour
         moveRestrictions = new Vector2[enemyCount];
         random = new uint[enemyCount];
         randomValues = new float[enemyCount];
-        enemySurvival = new bool[enemyCount];
         OperationID = 0;
         resetEnemy = new List<uint>();
+        attackEnemy = new List<uint>();
+        attackEnemy.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
 
         for (int i = 0; i < enemyCount; i++)
         {
             // ランダムな初期位置（例：-10〜10の範囲）
             enemyPositions[i] = new Vector2(Random.Range(Mathf.Abs(generationRange) * -1, Mathf.Abs(generationRange)), Random.Range(Mathf.Abs(generationRange) * -1, Mathf.Abs(generationRange)));
+
+            // notgenerationRangeの範囲内に生成された場合はenemyPositionsを再設定
+            if ((enemyPositions[i].x < notgenerationRange) && (enemyPositions[i].x > -notgenerationRange)
+                && (enemyPositions[i].y < notgenerationRange) && (enemyPositions[i].y > -notgenerationRange))
+            {
+                enemyPositions[i].x = Mathf.Abs(notgenerationRange) * Mathf.Sign(enemyPositions[i].x);
+                enemyPositions[i].y = Mathf.Abs(notgenerationRange) * Mathf.Sign(enemyPositions[i].y);
+            }
+
 
             // プレハブをインスタンス化してリストに保存
             GameObject enemy = Instantiate(enemyPrefab, enemyPositions[i], Quaternion.identity);
@@ -86,11 +147,8 @@ public class EnemyManager2D : MonoBehaviour
             // スケールを保存
             enemyScales[i] = scale;
 
-            // 生存情報を保存
-            enemySurvival[i] = true;
-
             // 停止確率を設定
-            probabilities[i] = i % 3 == 0 ? 0.01f : 0.9f;
+            probabilities[i] = i % 3 == 0 ? 0.01f : 0.01f;
 
             enemies[i] = enemy;
         }
@@ -116,19 +174,18 @@ public class EnemyManager2D : MonoBehaviour
 
         randomValuesBuffer = new ComputeBuffer((int)enemyCount, sizeof(float)); // ランダム値はint1
         randomValuesBuffer.SetData(randomValues);
-        
-        survivalBuffer = new ComputeBuffer((int)enemyCount, sizeof(bool)); // 生存情報はbool1
-        survivalBuffer.SetData(enemySurvival);
 
-        resetBuffer = new ComputeBuffer((int)resetEnemy.Count, sizeof(uint)); // リセット情報はuint1
-        resetBuffer.SetData(resetEnemy.ToArray());
+        attackBuffer = new ComputeBuffer((int)enemyCount, sizeof(int)); // 攻撃情報はint1
+        attackBuffer.SetData(attackEnemy);
+
+        countBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Raw); // カウンタ取得用のバッファ
     }
 
     void Update()
     {
-        OperationID = (uint)Mathf.Repeat(OperationID++,10);
+        OperationID = (uint)Mathf.Repeat(OperationID++, 10);
 
-        int kernel = computeShader.FindKernel("CSMain");
+        kernel = computeShader.FindKernel("CSMain");
 
         if (kernel < 0)
         {
@@ -150,7 +207,8 @@ public class EnemyManager2D : MonoBehaviour
         computeShader.SetBuffer(kernel, "randomValues", randomValuesBuffer);
         computeShader.SetFloats("playerPosition", new float[] { playerPosition.x, playerPosition.y });
         computeShader.SetFloat("detectionRange", detectionRange);
-        computeShader.SetBuffer(kernel, "survival", survivalBuffer);
+        computeShader.SetFloat("attackRange", attackRange);
+        computeShader.SetBuffer(kernel, "attackIDs", attackBuffer);
 
 
         // Compute Shaderを実行
@@ -165,47 +223,22 @@ public class EnemyManager2D : MonoBehaviour
             enemies[i].transform.position = new Vector3(enemyPositions[i].x, enemyPositions[i].y, 0);
         }
 
-        // デバッグ用    
-        stopProbabilities.GetData(probabilities);
-        randomValuesBuffer.GetData(randomValues);
-        restrictionsBuffer.GetData(moveRestrictions);
-        for (int i = 0; i < probabilities.Length; i++)
+        // GPUでの処理が完了した後に、カウンタを取得
+        ComputeBuffer.CopyCount(attackBuffer, countBuffer, 0);
+        countBuffer.GetData(count);
+        if (count[0] > 1)
         {
-            Debug.Log("proba:" + probabilities[i]);
-            Debug.Log("random: " + randomValues[i]);
-            Debug.Log("restrictions: " + moveRestrictions[i]);  
+            uint[] tempArray = new uint[count[0]];
+            attackBuffer.GetData(tempArray, 0, 0, count[0]);
+            if (attackEnemy != null)
+            {
+                SetAttack(attackEnemy);
+                attackEnemy.Clear();
+                attackEnemy.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
+                computeShader.SetBuffer(kernel, "attackIDs", attackBuffer);
+            }
         }
 
-        if(resetEnemy != null)
-        {
-            resetEnemies(resetEnemy);
-            computeShader.SetBuffer(kernel, "reset", resetBuffer);
-        }
     }
 
-    private void resetEnemies(List<uint> enemies)
-    {
-        for (int i = 0;i < enemies.Count; i++)
-        {
-            uint ID = enemies[(int)i]; 
-            float direction = Random.Range(-1f, 1f); // -1 から 1 の範囲でランダムに方向を決定
-            Vector2 position = new Vector2(direction * generationRange, (1 - Mathf.Abs(direction)) * generationRange);
-            enemyPositions[ID] = position;
-            enemyEntity[(int)ID].transform.position = position;
-        }
-    }
-
-    void OnDestroy()
-    {
-        // ComputeBufferを解放
-        if (enemyBuffer != null) enemyBuffer.Release();
-        if (scaleBuffer != null) scaleBuffer.Release();
-        if (stopProbabilities != null) stopProbabilities.Release();
-        if (boundsBuffer != null) boundsBuffer.Release();
-        if (restrictionsBuffer != null) restrictionsBuffer.Release();
-        if (randomBuffer != null) randomBuffer.Release();
-        if (randomValuesBuffer != null) randomValuesBuffer.Release();
-    }
-
-    #endregion
 }

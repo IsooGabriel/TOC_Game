@@ -134,7 +134,7 @@ public class Player_Gabu : EntityBase
         rerollSpeed = DB.playerDBs[DB.AccountID].rerollSpeed;
         ammo = DB.playerDBs[DB.AccountID].ammo;
         isInBase = false;
-        Buff = 0;
+        Buff = 100;
 
         skillManager = new SkillManager_Gabu();
         skillManager.UseAllSkills(this);
