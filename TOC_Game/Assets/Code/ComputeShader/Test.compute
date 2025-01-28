@@ -44,28 +44,28 @@ float Random(uint id, uint seed)
 // --- Functions ---
 
 // 停止確率を更新
-bool ShouldStop(uint index, inout float stopProbability)
-{
-    return false;
-    const float minProbability = 0.005f; // 最小値
-    const float maxProbability = 0.995f; // 最大値
-    const float adjustment = 0.0005f; // 増減幅
+//bool ShouldStop(uint index, inout float stopProbability)
+//{
+//    return false;
+//    const float minProbability = 0.005f; // 最小値
+//    const float maxProbability = 0.995f; // 最大値
+//    const float adjustment = 0.0005f; // 増減幅
 
-    bool flag = false;
-    randomValues[index] = Random(index, 2u);
-    // 停止の判定
-    if (randomValues[index] < stopProbability) // 乱数が停止確率未満の場合、停止、停止最小値は0.01
-    {
-        stopProbability = max(minProbability, stopProbability - adjustment); // 停止確率を減少
-        flag = true; // 停止
-    }
-    else
-    {
-        stopProbability = min(maxProbability, stopProbability + adjustment); // 停止確率を増加
-    }
-    stopProbabilities[index] = stopProbability;
-    return flag;
-}
+//    bool flag = false;
+//    randomValues[index] = Random(index, 2u);
+//    // 停止の判定
+//    if (randomValues[index] < stopProbability) // 乱数が停止確率未満の場合、停止、停止最小値は0.01
+//    {
+//        stopProbability = max(minProbability, stopProbability - adjustment); // 停止確率を減少
+//        flag = true; // 停止
+//    }
+//    else
+//    {
+//        stopProbability = min(maxProbability, stopProbability + adjustment); // 停止確率を増加
+//    }
+//    stopProbabilities[index] = stopProbability;
+//    return flag;
+//}
 
 // 回避力を計算
 float2 ComputeAvoidForce(uint index, float2 position, float dynamicRadius)
@@ -183,7 +183,9 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     
     uint index = id.x;
     if (index >= enemyCount)
+    {
         return;
+    }
     
     if ((10 + index - operationID) % 10 != 0)
     {
@@ -216,10 +218,10 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     else
     {
     // 停止の判定
-        if (ShouldStop(index, stopProbability))
-        {
-            return;
-        }
+        //if (ShouldStop(index, stopProbability))
+        //{
+        //    return;
+        //}
     
         if (restriction.x == 0 && restriction.y == 0)
         {

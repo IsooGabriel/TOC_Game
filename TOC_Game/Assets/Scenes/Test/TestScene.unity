@@ -292,9 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38bea10d228364741bf495ea25ee6d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generationRange: 15
   computeShader: {fileID: 7200000, guid: 424cf8c3af6785a4099d9edcf0f9af2d, type: 3}
-  enemyCount: 100
   moveSpeed: 1
   player: {fileID: 424975164}
   playerPosition: {x: 0, y: 0}
@@ -403,7 +401,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -427,12 +425,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1482794266}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -23.809525}
+  m_LocalScale: {x: 2.3809524, y: 2.3809524, z: 2.3809524}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1565202761}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1482794270
 MonoBehaviour:
@@ -478,6 +476,11 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!4 &1565202761 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3585908849044677045, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+  m_PrefabInstance: {fileID: 4574498393967424608}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1767465293
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,14 +638,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3585908849044677045, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1482794269}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1482794269}
   - {fileID: 628164800}
   - {fileID: 4574498393967424608}
   - {fileID: 1767465296}

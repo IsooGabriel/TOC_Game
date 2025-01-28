@@ -6,11 +6,11 @@ public class EnemyManager : MonoBehaviour
     #region 変数
 
     [SerializeField, Header("生成範囲")]
-    public readonly float generationRange = 15f;
+    public readonly float generationRange = 25f;
     [SerializeField, Header("生成しない範囲")]
-    private readonly float notgenerationRange = 5f; // 敵の生成範囲
+    private readonly float notgenerationRange = 10f; // 敵の生成範囲
     public ComputeShader computeShader;  // Compute Shaderをアタッチ
-    public readonly uint enemyCount = 10;         // 敵の数
+    public readonly uint enemyCount = 1000;         // 敵の数
     public float moveSpeed = 1.0f;       // 敵の移動速度
 
     private ComputeBuffer enemyBuffer;   // 敵位置情報用のComputeBuffer
@@ -56,7 +56,7 @@ public class EnemyManager : MonoBehaviour
         1.68f,1.68f,1.68f,
         3.36f
         };                         // 敵のスケール
-    public float[] bounds = { 25f };   // 座標制限
+    public float[] bounds = { 29f };   // 座標制限
 
     private GameObject[] enemies;   // 敵オブジェクトの配列
 
@@ -183,7 +183,7 @@ public class EnemyManager : MonoBehaviour
 
     void Update()
     {
-        OperationID = (uint)Mathf.Repeat(OperationID++, 10);
+        OperationID = (uint)Mathf.Repeat(OperationID++, 11);
 
         kernel = computeShader.FindKernel("CSMain");
 
@@ -238,7 +238,5 @@ public class EnemyManager : MonoBehaviour
                 computeShader.SetBuffer(kernel, "attackIDs", attackBuffer);
             }
         }
-
     }
-
 }
