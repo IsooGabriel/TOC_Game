@@ -35,9 +35,11 @@ public class EnemyManager : MonoBehaviour
     private ComputeBuffer attackBuffer;  // 攻撃用のComputeBuffer
     private List<uint> attackEnemy;
 
-    // カウンタ取得用のバッファ
-    private ComputeBuffer countBuffer;
-    private int[] count = new int[1];
+    private ComputeBuffer takeDamageBuffer;    // カウンタ取得用のバッファ
+    private List<uint> takeDamage;
+
+    private ComputeBuffer ShotBuffer;  // ショット用のComputeBuffer
+    private List<Vector2> shotPosition;
 
     public EntityBase player;           // プレイヤー
     public Vector2 playerPosition = Vector2.zero;  // プレイヤーの位置
@@ -61,6 +63,7 @@ public class EnemyManager : MonoBehaviour
     private GameObject[] enemies;   // 敵オブジェクトの配列
 
     int kernel;
+    uint[] tempArray;
 
     #endregion
 
@@ -68,9 +71,9 @@ public class EnemyManager : MonoBehaviour
     #region 関数
 
 
-    private void SetAttack(List<uint> targetEnemies)
+    private void SetAttack(uint[] targetEnemies)
     {
-        for (int i = 1; i < targetEnemies.Count; i++)
+        for (int i = 0; i < targetEnemies.Length; i++)
         {
             if (targetEnemies[(int)i] >= enemyCount)
             {
@@ -78,6 +81,12 @@ public class EnemyManager : MonoBehaviour
             }
             uint ID = targetEnemies[(int)i];
             Enemy_Gabu entity = enemies[(int)ID].GetComponent<Enemy_Gabu>();
+            if (entity.atkCT > 0)
+            {
+                continue;
+            }
+
+            entity.atkCT = entity.atkSpeed;
             player.TakeDamage(entity.atk, entity.level, entity.criticalChance, entity.criticalDamage, entity.Buff);
         }
     }
@@ -92,6 +101,20 @@ public class EnemyManager : MonoBehaviour
 
     }
 
+    public void TakeDamage(uint[] IDs)
+    {
+        for (int i = 0; i < IDs.Length; i++)
+        {
+            if (IDs[(int)i] >= enemyCount)
+            {
+                continue;
+            }
+            uint ID = IDs[(int)i];
+            enemies[(int)ID].GetComponent<Enemy_Gabu>().TakeDamage(
+            player.atk, player.level, player.criticalChance, player.criticalDamage, player.Buff);
+        }
+    }
+
     void OnDestroy()
     {
         // ComputeBufferを解放
@@ -104,6 +127,10 @@ public class EnemyManager : MonoBehaviour
         if (randomValuesBuffer != null) randomValuesBuffer.Release();
     }
 
+    public void SetShotPotion(Vector2 position)
+    {
+        shotPosition.Add(position);
+    }
 
     #endregion
 
@@ -122,6 +149,8 @@ public class EnemyManager : MonoBehaviour
         resetEnemy = new List<uint>();
         attackEnemy = new List<uint>();
         attackEnemy.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
+        takeDamage.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
+        tempArray = new uint[enemyCount];
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -149,6 +178,11 @@ public class EnemyManager : MonoBehaviour
 
             // 停止確率を設定
             probabilities[i] = i % 3 == 0 ? 0.01f : 0.01f;
+
+            // Enemy_Gabuスクリプトを取得
+            Enemy_Gabu enemy_Gabu = enemy.GetComponent<Enemy_Gabu>();
+            enemy_Gabu.ID = (uint)i;
+            enemy_Gabu.enemyManager = this;
 
             enemies[i] = enemy;
         }
@@ -178,7 +212,9 @@ public class EnemyManager : MonoBehaviour
         attackBuffer = new ComputeBuffer((int)enemyCount, sizeof(int)); // 攻撃情報はint1
         attackBuffer.SetData(attackEnemy);
 
-        countBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Raw); // カウンタ取得用のバッファ
+        takeDamageBuffer = new ComputeBuffer((int)enemyCount, sizeof(int)); // 攻撃情報はint1
+        takeDamageBuffer.SetData(takeDamage);
+
     }
 
     void Update()
@@ -209,6 +245,7 @@ public class EnemyManager : MonoBehaviour
         computeShader.SetFloat("detectionRange", detectionRange);
         computeShader.SetFloat("attackRange", attackRange);
         computeShader.SetBuffer(kernel, "attackIDs", attackBuffer);
+        computeShader.SetBuffer(kernel, "shotPosition", ShotBuffer);
 
 
         // Compute Shaderを実行
@@ -224,19 +261,25 @@ public class EnemyManager : MonoBehaviour
         }
 
         // GPUでの処理が完了した後に、カウンタを取得
-        ComputeBuffer.CopyCount(attackBuffer, countBuffer, 0);
-        countBuffer.GetData(count);
-        if (count[0] > 1)
+
+        attackBuffer.GetData(tempArray);
+        Debug.Log("tempArray: " + tempArray[1]);
+        if (tempArray[0] > 0)
         {
-            uint[] tempArray = new uint[count[0]];
-            attackBuffer.GetData(tempArray, 0, 0, count[0]);
-            if (attackEnemy != null)
-            {
-                SetAttack(attackEnemy);
-                attackEnemy.Clear();
-                attackEnemy.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
-                computeShader.SetBuffer(kernel, "attackIDs", attackBuffer);
-            }
+
+            SetAttack(tempArray);
+            attackEnemy.Clear();
+            attackEnemy.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
+            computeShader.SetBuffer(kernel, "attackIDs", attackBuffer);
+        }
+
+        takeDamageBuffer.GetData(tempArray);
+        if (tempArray[0] > 0)
+        {
+            TakeDamage(tempArray);
+            takeDamage.Clear();
+            takeDamage.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
+            computeShader.SetBuffer(kernel, "takeDamageIDs", takeDamageBuffer);
         }
     }
 }

@@ -9,6 +9,8 @@ StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用さ
 RWStructuredBuffer<uint> random; // 乱数
 RWStructuredBuffer<float> randomValues; // 乱数の値
 AppendStructuredBuffer<uint> attackIDs;
+AppendStructuredBuffer<uint> takeDamageIDs;
+RWStructuredBuffer<float2> shotPosition;
 
 float deltaTime;
 float moveSpeed;
@@ -130,12 +132,6 @@ float2 ApplyBounds(uint index, float2 direction, float2 position, float2 restric
     return direction;
 }
 
-bool IsInAttackRange(float2 position, float myScale)
-{
-    float distanceToPlayer = distance(playerPosition, position);
-    return distanceToPlayer <= attackRange* myScale;
-}
-
 // --- Functions ---
 // 移動方向を更新（壁や敵による変更を優先し、その後一定確率で変更）
 float2 UpdateDirection(uint index, float2 position, float2 currentDirection, inout float2 restriction, float dynamicRadius, out bool changed)
@@ -199,11 +195,21 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 
     float2 moveDirection;
     
+    // player攻撃範囲内の敵を検出
+    if (shotPosition[0].x != 0 && shotPosition[0].y != 0)
+    {
+        for (int i = 0; )
+        {
+        
+        }
+
+    }
+    
     // 距離を計算（2D空間）
     float distanceToPlayer = distance(playerPosition, position);
 
     // 攻撃範囲内かどうかを判定
-    if (IsInAttackRange(position, scale))
+    if (distanceToPlayer <= attackRange * scale)
     {
         attackIDs.Append(index);
         return;

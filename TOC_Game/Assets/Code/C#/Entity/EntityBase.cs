@@ -9,13 +9,16 @@ public abstract class EntityBase : MonoBehaviour
     public long currentHP;
     public long atk = 10;
     public float atkSpeed = 1;
+    [SerializeField, Header("会心の確率、%で計算つまり100で確定会心")]
     public float criticalChance = 0;
-    public float criticalDamage = 1f;
+    [SerializeField, Header("会心のダメージ、%で計算つまり100で2倍のダメージ")]
+    public float criticalDamage = 0f;
     public float speed = 1;
     public float defense = 10;
     public float rerollSpeed = 1;
     public long ammo = 1;
-    public float Buff = 100;
+    [SerializeField, Header("バフの値、%で計算つまり100で2倍のダメージ")]
+    public float Buff = 0;
     public bool isInBase = false;
 
     public float atkCT = 0;
@@ -31,6 +34,7 @@ public abstract class EntityBase : MonoBehaviour
 
     public virtual void TakeDamage(long opponentAtk, long opponentLevel, float opponentCriticalChance, float opponentCriticalDamage, float buff)
     {
+        Debug.Log("TakeDamage");
         if (currentHP <= 0)
         {
             return;
@@ -38,11 +42,11 @@ public abstract class EntityBase : MonoBehaviour
 
         float levelMultiplier = Mathf.Pow(1.1f, level - opponentLevel); // 1レベル差ごとに10%増減
         long damage = (long)Mathf.Max(1, (opponentAtk - defense) * levelMultiplier);
-        damage = (long)(damage * (buff / 100));
+        damage += (long)(damage * (buff / 100));
 
-        if(Random.Range(0f, 1f) < opponentCriticalChance)
+        if(Random.Range(0f, 1f) < opponentCriticalChance/100)
         {
-            damage = (long)(damage * opponentCriticalDamage);
+            damage += (long)(damage * opponentCriticalDamage/100);
             entityUIBase.Critical();
         }
 

@@ -52,12 +52,12 @@ MonoBehaviour:
   atk: 10
   atkSpeed: 1
   criticalChance: 0
-  criticalDamage: 1
+  criticalDamage: 0
   speed: 1
   defense: 10
   rerollSpeed: 1
   ammo: 1
-  Buff: 100
+  Buff: 0
   isInBase: 0
   atkCT: 0
   rerollTime: 0

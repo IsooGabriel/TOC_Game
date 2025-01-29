@@ -568,6 +568,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1960646276493825345, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: Buff
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960646276493825345, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: currentHP
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960646276493825345, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: criticalDamage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2451234403318663066, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
