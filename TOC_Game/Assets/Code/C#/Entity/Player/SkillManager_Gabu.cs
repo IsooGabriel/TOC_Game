@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static DBManager_Gabu;
 
 public class SkillManager_Gabu : MonoBehaviour
 {

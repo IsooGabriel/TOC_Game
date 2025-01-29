@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEditor.Animations;
-using UnityEditor.ShaderGraph;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class ColorSystem : MonoBehaviour
 {
@@ -10,7 +7,7 @@ public abstract class ColorSystem : MonoBehaviour
     #endregion
 
     #region 関数
-    
+
     /// <summary>
     /// ColorのH,S,Vを変更します
     /// </summary>
@@ -171,7 +168,7 @@ public abstract class ColorSystem : MonoBehaviour
         Color.RGBToHSV(currentColor, out currentColor.r, out currentColor.g, out currentColor.b);
         Color newColor = new Color(currentColor.r, currentColor.g, currentColor.b + v);
         return Color.HSVToRGB(newColor.r, newColor.g, newColor.b);
-    }   
+    }
 
     public Color SubtractionValue(Color currentColor, float v)
     {

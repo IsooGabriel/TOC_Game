@@ -3,7 +3,7 @@
 // Buffers and parameters
 RWStructuredBuffer<float2> enemyPositions; // 敵の位置
 StructuredBuffer<float> enemyScales; // 各敵のスケール
-RWStructuredBuffer<float> stopProbabilities; // 各敵の停止確率
+//RWStructuredBuffer<float> stopProbabilities; // 各敵の停止確率
 RWStructuredBuffer<float2> moveRestrictions; // 各敵の移動制限 (1: 移動可能、0: 移動不可)
 StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用される）
 RWStructuredBuffer<uint> random; // 乱数
@@ -11,6 +11,8 @@ RWStructuredBuffer<float> randomValues; // 乱数の値
 AppendStructuredBuffer<uint> attackIDs;
 AppendStructuredBuffer<uint> takeDamageIDs;
 RWStructuredBuffer<float2> shotPosition;
+StructuredBuffer<float> shotScale; // 各弾のスケール
+AppendStructuredBuffer<uint> attackedShotIDs;
 
 float deltaTime;
 float moveSpeed;
@@ -19,6 +21,7 @@ uint operationID; // 演算ID
 float2 playerPosition; // プレイヤーの位置
 float detectionRange;
 float attackRange;
+uint shotCount;
 
 // XORシフト乱数生成器
 uint XorShift(inout uint state)
@@ -145,8 +148,6 @@ float2 UpdateDirection(uint index, float2 position, float2 currentDirection, ino
         changed = true; // 壁にぶつかったため変更
         return newDirection;
     }
-
-    return newDirection;
     
     // 回避力を計算
     float2 avoidForce = ComputeAvoidForce(index, position, dynamicRadius);
@@ -182,30 +183,37 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     {
         return;
     }
-    
-    if ((10 + index - operationID) % 10 != 0)
-    {
-        return;
-    }
 
     float2 position = enemyPositions[index];
     float scale = enemyScales[index];
-    float stopProbability = stopProbabilities[index];
+    //float stopProbability = stopProbabilities[index];
     float2 restriction = moveRestrictions[index];
+    
+    
+    // すべての弾について当たり判定を行う
+    for (uint i = 0; i < shotCount; i++)
+    {
+        float2 shotPos = shotPosition[i];
+        float shotRadius = shotScale[i];
+        float distance = length(shotPos - position);
+        
+        if (distance <= (scale + shotRadius)) // 敵の半径 + 弾の半径
+        {
+            attackedShotIDs.Append(i);
+            takeDamageIDs.Append(index);
+            break; // 一つでも当たれば終了
+        }
+    }
+    
+    if ((index + operationID) % 10 != 0)
+    {
+        
+        return;
+    }   
 
     float2 moveDirection;
     
-    // player攻撃範囲内の敵を検出
-    if (shotPosition[0].x != 0 && shotPosition[0].y != 0)
-    {
-        for (int i = 0; )
-        {
-        
-        }
-
-    }
-    
-    // 距離を計算（2D空間）
+    // 距離を計算
     float distanceToPlayer = distance(playerPosition, position);
 
     // 攻撃範囲内かどうかを判定
@@ -251,5 +259,5 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     // 結果を保存
     enemyPositions[index] = position;
     moveRestrictions[index] = restriction;
-    stopProbabilities[index] = stopProbability;
+    //stopProbabilities[index] = stopProbability;
 }

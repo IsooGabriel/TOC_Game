@@ -143,6 +143,12 @@ public class PlayerUISystem_Gabu : EntityUIBase
         shopObject.SetActive(true);
     }
 
+    public override void Die()
+    {
+        base.Die();
+        Application.Quit();//ゲームプレイ終了
+    }
+
     #endregion
 
     public override void VitualStart()

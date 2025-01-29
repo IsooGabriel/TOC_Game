@@ -8,6 +8,7 @@ public class Player_Gabu : EntityBase
     public PlayerUISystem_Gabu uiSystem;
     public SkillManager_Gabu skillManager;
     public PlayerInputManager playerMovement;
+    public EnemyManager enemyManager;
 
     public float holdTime = 0f;
     public readonly float openShopTime = 0.45f;
@@ -19,13 +20,16 @@ public class Player_Gabu : EntityBase
 
     public void AttackButton(Quaternion rotation)
     {
+        GameObject shotObj;
         if (!isInBase)
         {
             if (ammo <= 0 || atkCT > 0)
             {
                 return;
             }
-            Attack(rotation);
+            shotObj = Attack(rotation);
+            enemyManager.SetShot(shotObj);
+            shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
             ammo--;
             uiSystem.UpdateAmmo(ammo);
             return;
@@ -37,8 +41,9 @@ public class Player_Gabu : EntityBase
             uiSystem.Shop();
             return;
         }
-
-        Attack(rotation);
+        shotObj = Attack(rotation);
+        enemyManager.SetShot(shotObj);
+        shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
         ammo--;
         uiSystem.UpdateAmmo(ammo);
     }
@@ -101,6 +106,7 @@ public class Player_Gabu : EntityBase
 
     public override void Die()
     {
+        Application.Quit();//ゲームプレイ終了
         entityUIBase.Die();
     }
 

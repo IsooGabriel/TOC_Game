@@ -5,7 +5,7 @@ public abstract class EntityBase : MonoBehaviour
     #region 変数
 
     public int level = 1;
-    public long maxHP = 100;
+    public long maxHP = 5;
     public long currentHP;
     public long atk = 10;
     public float atkSpeed = 1;
@@ -60,11 +60,11 @@ public abstract class EntityBase : MonoBehaviour
             Die();
         }
     }
-    public virtual void Attack(Quaternion rotation)
+    public virtual GameObject Attack(Quaternion rotation)
     {
         if (!CanAttack())
         {
-            return;
+            return null;
         }
 
         // 攻撃処理
@@ -72,6 +72,7 @@ public abstract class EntityBase : MonoBehaviour
         shotObj.transform.parent = transform.parent;
         shotObj.GetComponent<Shot_Gabu>().attacker = this;
         entityUIBase.Attack();
+        return shotObj;
     }
 
     public virtual bool CanAttack()

@@ -1,6 +1,4 @@
-﻿using UnityEditorInternal;
-using UnityEngine;
-using System.Threading;
+﻿using System.Threading;
 
 public class Enemy_Gabu : EntityBase
 {
@@ -22,7 +20,7 @@ public class Enemy_Gabu : EntityBase
     public override void Die()
     {
         entityUIBase.Die();
-        Thread.Sleep((int)entityUIBase.dieEffectTime*1000); // エフェクトが終わるまで待機、1000倍してミリ秒に変換
+        Thread.Sleep((int)entityUIBase.dieEffectTime * 1000); // エフェクトが終わるまで待機、1000倍してミリ秒に変換
         Reset();
         enemyManager.ResetEnemy(ID);
     }

@@ -19,7 +19,7 @@ public abstract class EntityUIBase : ColorSystem
     public float normalSaturation = 0f;
     public Vector3 normalScale = Vector3.one;
             
-    public readonly float damageSaturation = 50f;
+    public readonly float damageSaturation = 30f;
     public readonly float damageEffectTime = 0.4f;
     public readonly Ease damageEase = Ease.InFlash;
 
@@ -65,7 +65,7 @@ public abstract class EntityUIBase : ColorSystem
     }
     public virtual void Die()
     {
-        entityImage.transform.DOShakeScale(dieEffectTime, 5f, 10, 10f, true).SetEase(dieScaleEase);
+        entityImage.transform.DOShakeScale(dieEffectTime, 10f, 15, 15f, true).SetEase(dieScaleEase);
         entityImage.transform.DOScale(Vector3.zero, dieEffectTime/2).SetEase(dieScaleEase).SetDelay(dieEffectTime/2);
         entityImage.DOColor(new Color(180f, 180f, 180f), dieEffectTime / 2).SetEase(dieColorEase).SetDelay(dieEffectTime/2);
         entityImage.transform.DORotate(new Vector3(0, 0, dieRotate), dieEffectTime).SetEase(dieRotateEase);
