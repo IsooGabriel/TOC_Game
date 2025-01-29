@@ -3,15 +3,25 @@
 // Buffers and parameters
 RWStructuredBuffer<float2> enemyPositions; // 敵の位置
 StructuredBuffer<float> enemyScales; // 各敵のスケール
-RWStructuredBuffer<float> stopProbabilities; // 各敵の停止確率
+//RWStructuredBuffer<float> stopProbabilities; // 各敵の停止確率
 RWStructuredBuffer<float2> moveRestrictions; // 各敵の移動制限 (1: 移動可能、0: 移動不可)
 StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用される）
 RWStructuredBuffer<uint> random; // 乱数
 RWStructuredBuffer<float> randomValues; // 乱数の値
+AppendStructuredBuffer<uint> attackIDs;
+AppendStructuredBuffer<uint> takeDamageIDs;
+RWStructuredBuffer<float2> shotPosition;
+StructuredBuffer<float> shotScale; // 各弾のスケール
+AppendStructuredBuffer<uint> attackedShotIDs;
 
 float deltaTime;
 float moveSpeed;
 uint enemyCount; // 敵の数
+uint operationID; // 演算ID
+float2 playerPosition; // プレイヤーの位置
+float detectionRange;
+float attackRange;
+uint shotCount;
 
 // XORシフト乱数生成器
 uint XorShift(inout uint state)
@@ -39,28 +49,28 @@ float Random(uint id, uint seed)
 // --- Functions ---
 
 // 停止確率を更新
-bool ShouldStop(uint index, inout float stopProbability)
-{
-    return false;
-    const float minProbability = 0.005f; // 最小値
-    const float maxProbability = 0.995f; // 最大値
-    const float adjustment = 0.0005f; // 増減幅
+//bool ShouldStop(uint index, inout float stopProbability)
+//{
+//    return false;
+//    const float minProbability = 0.005f; // 最小値
+//    const float maxProbability = 0.995f; // 最大値
+//    const float adjustment = 0.0005f; // 増減幅
 
-    bool flag = false;
-    randomValues[index] = Random(index, 2u);
-    // 停止の判定
-    if (randomValues[index] < stopProbability) // 乱数が停止確率未満の場合、停止、停止最小値は0.01
-    {
-        stopProbability = max(minProbability, stopProbability - adjustment); // 停止確率を減少
-        flag = true; // 停止
-    }
-    else
-    {
-        stopProbability = min(maxProbability, stopProbability + adjustment); // 停止確率を増加
-    }
-    stopProbabilities[index] = stopProbability;
-    return flag;
-}
+//    bool flag = false;
+//    randomValues[index] = Random(index, 2u);
+//    // 停止の判定
+//    if (randomValues[index] < stopProbability) // 乱数が停止確率未満の場合、停止、停止最小値は0.01
+//    {
+//        stopProbability = max(minProbability, stopProbability - adjustment); // 停止確率を減少
+//        flag = true; // 停止
+//    }
+//    else
+//    {
+//        stopProbability = min(maxProbability, stopProbability + adjustment); // 停止確率を増加
+//    }
+//    stopProbabilities[index] = stopProbability;
+//    return flag;
+//}
 
 // 回避力を計算
 float2 ComputeAvoidForce(uint index, float2 position, float dynamicRadius)
@@ -132,14 +142,12 @@ float2 UpdateDirection(uint index, float2 position, float2 currentDirection, ino
     changed = false;
 
     // 壁判定を最優先でチェック
-    float2 newDirection = ApplyBounds(index,currentDirection, position, restriction, restriction);
+    float2 newDirection = ApplyBounds(index, currentDirection, position, restriction, restriction);
     if (newDirection.x != currentDirection.x || newDirection.y != currentDirection.y)
     {
         changed = true; // 壁にぶつかったため変更
         return newDirection;
     }
-
-    return newDirection;
     
     // 回避力を計算
     float2 avoidForce = ComputeAvoidForce(index, position, dynamicRadius);
@@ -164,47 +172,92 @@ float2 RandomizeDirection(uint index, float2 currentDirection)
     return currentDirection;
 }
 
+
 // --- Main Kernel ---
 [numthreads(1, 1, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID)
 {
+    
     uint index = id.x;
-
     if (index >= enemyCount)
+    {
         return;
+    }
 
     float2 position = enemyPositions[index];
     float scale = enemyScales[index];
-    float stopProbability = stopProbabilities[index];
+    //float stopProbability = stopProbabilities[index];
     float2 restriction = moveRestrictions[index];
-
-    // 停止の判定
-    if (ShouldStop(index, stopProbability))
+    
+    
+    // すべての弾について当たり判定を行う
+    for (uint i = 0; i < shotCount; i++)
     {
+        float2 shotPos = shotPosition[i];
+        float shotRadius = shotScale[i];
+        float distance = length(shotPos - position);
+        
+        if (distance <= (scale + shotRadius)) // 敵の半径 + 弾の半径
+        {
+            attackedShotIDs.Append(i);
+            takeDamageIDs.Append(index);
+            break; // 一つでも当たれば終了
+        }
+    }
+    
+    if ((index + operationID) % 10 != 0)
+    {
+        
+        return;
+    }   
+
+    float2 moveDirection;
+    
+    // 距離を計算
+    float distanceToPlayer = distance(playerPosition, position);
+
+    // 攻撃範囲内かどうかを判定
+    if (distanceToPlayer <= attackRange * scale)
+    {
+        attackIDs.Append(index);
         return;
     }
     
-    if (restriction.x == 0 && restriction.y == 0)
+    // 範囲内かどうかを判定
+    if (distanceToPlayer <= detectionRange)
     {
-        restriction.x = Random(index, 6u) > 0.5 ? 1 : -1;
-        restriction.y = Random(index, 7u) > 0.5 ? 1 : -1;
+        // プレイヤーに向かって移動
+        moveDirection = normalize(playerPosition - position);
     }
+    else
+    {
+    // 停止の判定
+        //if (ShouldStop(index, stopProbability))
+        //{
+        //    return;
+        //}
+    
+        if (restriction.x == 0 && restriction.y == 0)
+        {
+            restriction.x = Random(index, 6u) > 0.5 ? 1 : -1;
+            restriction.y = Random(index, 7u) > 0.5 ? 1 : -1;
+        }
     
     // 現在の移動方向を取得（初期値はランダム方向）
-    float2 moveDirection = restriction;
-    bool directionChanged = false;
+        moveDirection = restriction;
+        bool directionChanged = false;
     
     // 一定確率で方向転換
-    moveDirection = RandomizeDirection(index, moveDirection);
+        moveDirection = RandomizeDirection(index, moveDirection);
     
     // 壁や敵の影響で方向を変更
-    moveDirection = UpdateDirection(index, position, moveDirection, restriction, scale, directionChanged);
+        moveDirection = UpdateDirection(index, position, moveDirection, restriction, scale, directionChanged);
+    }
     
     // 移動を計算
     position += moveDirection * moveSpeed * deltaTime;
-
     // 結果を保存
     enemyPositions[index] = position;
     moveRestrictions[index] = restriction;
-    stopProbabilities[index] = stopProbability;
+    //stopProbabilities[index] = stopProbability;
 }

@@ -8,6 +8,7 @@ public class Shot_Gabu : MonoBehaviour
 
     public EntityBase attacker = null;
     public string targetTag = "Enemy";
+    public EnemyManager enemyManager = null;
 
     #endregion
 
@@ -17,20 +18,30 @@ public class Shot_Gabu : MonoBehaviour
     {
         if (other.tag == targetTag)
         {
-            other.GetComponent<EntityBase>().TakeDamage(attacker.atk, attacker.level);
+            other.GetComponent<EntityBase>().TakeDamage(attacker.atk, attacker.level, attacker.criticalChance, attacker.criticalDamage, attacker.Buff);
             Destroy(gameObject);
         }
     }
 
-    #endregion
-
-    private void Start()
+    public void OnAttacked()
     {
-
+        enemyManager.DessetShot(gameObject);
+        Destroy(gameObject);
     }
+
+    public void OnBecameInvisible()
+    {
+       Destroy(gameObject);
+    }
+
+    #endregion
 
     public void Update()
     {
-        transform.position += transform.forward * speed * Time.deltaTime;
+        if(gameObject.transform.position.x > 1000 || gameObject.transform.position.x < -1000 || gameObject.transform.position.y > 1000 || gameObject.transform.position.y < -1000)
+        {
+            Destroy(gameObject);
+        }
+        transform.position += transform.right * speed * Time.deltaTime;
     }
 }

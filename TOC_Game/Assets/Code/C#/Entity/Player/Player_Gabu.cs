@@ -5,13 +5,53 @@ public class Player_Gabu : EntityBase
 {
     #region 変数
 
+    public PlayerUISystem_Gabu uiSystem;
     public SkillManager_Gabu skillManager;
+    public PlayerInputManager playerMovement;
+    public EnemyManager enemyManager;
+
+    public float holdTime = 0f;
+    public readonly float openShopTime = 0.45f;
 
     #endregion
 
 
     #region 関数
 
+    public void AttackButton(Quaternion rotation)
+    {
+        GameObject shotObj;
+        if (!isInBase)
+        {
+            if (ammo <= 0 || atkCT > 0)
+            {
+                return;
+            }
+            shotObj = Attack(rotation);
+            enemyManager.SetShot(shotObj);
+            shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
+            ammo--;
+            uiSystem.UpdateAmmo(ammo);
+            return;
+        }
+
+        holdTime += Time.deltaTime;
+        if (holdTime >= openShopTime)
+        {
+            uiSystem.Shop();
+            return;
+        }
+        shotObj = Attack(rotation);
+        enemyManager.SetShot(shotObj);
+        shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
+        ammo--;
+        uiSystem.UpdateAmmo(ammo);
+    }
+
+    public void Move(Vector2 direction)
+    {
+        uiSystem.Dash(direction);
+    }
 
     public void UseSkill(int skillID)
     {
@@ -23,6 +63,11 @@ public class Player_Gabu : EntityBase
         powerUp.Apply(this);
     }
 
+    public void Aim()
+    {
+        uiSystem.Aim();
+    }
+
     public override void Reroll()
     {
         // DBに保存されている弾数より多い場合はリロールしない
@@ -30,13 +75,20 @@ public class Player_Gabu : EntityBase
         {
             return;
         }
+        if (!isInBase)
+        {
+            return;
+        }
 
         // リロール中の処理
         if (rerollTime > 0)
         {
-            rerollSpeed -= Time.deltaTime;
-            if (rerollSpeed <= 0)
+            rerollTime -= Time.deltaTime;
+            uiSystem.Reroll(rerollTime);
+
+            if (rerollTime <= 0)
             {
+                uiSystem.Rerolled();
                 ammo += 1;
             }
             return;
@@ -54,7 +106,24 @@ public class Player_Gabu : EntityBase
 
     public override void Die()
     {
-        entityUIBase    .Die();
+        Application.Quit();//ゲームプレイ終了
+        entityUIBase.Die();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Base")
+        {
+            isInBase = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Base")
+        {
+            isInBase = false;
+        }
     }
 
     #endregion
@@ -71,9 +140,17 @@ public class Player_Gabu : EntityBase
         rerollSpeed = DB.playerDBs[DB.AccountID].rerollSpeed;
         ammo = DB.playerDBs[DB.AccountID].ammo;
         isInBase = false;
-        Buff = 0;
+        Buff = 100;
 
         skillManager = new SkillManager_Gabu();
         skillManager.UseAllSkills(this);
+
+        if (entityUIBase == null)
+        {
+            entityUIBase = uiSystem;
+        }
+
+        playerMovement.player = this;
     }
+
 }
