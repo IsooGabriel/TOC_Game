@@ -1,0 +1,263 @@
+﻿#pragma kernel CSMain
+
+// Buffers and parameters
+RWStructuredBuffer<float2> enemyPositions; // 敵の位置
+StructuredBuffer<float> enemyScales; // 各敵のスケール
+//RWStructuredBuffer<float> stopProbabilities; // 各敵の停止確率
+RWStructuredBuffer<float2> moveRestrictions; // 各敵の移動制限 (1: 移動可能、0: 移動不可)
+StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用される）
+RWStructuredBuffer<uint> random; // 乱数
+RWStructuredBuffer<float> randomValues; // 乱数の値
+AppendStructuredBuffer<uint> attackIDs;
+AppendStructuredBuffer<uint> takeDamageIDs;
+RWStructuredBuffer<float2> shotPosition;
+StructuredBuffer<float> shotScale; // 各弾のスケール
+AppendStructuredBuffer<uint> attackedShotIDs;
+
+float deltaTime;
+float moveSpeed;
+uint enemyCount; // 敵の数
+uint operationID; // 演算ID
+float2 playerPosition; // プレイヤーの位置
+float detectionRange;
+float attackRange;
+uint shotCount;
+
+// XORシフト乱数生成器
+uint XorShift(inout uint state)
+{
+    state ^= state << 13;
+    state ^= state >> 17;
+    state ^= state << 5;
+    return state;
+}
+
+float Random(uint id, uint seed)
+{
+    // 初期化されていない場合に備え、IDのランダム値を設定
+    if (random[id] == 0)
+        random[id] = id * 1664525u + seed;
+
+    // シードを更新
+    random[id] ^= (id * 1664525u) ^ (seed * 1013904223u);
+    float randomValue = float(XorShift(random[id]));
+    float random = randomValue / float(0xFFFFFFFF);
+    // 32ビット乱数を0〜1に正規化
+    return random; // 32ビット乱数を0〜1に
+}
+
+// --- Functions ---
+
+// 停止確率を更新
+//bool ShouldStop(uint index, inout float stopProbability)
+//{
+//    return false;
+//    const float minProbability = 0.005f; // 最小値
+//    const float maxProbability = 0.995f; // 最大値
+//    const float adjustment = 0.0005f; // 増減幅
+
+//    bool flag = false;
+//    randomValues[index] = Random(index, 2u);
+//    // 停止の判定
+//    if (randomValues[index] < stopProbability) // 乱数が停止確率未満の場合、停止、停止最小値は0.01
+//    {
+//        stopProbability = max(minProbability, stopProbability - adjustment); // 停止確率を減少
+//        flag = true; // 停止
+//    }
+//    else
+//    {
+//        stopProbability = min(maxProbability, stopProbability + adjustment); // 停止確率を増加
+//    }
+//    stopProbabilities[index] = stopProbability;
+//    return flag;
+//}
+
+// 回避力を計算
+float2 ComputeAvoidForce(uint index, float2 position, float dynamicRadius)
+{
+    float2 avoidForce = float2(0.0, 0.0);
+    int neighborCount = 0;
+
+    for (uint i = 0; i < enemyCount; i++)
+    {
+        if (i == index)
+        {
+            continue;
+        }
+
+        float2 otherPos = enemyPositions[i];
+        float otherScale = enemyScales[i];
+        float distance = length(position - otherPos);
+
+        if (distance < dynamicRadius + otherScale && distance > 0.0)
+        {
+            float2 diff = normalize(position - otherPos);
+            avoidForce += diff / distance; // 距離に反比例して回避力を強く
+            neighborCount++;
+        }
+    }
+
+    if (neighborCount > 0)
+    {
+        avoidForce /= neighborCount;
+        avoidForce = normalize(avoidForce);
+    }
+
+    return avoidForce;
+}
+
+// 座標制限を更新
+float2 ApplyBounds(uint index, float2 direction, float2 position, float2 restriction, inout float2 moveRestriction)
+{
+    float bound = abs(bounds[0]); // float bound = abs(bounds[0] - bounds[0] * 0.1);
+    if (position.x >= bound)
+    {
+        direction.x = -1 * abs(direction.x);
+        moveRestriction.x = -1.0; // X方向を制限
+    }
+    else if (position.x <= -1 * bound)
+    {
+        direction.x = abs(direction.x);
+        moveRestriction.x = 1.0;
+    }
+    else if (position.y >= bound)
+    {
+        direction.y = -1 * abs(direction.y);
+        moveRestriction.y = -1.0; // Y方向を制限
+    }
+    else if (position.y <= -1 * bound)
+    {
+        direction.y = abs(direction.y);
+        moveRestriction.y = 1.0;
+    }
+    
+    moveRestrictions[index] = moveRestriction;
+    return direction;
+}
+
+// --- Functions ---
+// 移動方向を更新（壁や敵による変更を優先し、その後一定確率で変更）
+float2 UpdateDirection(uint index, float2 position, float2 currentDirection, inout float2 restriction, float dynamicRadius, out bool changed)
+{
+    changed = false;
+
+    // 壁判定を最優先でチェック
+    float2 newDirection = ApplyBounds(index, currentDirection, position, restriction, restriction);
+    if (newDirection.x != currentDirection.x || newDirection.y != currentDirection.y)
+    {
+        changed = true; // 壁にぶつかったため変更
+        return newDirection;
+    }
+    
+    // 回避力を計算
+    float2 avoidForce = ComputeAvoidForce(index, position, dynamicRadius);
+    if (length(avoidForce) > 0.01) // 避ける必要がある場合
+    {
+        changed = true;
+        newDirection = normalize(currentDirection + avoidForce);
+    }
+
+    return newDirection;
+}
+
+// 一定確率で方向転換
+float2 RandomizeDirection(uint index, float2 currentDirection)
+{
+    const float changeProbability = 0.02f; // 方向転換確率
+    if (Random(index, 3u) < changeProbability)
+    {
+        // 新しいランダム方向を設定
+        return normalize(float2(Random(index, 4u), Random(index, 5u)) - 0.5);
+    }
+    return currentDirection;
+}
+
+
+// --- Main Kernel ---
+[numthreads(1, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    
+    uint index = id.x;
+    if (index >= enemyCount)
+    {
+        return;
+    }
+
+    float2 position = enemyPositions[index];
+    float scale = enemyScales[index];
+    //float stopProbability = stopProbabilities[index];
+    float2 restriction = moveRestrictions[index];
+    
+    
+    // すべての弾について当たり判定を行う
+    for (uint i = 0; i < shotCount; i++)
+    {
+        float2 shotPos = shotPosition[i];
+        float shotRadius = shotScale[i];
+        float distance = length(shotPos - position);
+        
+        if (distance <= (scale + shotRadius)) // 敵の半径 + 弾の半径
+        {
+            attackedShotIDs.Append(i);
+            takeDamageIDs.Append(index);
+            break; // 一つでも当たれば終了
+        }
+    }
+    
+    if ((index + operationID) % 10 != 0)
+    {
+        
+        return;
+    }   
+
+    float2 moveDirection;
+    
+    // 距離を計算
+    float distanceToPlayer = distance(playerPosition, position);
+
+    // 攻撃範囲内かどうかを判定
+    if (distanceToPlayer <= attackRange * scale)
+    {
+        attackIDs.Append(index);
+        return;
+    }
+    
+    // 範囲内かどうかを判定
+    if (distanceToPlayer <= detectionRange)
+    {
+        // プレイヤーに向かって移動
+        moveDirection = normalize(playerPosition - position);
+    }
+    else
+    {
+    // 停止の判定
+        //if (ShouldStop(index, stopProbability))
+        //{
+        //    return;
+        //}
+    
+        if (restriction.x == 0 && restriction.y == 0)
+        {
+            restriction.x = Random(index, 6u) > 0.5 ? 1 : -1;
+            restriction.y = Random(index, 7u) > 0.5 ? 1 : -1;
+        }
+    
+    // 現在の移動方向を取得（初期値はランダム方向）
+        moveDirection = restriction;
+        bool directionChanged = false;
+    
+    // 一定確率で方向転換
+        moveDirection = RandomizeDirection(index, moveDirection);
+    
+    // 壁や敵の影響で方向を変更
+        moveDirection = UpdateDirection(index, position, moveDirection, restriction, scale, directionChanged);
+    }
+    
+    // 移動を計算
+    position += moveDirection * moveSpeed * deltaTime;
+    // 結果を保存
+    enemyPositions[index] = position;
+    moveRestrictions[index] = restriction;
+    //stopProbabilities[index] = stopProbability;
+}
