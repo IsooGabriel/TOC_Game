@@ -188,21 +188,22 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     float scale = enemyScales[index];
     //float stopProbability = stopProbabilities[index];
     float2 restriction = moveRestrictions[index];
-    takeDamageIDs[index] = false;
-    attackIDs[index] = false;
+    takeDamageIDs[index] = 0;
+    attackIDs[index] = 0;
     
     
     // すべての弾について当たり判定を行う
-    for (uint i = 1; i < shotCount; i++)
+    for (uint i = 0; i < shotCount; i++)
     {
+        attackedShotIDs[i] = 0;
         float2 shotPos = shotPosition[i];
         float shotRadius = shotScale[i];
         float distance = length(shotPos - position);
         
         if (distance <= (scale + shotRadius)) // 敵の半径 + 弾の半径
         {
-            attackedShotIDs[i] = true;
-            takeDamageIDs[index] = true;
+            attackedShotIDs[i] = 1;
+            takeDamageIDs[index] = 1;
             break; // 一つでも当たれば終了
         }
     }
@@ -221,7 +222,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     // 攻撃範囲内かどうかを判定
     if (distanceToPlayer <= attackRange * scale)
     {
-        attackIDs[index] = true;
+        attackIDs[index] = 1;
         return;
     }
     

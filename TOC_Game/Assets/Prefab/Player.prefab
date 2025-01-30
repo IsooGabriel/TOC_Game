@@ -1263,6 +1263,7 @@ MonoBehaviour:
   playerMovement: {fileID: 6236686304257134747}
   enemyManager: {fileID: 0}
   sceneLoad: {fileID: 8829758765369437698}
+  playerAssetsUISystem: {fileID: 1422573282289807653}
   holdTime: 0
 --- !u!114 &6236686304257134747
 MonoBehaviour:
@@ -1292,6 +1293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDash: 0
+  isDie: 0
   entity: {fileID: 1960646276493825345}
   damageEfect: {fileID: 0}
   entityImage: {fileID: 8377562611048228418}
@@ -1306,6 +1308,7 @@ MonoBehaviour:
   dashTimeMultiplier: 0.1
   openShopHoldTime: 0
   shopObject: {fileID: 0}
+  DieObject: {fileID: 0}
 --- !u!114 &9204988762149325496
 MonoBehaviour:
   m_ObjectHideFlags: 0

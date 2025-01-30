@@ -32,6 +32,7 @@ public class PlayerUISystem_Gabu : EntityUIBase
     public readonly float openShopTime = 0.45f;
     public float openShopHoldTime = 0f;
     public GameObject shopObject = null;
+    public GameObject DieObject = null;
 
     #endregion
 
@@ -146,7 +147,7 @@ public class PlayerUISystem_Gabu : EntityUIBase
     public override void Die()
     {
         base.Die();
-
+        Instantiate(DieObject, entityImage.transform);
     }
 
     #endregion

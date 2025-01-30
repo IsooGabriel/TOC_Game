@@ -6,7 +6,7 @@ public abstract class EntityUIBase : ColorSystem
     #region 変数
 
     public bool isDash = false;
-
+    public bool isDie = false;
     
     public  EntityBase entity = null;
     
@@ -65,6 +65,11 @@ public abstract class EntityUIBase : ColorSystem
     }
     public virtual void Die()
     {
+        if (isDie)
+        {
+            return;
+        }
+        isDie = true;
         entityImage.transform.DOShakeScale(dieEffectTime, 10f, 15, 15f, true).SetEase(dieScaleEase);
         entityImage.transform.DOScale(Vector3.zero, dieEffectTime/2).SetEase(dieScaleEase).SetDelay(dieEffectTime/2);
         entityImage.DOColor(new Color(180f, 180f, 180f), dieEffectTime / 2).SetEase(dieColorEase).SetDelay(dieEffectTime/2);
@@ -143,6 +148,7 @@ public abstract class EntityUIBase : ColorSystem
         normalSaturation = GetSaturation(entityImage.color);
         normalColor = entityImage.color;
         normalScale = entityImage.transform.localScale;
+        isDie = false;
         VitualStart();
     }
     public abstract void VitualStart();

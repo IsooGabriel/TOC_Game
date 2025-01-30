@@ -11,6 +11,7 @@ public class Player_Gabu : EntityBase
     public PlayerInputManager playerMovement;
     public EnemyManager enemyManager;
     public SceneLoad_Gabu sceneLoad;
+    public PlayerAssetsUISystem_Gabu playerAssetsUISystem;
 
     public float holdTime = 0f;
     public readonly float openShopTime = 0.45f;
@@ -22,6 +23,7 @@ public class Player_Gabu : EntityBase
 
     public void AttackButton(Quaternion rotation)
     {
+        if(entityUIBase.isDie) { return; }
         GameObject shotObj;
         if (!isInBase)
         {
@@ -100,6 +102,10 @@ public class Player_Gabu : EntityBase
         rerollTime = rerollSpeed;
     }
 
+    public void UpdateMoney()
+    {
+        playerAssetsUISystem.UpdateMoney();
+    }
 
     public void SetIsInBase(bool binary)
     {
@@ -108,10 +114,8 @@ public class Player_Gabu : EntityBase
 
     public override void Die()
     {
+        if(entityUIBase.isDie) { return; }
         entityUIBase.Die();
-
-        Thread.Sleep((int)entityUIBase.dieEffectTime * 1000); // エフェクトが終わるまで待機、1000倍してミリ秒に変換
-        sceneLoad.LoadScene("Shop");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

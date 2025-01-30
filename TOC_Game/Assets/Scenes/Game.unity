@@ -474,6 +474,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2656088272851320401, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: DieObject
+      value: 
+      objectReference: {fileID: 3980157834873523446, guid: b130756b8ec5962448430a9b6deb3772, type: 3}
     - target: {fileID: 3585908849044677045, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
