@@ -10,21 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21c3aaf9aafef5d43944ca6879a99e8f, type: 3}
-  m_Name: DamageUp 2
+  m_Name: 23Reroll
   m_EditorClassIdentifier: 
-  UpGradeName: Diamond
-  UpGradeID: 2
-  moneyCost: 1000
+  UpGradeName: Down Attack CT
+  UpGradeID: 23
+  moneyCost: 30
   starCost: 0
-  infometion: damaage+++
-  prefab: {fileID: 21300000, guid: ff885d2457ed2194885eb7115ae6f535, type: 3}
-  color: {r: 1, g: 0, b: 0, a: 1}
-  treePosition: {x: 1, y: -1}
-  premises: []
+  infometion: Attack CT -0.1
+  prefab: {fileID: 21300000, guid: db9dad1771665cb498b552f7009c4823, type: 3}
+  color: {r: 0.9258138, g: 1, b: 0, a: 1}
+  treePosition: {x: -4, y: 1}
+  premises:
+  - {fileID: 11400000, guid: 55bdca4723d89ef4283c6115d18a36bb, type: 2}
   fluctuateStats:
-  - fluctuateStats: 0
-    value: 0
+  - fluctuateStats: 10
+    value: 0.1
     priority: 0
   priority: 0
   customObject: {fileID: 0}
-  material: 8
+  material: 7

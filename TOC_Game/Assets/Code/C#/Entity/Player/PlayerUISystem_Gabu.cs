@@ -146,7 +146,7 @@ public class PlayerUISystem_Gabu : EntityUIBase
     public override void Die()
     {
         base.Die();
-        Application.Quit();//ゲームプレイ終了
+
     }
 
     #endregion

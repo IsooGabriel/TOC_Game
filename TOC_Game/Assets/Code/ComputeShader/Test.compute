@@ -191,7 +191,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     
     
     // すべての弾について当たり判定を行う
-    for (uint i = 0; i < shotCount; i++)
+    for (uint i = 1; i < shotCount; i++)
     {
         float2 shotPos = shotPosition[i];
         float shotRadius = shotScale[i];
@@ -205,11 +205,11 @@ void CSMain(uint3 id : SV_DispatchThreadID)
         }
     }
     
-    if ((index + operationID) % 10 != 0)
+    if ((index * 2 + operationID) % 5 != 0)
     {
         
         return;
-    }   
+    }
 
     float2 moveDirection;
     
@@ -219,7 +219,9 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     // 攻撃範囲内かどうかを判定
     if (distanceToPlayer <= attackRange * scale)
     {
+
         attackIDs.Append(index);
+
         return;
     }
     

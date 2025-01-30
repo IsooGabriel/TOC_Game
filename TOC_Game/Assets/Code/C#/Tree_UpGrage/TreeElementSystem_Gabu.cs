@@ -139,12 +139,25 @@ public class TreeElementSystem_Gabu : MonoBehaviour
         LineRenderer.material = DBManager_Gabu.DB.gradationMaterials[(int)DBManager_Gabu.E_GRADATION_MATERIAL.矢印];
 
         // 矢印を配置
-        PlaceArrow(startPos, endPos);
+        PlaceArrow(startPos, endPos, LineRenderer);
     }
 
-    void PlaceArrow(Vector3 startPos, Vector3 endPos)
+    void PlaceArrow(Vector3 startPos, Vector3 endPos, LineRenderer connection)
     {
         GameObject arrowInstance = Instantiate(image.gameObject, transform);
+        LineRenderer newLine = arrowInstance.AddComponent<LineRenderer>();
+        // connection の設定を newLine にコピー
+        newLine.positionCount = connection.positionCount;
+        newLine.startWidth = connection.startWidth;
+        newLine.endWidth = connection.endWidth;
+        newLine.material = connection.material;
+        newLine.startColor = connection.startColor;
+        newLine.endColor = connection.endColor;
+        newLine.numCapVertices = connection.numCapVertices;
+        newLine.numCornerVertices = connection.numCornerVertices;
+        newLine.useWorldSpace = connection.useWorldSpace;
+        newLine.SetPositions(new Vector3[] { startPos, endPos });
+
         Image arrowImage = arrowInstance.GetComponent<Image>();
         RectTransform arrowRectTransform = arrowInstance.GetComponent<RectTransform>();
         arrowImage.sprite = DBManager_Gabu.DB.arrow;

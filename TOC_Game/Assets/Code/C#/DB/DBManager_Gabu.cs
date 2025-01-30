@@ -181,6 +181,7 @@ public class DBManager_Gabu : ScriptableObject
         NONE = -1,
         WHITE = 0,
         RED,
+        RtoO,
         GREEN,
         BLUE,
         CYAN,
@@ -188,10 +189,13 @@ public class DBManager_Gabu : ScriptableObject
         YELLOW,
         PURPLE,
         ORANGE,
+        OtoO,
         BLACK,
         BtoC,
         BGI_BtoC,
         矢印,
+        Star,
+        Gold
     }
 
     public enum UIStatusType

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading;
+using UnityEngine;
 using static DBManager_Gabu;
 
 public class Player_Gabu : EntityBase
@@ -9,6 +10,7 @@ public class Player_Gabu : EntityBase
     public SkillManager_Gabu skillManager;
     public PlayerInputManager playerMovement;
     public EnemyManager enemyManager;
+    public SceneLoad_Gabu sceneLoad;
 
     public float holdTime = 0f;
     public readonly float openShopTime = 0.45f;
@@ -106,8 +108,10 @@ public class Player_Gabu : EntityBase
 
     public override void Die()
     {
-        Application.Quit();//ゲームプレイ終了
         entityUIBase.Die();
+
+        Thread.Sleep((int)entityUIBase.dieEffectTime * 1000); // エフェクトが終わるまで待機、1000倍してミリ秒に変換
+        sceneLoad.LoadScene("Shop");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

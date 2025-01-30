@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c3aaf9aafef5d43944ca6879a99e8f, type: 3}
+  m_Name: 26Reroll
+  m_EditorClassIdentifier: 
+  UpGradeName: Down Attack CT
+  UpGradeID: 26
+  moneyCost: 1
+  starCost: 0
+  infometion: "Attack CT x0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<rotation=5>!</rotation><rotation=10>!</rotation><rotation=15>!</rotation><rotation=20>!</rotation><rotation=25>!</rotation><rotation=30>!</rotation><rotation=35>!</rotation><rotation=40>!</rotation><rotation=45>!</rotation><rotation=50>!</rotation><rotation=55>!</rotation><rotation=60>!</rotation><rotation=65>!</rotation><rotation=70>!</rotation><rotation=75>!</rotation><rotation=80>!</rotation><rotation=85>!</rotation><rotation=90>!</rotation><rotation=95>!</rotation><rotation=100>!</rotation><rotation=105>!</rotation><rotation=110>!</rotation><rotation=115>!</rotation><rotation=120>!</rotation><rotation=125>!</rotation><rotation=130>!</rotation><rotation=135>!</rotation><rotation=140>!</rotation><rotation=145>!</rotation><rotation=150>!</rotation><rotation=155>!</rotation><rotation=160>!</rotation><rotation=165>!</rotation><rotation=170>!</rotation><rotation=175>!</rotation><rotation=180>!</rotation><rotation=185>!</rotation><rotation=190>!</rotation><rotation=195>!</rotation><rotation=200>!</rotation><rotation=205>!</rotation><rotation=210>!</rotation><rotation=215>!</rotation><rotation=220>!</rotation><rotation=225>!</rotation><rotation=230>!</rotation><rotation=235>!</rotation><rotation=240>!</rotation><rotation=245>!</rotation><rotation=250>!</rotation><rotation=255>!</rotation><rotation=260>!</rotation><rotation=265>!</rotation><rotation=270>!</rotation><rotation=275>!</rotation><rotation=280>!</rotation><rotation=285>!</rotation><rotation=290>!</rotation><rotation=295>!</rotation><rotation=300>!</rotation><rotation=305>!</rotation><rotation=310>!</rotation><rotation=315>!</rotation><rotation=320>!</rotation><rotation=325>!</rotation><rotation=330>!</rotation><rotation=335>!</rotation><rotation=340>!</rotation><rotation=345>!</rotation><rotation=350>!</rotation><rotation=355>!</rotation><rotation=360>!</rotation>\u203D\u203D\u203D\u203D\u203D\u203D\u203D\u203D\u203D"
+  prefab: {fileID: 21300000, guid: db9dad1771665cb498b552f7009c4823, type: 3}
+  color: {r: 0.9258138, g: 1, b: 0, a: 1}
+  treePosition: {x: -8, y: 0}
+  premises:
+  - {fileID: 11400000, guid: 09936d1ab1695154c9889505362788bc, type: 2}
+  - {fileID: 11400000, guid: e29d24fbaec7fb541aed082ee1761862, type: 2}
+  - {fileID: 11400000, guid: 48ff1b1bd99d0bf4291b440306fa80ef, type: 2}
+  - {fileID: 11400000, guid: ba46814502f22c34faaa06124c9a5d6f, type: 2}
+  - {fileID: 11400000, guid: 99d6a1150aedc9a4d8454f9716649acf, type: 2}
+  fluctuateStats:
+  - fluctuateStats: 28
+    value: 0
+    priority: 0
+  priority: 0
+  customObject: {fileID: 0}
+  material: 7

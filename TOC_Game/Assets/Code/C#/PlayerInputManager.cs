@@ -7,6 +7,7 @@ public class PlayerInputManager : MonoBehaviour
     #region Variáveis
 
     public float moveSpeed = 5f; // Velocidade do movimento
+    public float limit = 30;
     private Vector2 moveInput; // Input de movimento
     private Transform playerTransform; // Transform do jogador
 
@@ -94,6 +95,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         // Atualizar a movimentação direta
         playerTransform.position += MovePlayerDirectly() * moveSpeed * Time.deltaTime;
+        playerTransform.position = new Vector3(Mathf.Clamp(playerTransform.position.x, -limit, limit), Mathf.Clamp(playerTransform.position.y, -limit, limit), 0);
     }
 
 }
