@@ -17,7 +17,7 @@ public abstract class EntityUIBase : ColorSystem
             
     public Color normalColor = new Color(255f, 255f, 255f);
     public float normalSaturation = 0f;
-    public Vector3 normalScale = Vector3.one;
+    public Vector3 normalScale = Vector3.zero;
             
     public readonly float damageSaturation = 10f;
     public readonly float damageEffectTime = 0.4f;

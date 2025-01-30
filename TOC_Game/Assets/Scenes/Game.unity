@@ -294,6 +294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: 424cf8c3af6785a4099d9edcf0f9af2d, type: 3}
   moveSpeed: 3
+  maxShots: 255
   player: {fileID: 424975164}
   playerPosition: {x: 0, y: 0}
   enemyPrefab: {fileID: 5762256463549980013, guid: ef96026cb0ae3ce4cb86a8c787f06227, type: 3}
@@ -445,6 +446,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 203055922986257249, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 203055922986257249, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 203055922986257249, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1960646276493825345, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
       propertyPath: enemyManager
       value: 
@@ -499,6 +512,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3585908849044677045, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941048042184775841, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941048042184775841, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941048042184775841, guid: 71a34234fa7af2d439437aa910053ace, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6117282336490409655, guid: 71a34234fa7af2d439437aa910053ace, type: 3}

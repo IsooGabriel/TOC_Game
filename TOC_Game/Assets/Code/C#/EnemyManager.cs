@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class EnemyManager : MonoBehaviour
     public ComputeShader computeShader;  // Compute Shaderをアタッチ
     public readonly uint enemyCount = 250;         // 敵の数
     public float moveSpeed = 0.8f;       // 敵の移動速度
+    public uint maxShots = 255;
 
     private ComputeBuffer enemyBuffer;   // 敵位置情報用のComputeBuffer
 
@@ -37,14 +39,14 @@ public class EnemyManager : MonoBehaviour
     private ComputeBuffer takeDamageBuffer;    // ダメージ処理用のバッファ
 
     private ComputeBuffer ShotBuffer;  // ショット用のComputeBuffer
-    private List<Vector2> shotPosition;
-    private List<GameObject> shot;
+    private Vector2[] shotPosition;
+    private GameObject[] shot;
 
     private ComputeBuffer shotScaleBuffer;  // ショットスケール用のComputeBuffer
-    private List<float> shotScales;
+    private float[] shotScales;
 
     private ComputeBuffer attackedShotBuffer;  // 攻撃されたショット用のComputeBuffer
-    private List<float> attackedShot;
+    private int[] attackedShotFrags;
 
     public EntityBase player;           // プレイヤー
     public Vector2 playerPosition = Vector2.zero;  // プレイヤーの位置
@@ -68,7 +70,8 @@ public class EnemyManager : MonoBehaviour
     private GameObject[] enemies;   // 敵オブジェクトの配列
 
     int kernel;
-    uint[] tempArray;
+    int[] shotTempArray;
+    int[] tempArray;
 
     #endregion
 
@@ -76,16 +79,19 @@ public class EnemyManager : MonoBehaviour
     #region 関数
 
 
-    private void SetAttack(uint[] targetEnemies)
+    private void SetAttack(int[] targetEnemies)
     {
         for (int i = 1; i < targetEnemies.Length; i++)
         {
-            if (targetEnemies[(int)i] >= enemyCount)
+            if (i >= enemyCount)
             {
                 continue;
             }
-            uint ID = targetEnemies[(int)i];
-            Enemy_Gabu entity = enemies[(int)ID].GetComponent<Enemy_Gabu>();
+            if (targetEnemies[i] == 0)
+            {
+                continue;
+            }
+            Enemy_Gabu entity = enemies[i].GetComponent<Enemy_Gabu>();
             if (entity.atkCT > 0)
             {
                 continue;
@@ -99,23 +105,26 @@ public class EnemyManager : MonoBehaviour
     public void ResetEnemy(uint ID)
     {
 
-        float direction = Random.Range(-1f, 1f); // -1 から 1 の範囲でランダムに方向を決定
+        float direction = UnityEngine.Random.Range(-1f, 1f); // -1 から 1 の範囲でランダムに方向を決定
         Vector2 position = new Vector2(direction * generationRange, (1 - Mathf.Abs(direction)) * generationRange);
         enemyPositions[ID] = position;
         enemies[(int)ID].transform.position = position;
 
     }
 
-    public void TakeDamage(uint[] IDs)
+    public void TakeDamage(int[] IDs)
     {
         for (int i = 1; i < IDs.Length; i++)
         {
-            if (IDs[(int)i] >= enemyCount)
+            if (i >= enemyCount)
             {
                 continue;
             }
-            uint ID = IDs[(int)i];
-            enemies[(int)ID].GetComponent<Enemy_Gabu>().TakeDamage(
+            if (IDs[i] == 0)
+            {
+                continue;
+            }
+            enemies[i].GetComponent<Enemy_Gabu>().TakeDamage(
             player.atk, player.level, player.criticalChance, player.criticalDamage, player.Buff);
         }
     }
@@ -124,13 +133,38 @@ public class EnemyManager : MonoBehaviour
     public void SetShot(GameObject newShot)
     {
         Debug.Log("ショット追加");
-        shot.Add(newShot);
+        for (int i = 0; i < maxShots; i++)
+        {
+            if (shot[i] == null)
+            {
+                shot[i] = newShot;
+                attackedShotFrags[i] = 0;
+                return;
+
+            }
+        }
+
+        // すべての弾が埋まっている場合は、最初の弾を削除して新しい弾を追加
+        Destroy(shot[0]);
+        shot[0] = newShot;
     }
 
     public void RmoveShot(GameObject target)
     {
-        Debug.Log("ショット取り除き");
-        shot.Remove(target);
+        int index = Array.IndexOf(shot, target);
+        Debug.Log("ショット取り除き"+ index);
+        if(index < 0)
+        {
+            Debug.Log("ショットが見つかりません");
+            return;
+        }
+        if (index >= maxShots)
+        {
+            Debug.LogError("ショットの長さが異常です");
+            return;
+        }
+        attackedShotFrags[index] = 0;
+        shot[index] = null;
     }
 
     #endregion
@@ -148,20 +182,30 @@ public class EnemyManager : MonoBehaviour
         randomValues = new float[enemyCount];
         OperationID = 0;
         resetEnemy = new List<uint>();
-        tempArray = new uint[enemyCount];
-        shot = new List<GameObject>();
-        shotPosition = new List<Vector2>();
-        shotPosition.Add(Vector2.zero); // 要素のないリストはBufferに渡せないのでダミーを追加
-        attackedShot = new List<float>();
-        attackedShot.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
-        shotScales = new List<float>();
-        shotScales.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
+        tempArray = new int[enemyCount];
+        shotTempArray = new int[maxShots];
+        shot = new GameObject[maxShots];
+        shotPosition = new Vector2[maxShots];
+        shotScales = new float[maxShots];
+        attackedShotFrags = new int[maxShots];
         //shotCounts = 0;
+        for(int i = 0; i < maxShots; i++)
+        {
+            shotTempArray[i] = 0;
+            shot[i] = null;
+            shotPosition[i] = Vector2.zero;
+            shotScales[i] = 0;
+            attackedShotFrags[i] = 0;
+        }
+        for(int i = 0; i < enemyCount; i++)
+        {
+            tempArray[i] = 0;
+        }
 
         for (int i = 0; i < enemyCount; i++)
         {
             // ランダムな初期位置（例：-10〜10の範囲）
-            enemyPositions[i] = new Vector2(Random.Range(Mathf.Abs(generationRange) * -1, Mathf.Abs(generationRange)), Random.Range(Mathf.Abs(generationRange) * -1, Mathf.Abs(generationRange)));
+            enemyPositions[i] = new Vector2(UnityEngine.Random.Range(Mathf.Abs(generationRange) * -1, Mathf.Abs(generationRange)), UnityEngine.Random.Range(Mathf.Abs(generationRange) * -1, Mathf.Abs(generationRange)));
 
             // notgenerationRangeの範囲内に生成された場合はenemyPositionsを再設定
             if ((enemyPositions[i].x < notgenerationRange) && (enemyPositions[i].x > -notgenerationRange)
@@ -176,7 +220,7 @@ public class EnemyManager : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab, enemyPositions[i], Quaternion.identity);
 
             // ランダムなスケールを設定
-            float scale = scales[Random.Range(0, scales.Length)]; // スケールを配列からランダムに設定
+            float scale = scales[UnityEngine.Random.Range(0, scales.Length)]; // スケールを配列からランダムに設定
             enemy.transform.localScale = new Vector3(scale, scale, 1f);
 
             // スケールを保存
@@ -190,7 +234,8 @@ public class EnemyManager : MonoBehaviour
             enemy_Gabu.ID = (uint)i;
             enemy_Gabu.enemyManager = this;
             enemy_Gabu.level = 1 + (int)(scale / 0.21f);
-            enemy_Gabu.Buff = Random.Range(0, 100);
+            enemy_Gabu.Buff = UnityEngine.Random.Range(0, 100);
+            enemy_Gabu.entityUIBase.normalScale = Vector3.one * scale;
 
 
             enemies[i] = enemy;
@@ -219,18 +264,18 @@ public class EnemyManager : MonoBehaviour
         randomValuesBuffer.SetData(randomValues);
 
         attackBuffer = new ComputeBuffer((int)enemyCount, sizeof(int)); // 攻撃情報はint1
-        attackBuffer.SetData(new uint[] { 0 });
+        attackBuffer.SetData(tempArray);
 
         takeDamageBuffer = new ComputeBuffer((int)enemyCount, sizeof(int)); // 攻撃情報はint1
-        takeDamageBuffer.SetData(new uint[] { 0 });
+        takeDamageBuffer.SetData(tempArray);
 
-        ShotBuffer = new ComputeBuffer((int)enemyCount, sizeof(float) * 2); // 攻撃情報はint1
+        ShotBuffer = new ComputeBuffer((int)maxShots, sizeof(float) * 2); // 攻撃情報はint1
         ShotBuffer.SetData(shotPosition);
 
-        attackedShotBuffer = new ComputeBuffer((int)enemyCount, sizeof(float)); // 攻撃情報はint1
-        attackedShotBuffer.SetData(attackedShot);
+        attackedShotBuffer = new ComputeBuffer((int)maxShots, sizeof(int)); // 攻撃情報はint1
+        attackedShotBuffer.SetData(shotTempArray);
 
-        shotScaleBuffer = new ComputeBuffer((int)enemyCount, sizeof(float)); // 攻撃情報はint1
+        shotScaleBuffer = new ComputeBuffer((int)maxShots, sizeof(float)); // 攻撃情報はint1
         shotScaleBuffer.SetData(shotScales);
 
     }
@@ -264,72 +309,51 @@ public class EnemyManager : MonoBehaviour
         computeShader.SetBuffer(kernel, "attackIDs", attackBuffer);
         computeShader.SetBuffer(kernel, "takeDamageIDs", takeDamageBuffer);
         computeShader.SetBuffer(kernel, "attackedShotIDs", attackedShotBuffer);
+        computeShader.SetInt("shotCount", (int)maxShots);
 
-
-        shotPosition.Clear();
-        shotScales.Clear();
         // 弾の数と配置を教える、あとスケールも
-        if (shot.Count > 1)
+        for (int i = 0; i < shot.Length; i++)
         {
-            shotPosition.Add(Vector2.zero);
-            shotScales.Add(0);
-            foreach (GameObject obj in shot)
+            if (shot[i] == null)
             {
-                shotPosition.Add(obj.transform.position);
-                shotScales.Add(obj.transform.localScale.x);
+                continue;
             }
+            shotPosition[i] = shot[i].transform.position;
+            shotScales[i] = shot[i].transform.localScale.x;
         }
         ShotBuffer.SetData(shotPosition);
         shotScaleBuffer.SetData(shotScales);
         computeShader.SetBuffer(kernel, "shotPosition", ShotBuffer);
         computeShader.SetBuffer(kernel, "shotScale", shotScaleBuffer);
-        computeShader.SetInt("shotCount", (int)(shot.Count < 0 ? 0 : shot.Count));
 
         // Compute Shaderを実行
         // 敵の攻撃処理
         attackBuffer.GetData(tempArray);
-        if (tempArray.Length > 1)
-        {
-
-            Debug.Log($"攻撃した:{tempArray[0]}, {tempArray[1]}");
-            SetAttack(tempArray);
-        }
-        attackBuffer.SetData(new uint[] { 0 });
-        computeShader.SetBuffer(kernel, "attackIDs", attackBuffer);
+        SetAttack(tempArray);
 
         // 敵の攻撃を受ける処理
         takeDamageBuffer.GetData(tempArray);
-        if (tempArray.Length > 1)
-        {
-            Debug.Log($"攻撃受けた:{tempArray[0]}, {tempArray[1]}");
-            TakeDamage(tempArray);
-        }
-
-        takeDamageBuffer.SetData(new uint[] { 0 });
-        computeShader.SetBuffer(kernel, "takeDamageIDs", takeDamageBuffer);
+        TakeDamage(tempArray);
 
         // ヒット済みの弾の処理
-        attackedShotBuffer.GetData(tempArray);
-        attackedShot.Clear();
-        if (tempArray.Length > 1)
+        attackedShotBuffer.GetData(shotTempArray);
+        for (int i = 1; shotTempArray.Length > i; i++)
         {
-            Debug.Log($"攻撃済みの弾:{tempArray[0]}, {tempArray[1]}");
-            for (int i = 1; tempArray.Length > i; i++)
+            if (i >= maxShots)
             {
-                if (tempArray[i] >= shot.Count)
-                {
-                    continue;
-                }
-                shot[(int)tempArray[i]].GetComponent<Shot_Gabu>().OnAttacked();
+                Debug.LogError("attackedShotBufferの長さが異常です");
+                break;
             }
-            attackedShot.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
+            if (shot[i] == null)
+            {
+                continue;
+            }
+            if (shotTempArray[i] == 0)
+            {
+                continue;
+            }
+            shot[i].GetComponent<Shot_Gabu>().OnAttacked();
         }
-        else
-        {
-            attackedShot.Add(0); // 要素のないリストはBufferに渡せないのでダミーを追加
-        }
-        attackedShotBuffer.SetData(attackedShot);
-        computeShader.SetBuffer(kernel, "attackedShotIDs", attackedShotBuffer);
 
         computeShader.Dispatch(kernel, Mathf.CeilToInt(enemyCount / 1f), 1, 1);
 

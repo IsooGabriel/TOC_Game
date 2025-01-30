@@ -8,11 +8,11 @@ RWStructuredBuffer<float2> moveRestrictions; // 各敵の移動制限 (1: 移動
 StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用される）
 RWStructuredBuffer<uint> random; // 乱数
 RWStructuredBuffer<float> randomValues; // 乱数の値
-AppendStructuredBuffer<uint> attackIDs;
-AppendStructuredBuffer<uint> takeDamageIDs;
-RWStructuredBuffer<float2> shotPosition;
+RWStructuredBuffer<int> attackIDs;
+RWStructuredBuffer<int> takeDamageIDs;
+StructuredBuffer<float2> shotPosition;
 StructuredBuffer<float> shotScale; // 各弾のスケール
-AppendStructuredBuffer<uint> attackedShotIDs;
+RWStructuredBuffer<int> attackedShotIDs;
 
 float deltaTime;
 float moveSpeed;
@@ -188,6 +188,8 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     float scale = enemyScales[index];
     //float stopProbability = stopProbabilities[index];
     float2 restriction = moveRestrictions[index];
+    takeDamageIDs[index] = false;
+    attackIDs[index] = false;
     
     
     // すべての弾について当たり判定を行う
@@ -199,8 +201,8 @@ void CSMain(uint3 id : SV_DispatchThreadID)
         
         if (distance <= (scale + shotRadius)) // 敵の半径 + 弾の半径
         {
-            attackedShotIDs.Append(i);
-            takeDamageIDs.Append(index);
+            attackedShotIDs[i] = true;
+            takeDamageIDs[index] = true;
             break; // 一つでも当たれば終了
         }
     }
@@ -219,9 +221,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     // 攻撃範囲内かどうかを判定
     if (distanceToPlayer <= attackRange * scale)
     {
-
-        attackIDs.Append(index);
-
+        attackIDs[index] = true;
         return;
     }
     
