@@ -20,4 +20,9 @@ public class SceneLoad_Gabu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void SetTimeScale(float value)
+    {
+        Time.timeScale = value;
+    }
 }

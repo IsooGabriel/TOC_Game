@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c3aaf9aafef5d43944ca6879a99e8f, type: 3}
+  m_Name: 21DEF
+  m_EditorClassIdentifier: 
+  UpGradeName: UpDefence
+  UpGradeID: 21
+  moneyCost: 314159265
+  starCost: 271
+  infometion: 'Defence +1234567890
+
+    Total Defence x100'
+  prefab: {fileID: 21300000, guid: 95225b98114fcf245b8992aab7f4ea5e, type: 3}
+  color: {r: 0, g: 0.09811401, b: 1, a: 1}
+  treePosition: {x: 3, y: -4}
+  premises:
+  - {fileID: 11400000, guid: 48ff1b1bd99d0bf4291b440306fa80ef, type: 2}
+  - {fileID: 11400000, guid: 98603e5ac40bfe847bdcdde8ce907ff2, type: 2}
+  fluctuateStats:
+  - fluctuateStats: 16
+    value: 1.234568e+9
+    priority: 0
+  - fluctuateStats: 17
+    value: 100
+    priority: 100
+  priority: 0
+  customObject: {fileID: 0}
+  material: 4

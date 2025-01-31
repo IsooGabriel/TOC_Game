@@ -32,6 +32,8 @@ public class PlayerUISystem_Gabu : EntityUIBase
     public readonly float openShopTime = 0.45f;
     public float openShopHoldTime = 0f;
     public GameObject shopObject = null;
+    public GameObject DieObject = null;
+    public Slider hpSlider = null;
 
     #endregion
 
@@ -143,10 +145,15 @@ public class PlayerUISystem_Gabu : EntityUIBase
         shopObject.SetActive(true);
     }
 
+    public void UpdataHpSlider()
+    {
+        hpSlider.value = (float)((float)entity.currentHP / (float)entity.maxHP);
+    }
+
     public override void Die()
     {
         base.Die();
-        Application.Quit();//ゲームプレイ終了
+        Instantiate(DieObject, transform);
     }
 
     #endregion
@@ -155,6 +162,7 @@ public class PlayerUISystem_Gabu : EntityUIBase
     {
         dashTimeMultiplier = DB.playerDBs[DB.AccountID].speed;
         UpdateAmmo(entity.ammo);
+        UpdataHpSlider();
     }
 
 }

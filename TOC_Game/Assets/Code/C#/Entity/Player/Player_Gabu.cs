@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading;
+using UnityEngine;
 using static DBManager_Gabu;
 
 public class Player_Gabu : EntityBase
@@ -9,6 +10,8 @@ public class Player_Gabu : EntityBase
     public SkillManager_Gabu skillManager;
     public PlayerInputManager playerMovement;
     public EnemyManager enemyManager;
+    public SceneLoad_Gabu sceneLoad;
+    public PlayerAssetsUISystem_Gabu playerAssetsUISystem;
 
     public float holdTime = 0f;
     public readonly float openShopTime = 0.45f;
@@ -20,6 +23,7 @@ public class Player_Gabu : EntityBase
 
     public void AttackButton(Quaternion rotation)
     {
+        if(entityUIBase.isDie) { return; }
         GameObject shotObj;
         if (!isInBase)
         {
@@ -46,6 +50,12 @@ public class Player_Gabu : EntityBase
         shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
         ammo--;
         uiSystem.UpdateAmmo(ammo);
+    }
+
+    public override void TakeDamage(long opponentAtk, long opponentLevel, float opponentCriticalChance, float opponentCriticalDamage, float buff)
+    {
+        base.TakeDamage(opponentAtk, opponentLevel, opponentCriticalChance, opponentCriticalDamage, buff);
+        uiSystem.UpdataHpSlider();
     }
 
     public void Move(Vector2 direction)
@@ -98,6 +108,10 @@ public class Player_Gabu : EntityBase
         rerollTime = rerollSpeed;
     }
 
+    public void UpdateMoney()
+    {
+        playerAssetsUISystem.UpdateMoney();
+    }
 
     public void SetIsInBase(bool binary)
     {
@@ -106,7 +120,7 @@ public class Player_Gabu : EntityBase
 
     public override void Die()
     {
-        Application.Quit();//ゲームプレイ終了
+        if(entityUIBase.isDie) { return; }
         entityUIBase.Die();
     }
 
@@ -130,9 +144,9 @@ public class Player_Gabu : EntityBase
 
     void Start()
     {
+
         level = DB.playerDBs[DB.AccountID].level;
         maxHP = DB.playerDBs[DB.AccountID].hp;
-        currentHP = maxHP;
         atk = DB.playerDBs[DB.AccountID].atk;
         atkSpeed = DB.playerDBs[DB.AccountID].atkSpeed;
         speed = DB.playerDBs[DB.AccountID].speed;
@@ -142,7 +156,11 @@ public class Player_Gabu : EntityBase
         isInBase = false;
         Buff = 100;
 
-        skillManager = new SkillManager_Gabu();
+        if (skillManager == null)
+        {
+            skillManager = new SkillManager_Gabu();
+        }
+        skillManager.SetSkills();
         skillManager.UseAllSkills(this);
 
         if (entityUIBase == null)
@@ -151,6 +169,6 @@ public class Player_Gabu : EntityBase
         }
 
         playerMovement.player = this;
+        currentHP = maxHP;
     }
-
 }

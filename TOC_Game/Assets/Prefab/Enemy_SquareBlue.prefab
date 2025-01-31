@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
-  maxHP: 100
-  currentHP: 0
-  atk: 10
+  maxHP: 5
+  currentHP: 5
+  atk: 5
   atkSpeed: 1
   criticalChance: 0
   criticalDamage: 0

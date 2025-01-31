@@ -31,7 +31,7 @@ public class TreeManager_Gabu : MonoBehaviour
     // クリックされたアップグレードの情報を表示する
     public void SerectElement(int upgradeID)
     {
-        titleTMP.text = DB.baseUpGrageDBs[upgradeID].name;
+        titleTMP.text = DB.baseUpGrageDBs[upgradeID].UpGradeName;
         detaliTMP.text = DB.baseUpGrageDBs[upgradeID].infometion;
 
         unlockButton.onClick.RemoveAllListeners();

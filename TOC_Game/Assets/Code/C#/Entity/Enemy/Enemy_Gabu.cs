@@ -19,6 +19,8 @@ public class Enemy_Gabu : EntityBase
 
     public override void Die()
     {
+        if(entityUIBase.isDie) { return; }
+        
         entityUIBase.Die();
         Thread.Sleep((int)entityUIBase.dieEffectTime * 1000); // エフェクトが終わるまで待機、1000倍してミリ秒に変換
         Reset();
