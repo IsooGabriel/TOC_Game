@@ -249,6 +249,28 @@
                 },
                 {
                     "name": "",
+                    "id": "52cf1ebf-a611-4df5-b0fe-68e4df3c6c9a",
+                    "path": "<XInputController>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60dbf063-9828-4ff9-9606-a4ed23c1b444",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c1f7a91b-d0fd-4a62-997e-7fb9b69bf235",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -723,7 +745,7 @@
                 {
                     "name": "",
                     "id": "c165810b-ef00-496c-bbbd-5b5c64d74aa3",
-                    "path": "<Gamepad>/leftStick",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -734,7 +756,7 @@
                 {
                     "name": "",
                     "id": "66c2a03d-900f-4665-bc61-6bbbc2878efb",
-                    "path": "<XInputController>/leftStick",
+                    "path": "<XInputController>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
