@@ -4,6 +4,8 @@ using UnityEngine;
 public abstract class EntityUIBase : ColorSystem
 {
     #region 変数
+    
+    public readonly float camereZpos = -23;
 
     public bool isDash = false;
     public bool isDie = false;
@@ -78,7 +80,7 @@ public abstract class EntityUIBase : ColorSystem
 
     public virtual void Critical()
     {
-        Camera.main.DOShakePosition(criticalEffectTime, 3f, 10, 1, true);
+        Camera.main.DOShakePosition(criticalEffectTime, 3f, 15, 4, true);
     }
 
     public virtual void Buffed(float value)
@@ -150,6 +152,15 @@ public abstract class EntityUIBase : ColorSystem
         normalScale = entityImage.transform.localScale;
         isDie = false;
         VitualStart();
+    }
+
+    private void Update()
+    {
+        if(Camera.main.transform.localPosition != new Vector3(0f,0f,camereZpos))
+        {
+            Camera.main.transform.localPosition = new Vector3(0, 0, camereZpos);
+        }
+        
     }
     public abstract void VitualStart();
 }

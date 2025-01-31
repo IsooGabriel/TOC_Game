@@ -13,9 +13,9 @@ public class EnemyManager : MonoBehaviour
     [SerializeField, Header("生成しない範囲")]
     private readonly float notgenerationRange = 5f; // 敵の生成範囲
     public ComputeShader computeShader;  // Compute Shaderをアタッチ
-    public readonly uint enemyCount = 250;         // 敵の数
+    public readonly uint enemyCount = 500;         // 敵の数
     public float moveSpeed = 0.8f;       // 敵の移動速度
-    public uint maxShots = 255;
+    public readonly uint maxShots = 255;
 
     private ComputeBuffer enemyBuffer;   // 敵位置情報用のComputeBuffer
 
@@ -32,9 +32,6 @@ public class EnemyManager : MonoBehaviour
 
     private ComputeBuffer randomValuesBuffer; // ランダム値用のComputeBuffer
     private float[] randomValues;
-
-    private ComputeBuffer resetBuffer;  // リセット用のComputeBuffer
-    private List<uint> resetEnemy;
 
     private ComputeBuffer attackBuffer;  // 攻撃用のComputeBuffer
 
@@ -185,7 +182,6 @@ public class EnemyManager : MonoBehaviour
         random = new uint[enemyCount];
         randomValues = new float[enemyCount];
         OperationID = 0;
-        resetEnemy = new List<uint>();
         tempArray = new int[enemyCount];
         shotTempArray = new int[maxShots];
         shot = new GameObject[maxShots];
@@ -239,7 +235,9 @@ public class EnemyManager : MonoBehaviour
             enemy_Gabu.level = 1 + (int)(scale / 0.21f);
             enemy_Gabu.Buff = UnityEngine.Random.Range(0, 100);
             enemy_Gabu.entityUIBase.normalScale = Vector3.one * scale;
-
+            enemy_Gabu.atk = enemy_Gabu.level;
+            enemy_Gabu.maxHP = enemy_Gabu.level;
+            enemy_Gabu.currentHP = enemy_Gabu.maxHP;
 
             enemies[i] = enemy;
         }
@@ -385,6 +383,5 @@ public class EnemyManager : MonoBehaviour
         if (ShotBuffer != null) ShotBuffer.Release();
         if (shotScaleBuffer != null) shotScaleBuffer.Release();
         if (attackedShotBuffer != null) attackedShotBuffer.Release();
-
     }
 }

@@ -52,6 +52,12 @@ public class Player_Gabu : EntityBase
         uiSystem.UpdateAmmo(ammo);
     }
 
+    public override void TakeDamage(long opponentAtk, long opponentLevel, float opponentCriticalChance, float opponentCriticalDamage, float buff)
+    {
+        base.TakeDamage(opponentAtk, opponentLevel, opponentCriticalChance, opponentCriticalDamage, buff);
+        uiSystem.UpdataHpSlider();
+    }
+
     public void Move(Vector2 direction)
     {
         uiSystem.Dash(direction);
@@ -138,9 +144,9 @@ public class Player_Gabu : EntityBase
 
     void Start()
     {
+
         level = DB.playerDBs[DB.AccountID].level;
         maxHP = DB.playerDBs[DB.AccountID].hp;
-        currentHP = maxHP;
         atk = DB.playerDBs[DB.AccountID].atk;
         atkSpeed = DB.playerDBs[DB.AccountID].atkSpeed;
         speed = DB.playerDBs[DB.AccountID].speed;
@@ -150,7 +156,11 @@ public class Player_Gabu : EntityBase
         isInBase = false;
         Buff = 100;
 
-        skillManager = new SkillManager_Gabu();
+        if (skillManager == null)
+        {
+            skillManager = new SkillManager_Gabu();
+        }
+        skillManager.SetSkills();
         skillManager.UseAllSkills(this);
 
         if (entityUIBase == null)
@@ -159,6 +169,6 @@ public class Player_Gabu : EntityBase
         }
 
         playerMovement.player = this;
+        currentHP = maxHP;
     }
-
 }

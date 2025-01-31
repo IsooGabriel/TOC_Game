@@ -60,7 +60,6 @@ public class BaseUpGradeDB_StatChangeSkill_Gabu : UpGrade_Gabu
     {
         // ステータス変動を優先度順にソート
         System.Array.Sort(fluctuateStats, (a, b) => a.priority.CompareTo(b.priority));
-
         foreach (var fluctuateStat in fluctuateStats)
         {
             switch (fluctuateStat.fluctuateStats)
@@ -181,6 +180,19 @@ public class BaseUpGradeDB_StatChangeSkill_Gabu : UpGrade_Gabu
                 case E_FLUCTUATE_STATS.CRITICAL_DAMAGE_MULTIPLY:
                     CriticalDamageMultiply(player, fluctuateStat.value);
                     break;
+                case E_FLUCTUATE_STATS.AMMO_ADD:
+                    player.ammo += (int)fluctuateStat.value;
+                    break;
+                case E_FLUCTUATE_STATS.AMMO_MULTIPLY:
+                    player.ammo *= (int)fluctuateStat.value;
+                    break;
+                case E_FLUCTUATE_STATS.AMMO_SUBTRACT:
+                    player.ammo -= (int)fluctuateStat.value;
+                    break;
+                case E_FLUCTUATE_STATS.AMMO_DIVIDE:
+                    player.ammo /= (int)fluctuateStat.value;
+                    break;
+
 
                 default:
                     Debug.LogWarning($"未対応のフラグ: {fluctuateStat.fluctuateStats}");
