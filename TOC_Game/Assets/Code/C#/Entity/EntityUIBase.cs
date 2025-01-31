@@ -4,9 +4,11 @@ using UnityEngine;
 public abstract class EntityUIBase : ColorSystem
 {
     #region 変数
+    
+    public readonly float camereZpos = -23;
 
     public bool isDash = false;
-
+    public bool isDie = false;
     
     public  EntityBase entity = null;
     
@@ -17,9 +19,9 @@ public abstract class EntityUIBase : ColorSystem
             
     public Color normalColor = new Color(255f, 255f, 255f);
     public float normalSaturation = 0f;
-    public Vector3 normalScale = Vector3.one;
+    public Vector3 normalScale = Vector3.zero;
             
-    public readonly float damageSaturation = 30f;
+    public readonly float damageSaturation = 10f;
     public readonly float damageEffectTime = 0.4f;
     public readonly Ease damageEase = Ease.InFlash;
 
@@ -65,6 +67,11 @@ public abstract class EntityUIBase : ColorSystem
     }
     public virtual void Die()
     {
+        if (isDie)
+        {
+            return;
+        }
+        isDie = true;
         entityImage.transform.DOShakeScale(dieEffectTime, 10f, 15, 15f, true).SetEase(dieScaleEase);
         entityImage.transform.DOScale(Vector3.zero, dieEffectTime/2).SetEase(dieScaleEase).SetDelay(dieEffectTime/2);
         entityImage.DOColor(new Color(180f, 180f, 180f), dieEffectTime / 2).SetEase(dieColorEase).SetDelay(dieEffectTime/2);
@@ -73,7 +80,7 @@ public abstract class EntityUIBase : ColorSystem
 
     public virtual void Critical()
     {
-        Camera.main.DOShakePosition(criticalEffectTime, 3f, 10, 1, true);
+        Camera.main.DOShakePosition(criticalEffectTime, 3f, 15, 4, true);
     }
 
     public virtual void Buffed(float value)
@@ -143,7 +150,17 @@ public abstract class EntityUIBase : ColorSystem
         normalSaturation = GetSaturation(entityImage.color);
         normalColor = entityImage.color;
         normalScale = entityImage.transform.localScale;
+        isDie = false;
         VitualStart();
+    }
+
+    private void Update()
+    {
+        if(Camera.main.transform.localPosition != new Vector3(0f,0f,camereZpos))
+        {
+            Camera.main.transform.localPosition = new Vector3(0, 0, camereZpos);
+        }
+        
     }
     public abstract void VitualStart();
 }

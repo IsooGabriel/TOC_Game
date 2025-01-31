@@ -1,14 +1,24 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using static DBManager_Gabu;
+using System.Runtime.InteropServices;
 
 public class PlayerInputManager : MonoBehaviour
 {
     #region Variáveis
 
+
+    [DllImport("user32.dll")]
+    private static extern bool SetCursorPos(int X, int Y);
+
     public float moveSpeed = 5f; // Velocidade do movimento
+    public float limit = 30;
     private Vector2 moveInput; // Input de movimento
     private Transform playerTransform; // Transform do jogador
+    public GameObject menuObject;
+
+    public readonly float mouseSpeed = 5f;
 
     public Player_Gabu player;
 
@@ -27,6 +37,8 @@ public class PlayerInputManager : MonoBehaviour
         playerInput.actions["Reroll"].started += OnRerollStarted;
         playerInput.actions["Reroll"].performed += OnRerollCanceled;
         playerInput.actions["Reroll"].canceled += OnRerollCanceled;
+        playerInput.actions["Menu"].started += OnPlessMenu;
+        playerInput.actions["MoveMouse"].performed += OnMoveMouse;
     }
 
     private void OnDisable()
@@ -39,6 +51,8 @@ public class PlayerInputManager : MonoBehaviour
         playerInput.actions["Reroll"].started -= OnRerollStarted;
         playerInput.actions["Reroll"].performed -= OnRerollCanceled;
         playerInput.actions["Reroll"].canceled -= OnRerollCanceled;
+        playerInput.actions["Menu"].started -= OnPlessMenu;
+        playerInput.actions["MoveMouse"].performed -= OnMoveMouse;
     }
 
     private void OnMovePlayer(InputAction.CallbackContext context)
@@ -46,6 +60,12 @@ public class PlayerInputManager : MonoBehaviour
         // Captura o input de movimento (teclado, controle, etc)
         moveInput = context.ReadValue<Vector2>();
         player.Move(moveInput);
+    }
+
+    private void OnPlessMenu(InputAction.CallbackContext context)
+    {
+        Time.timeScale = menuObject.activeSelf ? 1 : 0;
+        menuObject.SetActive(!menuObject.activeSelf);
     }
 
     private void Attack(InputAction.CallbackContext context)
@@ -82,6 +102,17 @@ public class PlayerInputManager : MonoBehaviour
         return new Vector3(moveInput.x, moveInput.y, 0) ;
     }
 
+    public void OnMoveMouse(InputAction.CallbackContext context)
+    {
+        Vector2 moveMouse = context.ReadValue<Vector2>();
+        // マウスカーソルの位置を取得し、ワールド座標に変換
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPosition.x = Mathf.Clamp(moveMouse.x+ mouseWorldPosition.x, -Screen.width, Screen.width);
+        mouseWorldPosition.y = Mathf.Clamp(moveMouse.y + mouseWorldPosition.y, -Screen.height, Screen.height);
+
+        SetCursorPos((int)mouseWorldPosition.x,(int)mouseWorldPosition.y);
+    }
+
     #endregion
 
     private void Awake()
@@ -89,11 +120,13 @@ public class PlayerInputManager : MonoBehaviour
         // Obter o componente Transform
         playerTransform = GetComponent<Transform>();
         moveSpeed = DB.playerDBs[DB.AccountID].speed;
+        menuObject.SetActive(false);
     }
     private void Update()
     {
         // Atualizar a movimentação direta
-        playerTransform.position += MovePlayerDirectly() * moveSpeed * Time.deltaTime;
+        playerTransform.position += MovePlayerDirectly() * player.speed * Time.deltaTime;
+        playerTransform.position = new Vector3(Mathf.Clamp(playerTransform.position.x, -limit, limit), Mathf.Clamp(playerTransform.position.y, -limit, limit), 0);
     }
 
 }

@@ -34,7 +34,6 @@ public abstract class EntityBase : MonoBehaviour
 
     public virtual void TakeDamage(long opponentAtk, long opponentLevel, float opponentCriticalChance, float opponentCriticalDamage, float buff)
     {
-        Debug.Log("TakeDamage");
         if (currentHP <= 0)
         {
             return;
@@ -72,6 +71,7 @@ public abstract class EntityBase : MonoBehaviour
         shotObj.transform.parent = transform.parent;
         shotObj.GetComponent<Shot_Gabu>().attacker = this;
         entityUIBase.Attack();
+        atkCT = atkSpeed;
         return shotObj;
     }
 

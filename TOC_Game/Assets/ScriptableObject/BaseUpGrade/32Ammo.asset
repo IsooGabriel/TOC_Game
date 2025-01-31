@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c3aaf9aafef5d43944ca6879a99e8f, type: 3}
+  m_Name: 32Ammo
+  m_EditorClassIdentifier: 
+  UpGradeName: Add ammo
+  UpGradeID: 32
+  moneyCost: 1
+  starCost: 777
+  infometion: total ammo x100
+  prefab: {fileID: 21300000, guid: 4fc864b338388bb4e9ac8685388b15cd, type: 3}
+  color: {r: 1, g: 0.04943403, b: 0, a: 1}
+  treePosition: {x: 12, y: 0}
+  premises:
+  - {fileID: 11400000, guid: 75aeeec6f3b73fb4ba5a563b3c0940a0, type: 2}
+  fluctuateStats:
+  - fluctuateStats: 33
+    value: 100
+    priority: 100
+  priority: 0
+  customObject: {fileID: 0}
+  material: 1

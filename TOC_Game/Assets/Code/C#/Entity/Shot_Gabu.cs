@@ -25,22 +25,29 @@ public class Shot_Gabu : MonoBehaviour
 
     public void OnAttacked()
     {
-        enemyManager.DessetShot(gameObject);
+        Debug.Log("ショットしたよ");
+        enemyManager.RmoveShot(gameObject);
         Destroy(gameObject);
     }
 
     public void OnBecameInvisible()
     {
-       Destroy(gameObject);
+        Debug.Log("消えた");
+        OnAttacked();
     }
 
     #endregion
+
 
     public void Update()
     {
         if(gameObject.transform.position.x > 1000 || gameObject.transform.position.x < -1000 || gameObject.transform.position.y > 1000 || gameObject.transform.position.y < -1000)
         {
-            Destroy(gameObject);
+            OnAttacked();
+        }
+        if(Vector2.Distance(transform.position, attacker.transform.position) > 20)
+        {
+            OnAttacked();
         }
         transform.position += transform.right * speed * Time.deltaTime;
     }
