@@ -194,10 +194,6 @@ public class EnemyManager : MonoBehaviour
         computeShader.SetFloat("detectionRange", detectionRange);
 
 
-
-       
-
-
         computeShader.Dispatch(kernel, Mathf.CeilToInt(enemyCount / 1f), 1, 1);
 
         // ComputeBufferからデータを取得

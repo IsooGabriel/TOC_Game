@@ -32,7 +32,6 @@ public class Player_Gabu : EntityBase
                 return;
             }
             shotObj = Attack(rotation);
-            enemyManager.SetShot(shotObj);
             shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
             ammo--;
             uiSystem.UpdateAmmo(ammo);
@@ -46,7 +45,6 @@ public class Player_Gabu : EntityBase
             return;
         }
         shotObj = Attack(rotation);
-        enemyManager.SetShot(shotObj);
         shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
         ammo--;
         uiSystem.UpdateAmmo(ammo);

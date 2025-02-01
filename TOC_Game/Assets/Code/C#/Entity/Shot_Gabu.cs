@@ -14,19 +14,18 @@ public class Shot_Gabu : MonoBehaviour
 
     #region 関数
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.tag == targetTag)
+        if (collision.tag == targetTag)
         {
-            other.GetComponent<EntityBase>().TakeDamage(attacker.atk, attacker.level, attacker.criticalChance, attacker.criticalDamage, attacker.Buff);
-            Destroy(gameObject);
+            collision.GetComponent<Enemy_Gabu>().TakeDamage(attacker.atk, attacker.level, attacker.criticalChance, attacker.criticalDamage, attacker.Buff);
+            OnAttacked();
         }
     }
 
     public void OnAttacked()
     {
         Debug.Log("ショットしたよ");
-        enemyManager.RmoveShot(gameObject);
         Destroy(gameObject);
     }
 

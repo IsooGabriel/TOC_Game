@@ -8,11 +8,7 @@ RWStructuredBuffer<float2> moveRestrictions; // 各敵の移動制限 (1: 移動
 StructuredBuffer<float> bounds; // 座標範囲の制限値（正負に適用される）
 RWStructuredBuffer<uint> random; // 乱数
 RWStructuredBuffer<float> randomValues; // 乱数の値
-RWStructuredBuffer<int> attackIDs;
-RWStructuredBuffer<int> takeDamageIDs;
-StructuredBuffer<float2> shotPosition;
-StructuredBuffer<float> shotScale; // 各弾のスケール
-RWStructuredBuffer<int> attackedShotIDs;
+
 
 float deltaTime;
 float moveSpeed;
@@ -20,8 +16,6 @@ uint enemyCount; // 敵の数
 uint operationID; // 演算ID
 float2 playerPosition; // プレイヤーの位置
 float detectionRange;
-float attackRange;
-uint shotCount;
 
 // XORシフト乱数生成器
 uint XorShift(inout uint state)
@@ -188,25 +182,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     float scale = enemyScales[index];
     //float stopProbability = stopProbabilities[index];
     float2 restriction = moveRestrictions[index];
-    takeDamageIDs[index] = 0;
-    attackIDs[index] = 0;
-    
-    
-    // すべての弾について当たり判定を行う
-    for (uint i = 0; i < shotCount; i++)
-    {
-        attackedShotIDs[i] = 0;
-        float2 shotPos = shotPosition[i];
-        float shotRadius = shotScale[i];
-        float distance = length(shotPos - position);
-        
-        if (distance <= (scale + shotRadius)) // 敵の半径 + 弾の半径
-        {
-            attackedShotIDs[i] = 1;
-            takeDamageIDs[index] = 1;
-            break; // 一つでも当たれば終了
-        }
-    }
+
     
     if ((index *2 + operationID) % 5 != 0)
     {
@@ -219,12 +195,6 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     // 距離を計算
     float distanceToPlayer = abs(distance(playerPosition, position));
 
-    // 攻撃範囲内かどうかを判定
-    if (distanceToPlayer <= attackRange * scale)
-    {
-        attackIDs[index] = 1;
-        return;
-    }
     
     // 範囲内かどうかを判定
     if (distanceToPlayer <= detectionRange)
