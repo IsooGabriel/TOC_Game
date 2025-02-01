@@ -208,7 +208,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
         }
     }
     
-    if ((index * 2 + operationID) % 5 != 0)
+    if ((index *2 + operationID) % 5 != 0)
     {
         
         return;
@@ -217,7 +217,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     float2 moveDirection;
     
     // 距離を計算
-    float distanceToPlayer = distance(playerPosition, position);
+    float distanceToPlayer = abs(distance(playerPosition, position));
 
     // 攻撃範囲内かどうかを判定
     if (distanceToPlayer <= attackRange * scale)

@@ -38,7 +38,7 @@ public class PlayerInputManager : MonoBehaviour
         playerInput.actions["Reroll"].performed += OnRerollCanceled;
         playerInput.actions["Reroll"].canceled += OnRerollCanceled;
         playerInput.actions["Menu"].started += OnPlessMenu;
-        playerInput.actions["MoveMouse"].performed += OnMoveMouse;
+        playerInput.actions["MoveMouse"].performed += MoveMouse;
     }
 
     private void OnDisable()
@@ -52,7 +52,7 @@ public class PlayerInputManager : MonoBehaviour
         playerInput.actions["Reroll"].performed -= OnRerollCanceled;
         playerInput.actions["Reroll"].canceled -= OnRerollCanceled;
         playerInput.actions["Menu"].started -= OnPlessMenu;
-        playerInput.actions["MoveMouse"].performed -= OnMoveMouse;
+        playerInput.actions["MoveMouse"].performed -= MoveMouse;
     }
 
     private void OnMovePlayer(InputAction.CallbackContext context)
@@ -102,7 +102,7 @@ public class PlayerInputManager : MonoBehaviour
         return new Vector3(moveInput.x, moveInput.y, 0) ;
     }
 
-    public void OnMoveMouse(InputAction.CallbackContext context)
+    public void MoveMouse(InputAction.CallbackContext context)
     {
         Vector2 moveMouse = context.ReadValue<Vector2>();
         // マウスカーソルの位置を取得し、ワールド座標に変換

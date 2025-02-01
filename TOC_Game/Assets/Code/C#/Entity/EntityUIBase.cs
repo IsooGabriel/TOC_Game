@@ -15,8 +15,8 @@ public abstract class EntityUIBase : ColorSystem
     public  GameObject damageEfect = null; 
     
     public  SpriteRenderer entityImage = null;
-            
-            
+
+    public Transform normalTransform = null;
     public Color normalColor = new Color(255f, 255f, 255f);
     public float normalSaturation = 0f;
     public Vector3 normalScale = Vector3.zero;
@@ -143,13 +143,23 @@ public abstract class EntityUIBase : ColorSystem
         }
     }
 
+    public void Reset()
+    {
+        entityImage.transform.rotation = normalTransform.rotation;
+        entityImage.transform.localScale = normalScale;
+        entityImage.color = normalColor;
+        isDie = false;
+    }
+
     #endregion
 
     public virtual void Start()
     {
+        normalTransform = entityImage.transform;
         normalSaturation = GetSaturation(entityImage.color);
         normalColor = entityImage.color;
         normalScale = entityImage.transform.localScale;
+        
         isDie = false;
         VitualStart();
     }
