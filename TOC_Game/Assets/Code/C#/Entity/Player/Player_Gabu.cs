@@ -32,7 +32,6 @@ public class Player_Gabu : EntityBase
                 return;
             }
             shotObj = Attack(rotation);
-            enemyManager.SetShot(shotObj);
             shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
             ammo--;
             uiSystem.UpdateAmmo(ammo);
@@ -46,7 +45,6 @@ public class Player_Gabu : EntityBase
             return;
         }
         shotObj = Attack(rotation);
-        enemyManager.SetShot(shotObj);
         shotObj.GetComponent<Shot_Gabu>().enemyManager = enemyManager;
         ammo--;
         uiSystem.UpdateAmmo(ammo);
@@ -154,7 +152,7 @@ public class Player_Gabu : EntityBase
         rerollSpeed = DB.playerDBs[DB.AccountID].rerollSpeed;
         ammo = DB.playerDBs[DB.AccountID].ammo;
         isInBase = false;
-        Buff = 100;
+        Buff = 0f;
 
         if (skillManager == null)
         {

@@ -17,6 +17,15 @@ public class Enemy_Gabu : EntityBase
         return;
     }
 
+    private void OnTriggerEnter2D(UnityEngine.Collider2D collision)
+    {
+        if(collision.tag == "Player")
+        {
+            if(CanAttack() == false) { return; }
+            collision.GetComponent<Player_Gabu>().TakeDamage(atk, level, criticalChance, criticalDamage, Buff);
+        }
+    }
+
     public override void Die()
     {
         if(entityUIBase.isDie) { return; }
